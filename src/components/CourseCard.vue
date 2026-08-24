@@ -1,5 +1,7 @@
 <script setup>
-import { Star, BookOpen, Clock, Users } from 'lucide-vue-next';
+import { Star, BookOpen, Clock, Users, ShoppingCart } from 'lucide-vue-next';
+
+defineEmits(['add-to-cart']);
 
 defineProps({
   course: {
@@ -12,12 +14,12 @@ defineProps({
 <template>
   <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full group">
     <!-- Thumbnail -->
-    <div class="relative h-56 overflow-hidden">
+    <router-link :to="`/course/${course.id}`" class="relative h-56 overflow-hidden">
       <img :src="course.image" :alt="course.title" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
       <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-primary">
         {{ course.category }}
       </div>
-    </div>
+    </router-link>
     
     <!-- Content -->
     <div class="p-6 flex flex-col flex-grow">
@@ -34,9 +36,9 @@ defineProps({
       </div>
       
       <!-- Title -->
-      <a href="#" class="text-xl font-bold font-heading mb-4 hover:text-primary transition-colors line-clamp-2">
+      <router-link :to="`/course/${course.id}`" class="text-xl font-bold font-heading mb-4 hover:text-primary transition-colors line-clamp-2">
         {{ course.title }}
-      </a>
+      </router-link>
       
       <!-- Instructor -->
       <div class="flex items-center gap-3 mb-6 mt-auto border-t border-gray-100 pt-4">
@@ -59,6 +61,14 @@ defineProps({
           <span>{{ course.students }}</span>
         </div>
       </div>
+
+      <button
+        @click="$emit('add-to-cart', course)"
+        class="mt-5 w-full inline-flex items-center justify-center gap-2 bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary-dark transition-colors"
+      >
+        <ShoppingCart class="w-4 h-4" />
+        Add to Cart
+      </button>
     </div>
   </div>
 </template>

@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { courses } from '../data/index.js';
 import CourseCard from './CourseCard.vue';
 import { ArrowRight } from 'lucide-vue-next';
+import { cartStore } from '../store/cartStore.js';
 
 const activeTab = ref('All Courses');
 const tabs = ['All Courses', 'Design', 'Business', 'Development'];
@@ -11,6 +12,10 @@ const filteredCourses = computed(() => {
   if (activeTab.value === 'All Courses') return courses;
   return courses.filter(course => course.category === activeTab.value);
 });
+
+const addToCart = (course) => {
+  cartStore.add(course);
+};
 </script>
 
 <template>
@@ -53,14 +58,15 @@ const filteredCourses = computed(() => {
           v-for="course in filteredCourses" 
           :key="course.id" 
           :course="course" 
+          @add-to-cart="addToCart"
         />
       </transition-group>
 
       <!-- CTA -->
       <div class="text-center">
-        <a href="#" class="inline-flex items-center gap-2 px-8 py-4 bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-full font-medium transition-colors shadow-sm">
+        <router-link to="/courses" class="inline-flex items-center gap-2 px-8 py-4 bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-full font-medium transition-colors shadow-sm">
           See All Courses <ArrowRight class="w-5 h-5" />
-        </a>
+        </router-link>
       </div>
 
     </div>
