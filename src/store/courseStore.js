@@ -25,9 +25,12 @@ export const courseStore = reactive({
   addCourse(course) {
     const newCourse = {
       ...course,
+      thumbnailUrl: course.thumbnailUrl || course.image || '',
+      image: course.image || course.thumbnailUrl || '',
+      published: course.published ?? course.status !== 'draft',
       id: Date.now(),
       lessons: [],
-      status: 'draft',
+      status: course.status || 'draft',
       students: '0',
       rating: 0,
       reviews: 0
@@ -40,7 +43,14 @@ export const courseStore = reactive({
   updateCourse(id, updatedData) {
     const index = this.courses.findIndex(c => c.id === id);
     if (index !== -1) {
-      this.courses[index] = { ...this.courses[index], ...updatedData };
+      this.courses[index] = {
+        ...this.courses[index],
+        ...updatedData,
+        thumbnailUrl: updatedData.thumbnailUrl || updatedData.image || this.courses[index].thumbnailUrl || this.courses[index].image || '',
+        image: updatedData.image || updatedData.thumbnailUrl || this.courses[index].image || this.courses[index].thumbnailUrl || '',
+        published: updatedData.published ?? this.courses[index].published ?? this.courses[index].status !== 'draft',
+        status: updatedData.status || this.courses[index].status || 'draft',
+      };
       this.save();
     }
   },

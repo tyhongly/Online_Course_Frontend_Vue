@@ -1,4 +1,5 @@
 import { reactive } from 'vue';
+import { usersStore } from './usersStore.js';
 
 const storedEnrollments = localStorage.getItem('enrollment_data');
 const defaultEnrollments = storedEnrollments ? JSON.parse(storedEnrollments) : [];
@@ -17,9 +18,11 @@ export const enrollmentStore = reactive({
         userId,
         courseId,
         progress: {},
-        quizScores: {}
+        quizScores: {},
+        enrolledAt: new Date().toISOString(),
       });
       this.save();
+      usersStore.touchUser(userId);
     }
   },
   
@@ -40,6 +43,7 @@ export const enrollmentStore = reactive({
     const en = this.getEnrollment(userId, courseId);
     if (en) {
       en.progress[lessonId] = true;
+      usersStore.touchUser(userId);
       this.save();
     }
   },
@@ -50,6 +54,7 @@ export const enrollmentStore = reactive({
       en.quizScores[lessonId] = score;
       // marking the quiz lesson as complete
       en.progress[lessonId] = true; 
+      usersStore.touchUser(userId);
       this.save();
     }
   },

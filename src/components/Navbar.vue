@@ -19,11 +19,8 @@ onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll);
 });
 
-const dashboardRoute = computed(() => {
-  if (authStore.user?.role === 'admin') return '/admin';
-  if (authStore.user?.role === 'student') return '/student/my-courses';
-  return '/login';
-});
+const isLoggedIn = computed(() => !!authStore.user);
+const appRoute = computed(() => '/dashboard');
 </script>
 
 <template>
@@ -57,10 +54,6 @@ const dashboardRoute = computed(() => {
             <router-link to="/pricing" class="block px-4 py-2 hover:bg-light hover:text-primary transition-colors">Pricing</router-link>
           </div>
         </div>
-
-        <router-link :to="dashboardRoute" class="font-medium text-dark-light hover:text-primary transition-colors">
-          Dashboard
-        </router-link>
       </nav>
 
       <!-- Right Actions -->
@@ -81,9 +74,28 @@ const dashboardRoute = computed(() => {
           <User class="w-6 h-6" />
         </button>
 
-        <a href="#" class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-          Get Started
-        </a>
+        <template v-if="isLoggedIn">
+          <router-link
+            :to="appRoute"
+            class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+          >
+            Open App
+          </router-link>
+        </template>
+        <template v-else>
+          <router-link
+            to="/login"
+            class="font-medium text-dark-light hover:text-primary transition-colors"
+          >
+            Login
+          </router-link>
+          <router-link
+            to="/signup"
+            class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+          >
+            Sign Up
+          </router-link>
+        </template>
       </div>
 
       <!-- Mobile Menu Toggle -->
@@ -117,11 +129,13 @@ const dashboardRoute = computed(() => {
             <router-link to="/" class="font-medium text-primary py-2 border-b" @click="mobileMenuOpen = false">Home</router-link>
             <a href="/#courses" class="font-medium text-dark py-2 border-b" @click="mobileMenuOpen = false">Courses</a>
             <router-link to="/about" class="font-medium text-dark py-2 border-b" @click="mobileMenuOpen = false">Pages</router-link>
-            <router-link :to="dashboardRoute" class="font-medium text-dark py-2 border-b" @click="mobileMenuOpen = false">Dashboard</router-link>
-            
-            <div class="mt-4 flex gap-4">
-               <a href="#" class="flex-1 bg-primary text-white text-center py-3 rounded-xl font-medium">Get Started</a>
-            </div>
+            <template v-if="isLoggedIn">
+              <router-link :to="appRoute" class="font-medium text-dark py-2 border-b" @click="mobileMenuOpen = false">Open App</router-link>
+            </template>
+            <template v-else>
+              <router-link to="/login" class="font-medium text-dark py-2 border-b" @click="mobileMenuOpen = false">Login</router-link>
+              <router-link to="/signup" class="font-medium text-dark py-2 border-b" @click="mobileMenuOpen = false">Sign Up</router-link>
+            </template>
           </div>
         </div>
       </div>

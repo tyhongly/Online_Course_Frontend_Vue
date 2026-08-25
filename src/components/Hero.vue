@@ -32,12 +32,12 @@ import { ArrowRight, Play, Star } from 'lucide-vue-next';
               Start Free Trial <ArrowRight class="w-5 h-5" />
             </a>
             
-            <button class="w-full sm:w-auto px-8 py-4 bg-white hover:bg-light text-dark rounded-full font-medium flex items-center justify-center gap-3 transition-all border border-gray-200 hover:border-gray-300">
+            <!-- <button class="w-full sm:w-auto px-8 py-4 bg-white hover:bg-light text-dark rounded-full font-medium flex items-center justify-center gap-3 transition-all border border-gray-200 hover:border-gray-300">
               <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                 <Play class="w-4 h-4 ml-1 fill-current" />
               </div>
               Watch Our Class Demo
-            </button>
+            </button> -->
           </div>
         </div>
 
@@ -48,7 +48,7 @@ import { ArrowRight, Play, Star } from 'lucide-vue-next';
           </div>
           
           <!-- Floating Elements -->
-          <div class="absolute -top-6 -left-6 md:-left-12 bg-white p-4 rounded-2xl shadow-xl z-20 flex items-center gap-4 animate-bounce" style="animation-duration: 3s;">
+          <!-- <div class="absolute -top-6 -left-6 md:-left-12 bg-white p-4 rounded-2xl shadow-xl z-20 flex items-center gap-4 animate-bounce" style="animation-duration: 3s;">
             <div class="flex -space-x-3">
               <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" class="w-10 h-10 rounded-full border-2 border-white object-cover" />
               <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&q=80" class="w-10 h-10 rounded-full border-2 border-white object-cover" />
@@ -61,9 +61,9 @@ import { ArrowRight, Play, Star } from 'lucide-vue-next';
               <p class="font-bold text-dark text-sm">36K+ Enrolled</p>
               <p class="text-xs text-dark-lighter">Students Worldwide</p>
             </div>
-          </div>
+          </div> -->
 
-          <div class="absolute -bottom-8 -right-6 md:-right-8 bg-white p-5 rounded-2xl shadow-xl z-20">
+          <!-- <div class="absolute -bottom-8 -right-6 md:-right-8 bg-white p-5 rounded-2xl shadow-xl z-20">
             <div class="flex items-center gap-3 mb-2">
               <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent">
                 <Star class="w-6 h-6 fill-current" />
@@ -73,7 +73,7 @@ import { ArrowRight, Play, Star } from 'lucide-vue-next';
                 <p class="text-xs text-dark-lighter">Average Rating</p>
               </div>
             </div>
-          </div>
+          </div> -->
           
           <!-- Decorative shape -->
           <div class="absolute top-1/2 -right-4 w-24 h-24 bg-accent rounded-full blur-2xl opacity-50 -z-10"></div>
@@ -82,7 +82,7 @@ import { ArrowRight, Play, Star } from 'lucide-vue-next';
       </div>
 
       <!-- Brands Strip -->
-      <div class="mt-20 pt-10 border-t border-gray-100">
+      <!-- <div class="mt-20 pt-10 border-t border-gray-100">
         <p class="text-center text-sm font-medium text-dark-lighter mb-8 uppercase tracking-wider">Trusted by over 500+ leading universities and companies</p>
         <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
           <span class="text-2xl font-bold font-heading">Google</span>
@@ -91,7 +91,7 @@ import { ArrowRight, Play, Star } from 'lucide-vue-next';
           <span class="text-2xl font-bold font-heading">Spotify</span>
           <span class="text-2xl font-bold font-heading">Netflix</span>
         </div>
-      </div>
+      </div> -->
     </div>
   </section>
 </template>

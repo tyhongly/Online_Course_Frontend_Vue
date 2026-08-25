@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { courseStore } from '../../store/courseStore.js';
+import { categoryStore } from '../../store/categoryStore.js';
 
 const route = useRoute();
 const router = useRouter();
@@ -12,12 +13,14 @@ const courseId = computed(() => isNew.value ? null : Number(route.params.id));
 const courseData = ref({
   title: '',
   description: '',
-  category: 'Development',
+  category: categoryStore.categories[0]?.name || 'Development',
   price: 0,
   image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80',
+  thumbnailUrl: '',
   instructor: 'Admin Instructor',
   instructorAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80',
   status: 'draft',
+  published: false,
   lessons: []
 });
 
@@ -123,14 +126,13 @@ const deleteLesson = (index) => {
             <textarea v-model="courseData.description" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-primary"></textarea>
           </div>
           
-          <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
               <select v-model="courseData.category" class="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-primary">
-                <option>Development</option>
-                <option>Business</option>
-                <option>Design</option>
-                <option>Marketing</option>
+                <option v-for="category in categoryStore.categories" :key="category.id" :value="category.name">
+                  {{ category.name }}
+                </option>
               </select>
             </div>
             <div>
@@ -139,10 +141,10 @@ const deleteLesson = (index) => {
             </div>
           </div>
           
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Thumbnail URL</label>
-            <input v-model="courseData.image" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-primary" />
-          </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Thumbnail URL</label>
+          <input v-model="courseData.thumbnailUrl" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-primary" />
+        </div>
         </div>
 
         <!-- Curriculum / Lessons -->
@@ -191,7 +193,7 @@ const deleteLesson = (index) => {
         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
           <h2 class="text-xl font-bold border-b pb-4 mb-4">Thumbnail Preview</h2>
           <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-            <img :src="courseData.image" class="w-full h-full object-cover" />
+            <img :src="courseData.thumbnailUrl || courseData.image" class="w-full h-full object-cover" />
           </div>
         </div>
       </div>

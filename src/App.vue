@@ -6,7 +6,7 @@ import Footer from './components/Footer.vue';
 
 const route = useRoute();
 const hideNavAndFooter = computed(() => {
-  return route.path.startsWith('/admin') || route.path.startsWith('/student') || route.path.startsWith('/login') || route.path.startsWith('/signup') || route.path.startsWith('/learn');
+  return route.path.startsWith('/admin') || route.path.startsWith('/student') || route.path.startsWith('/dashboard') || route.path.startsWith('/login') || route.path.startsWith('/signup') || route.path.startsWith('/learn');
 });
 </script>
 

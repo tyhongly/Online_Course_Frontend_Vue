@@ -1,23 +1,30 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { authStore } from '../../store/authStore.js';
 
 const router = useRouter();
+const isDev = import.meta.env.DEV;
 const email = ref('');
 const password = ref('');
 const error = ref('');
 
+onMounted(() => {
+  if (authStore.user) {
+    router.replace('/dashboard');
+  }
+});
+
 const handleLogin = () => {
   if (authStore.login(email.value, password.value)) {
-    if (authStore.user.role === 'admin') {
-      router.push('/admin');
-    } else {
-      router.push('/student/my-courses');
-    }
+    router.push('/dashboard');
   } else {
     error.value = 'Invalid login credentials';
   }
+};
+
+const previewAdmin = () => {
+  router.push('/preview/admin');
 };
 </script>
 
@@ -26,8 +33,8 @@ const handleLogin = () => {
     <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
       <div class="text-center mb-8">
         <h1 class="text-3xl font-bold text-gray-800">Welcome Back</h1>
-        <p class="text-gray-500 mt-2">Sign in to continue learning</p>
-        <p class="text-xs text-primary mt-4 bg-primary/10 py-2 rounded-lg">Demo: email 'admin@example.com' password 'admin' for Admin role</p>
+      <p class="text-gray-500 mt-2">Sign in to continue learning</p>
+      <p class="text-xs text-primary mt-4 bg-primary/10 py-2 rounded-lg">Demo: email 'admin@example.com' password 'admin' for Admin role</p>
       </div>
       
       <form @submit.prevent="handleLogin" class="space-y-6">
@@ -47,6 +54,15 @@ const handleLogin = () => {
         
         <button type="submit" class="w-full bg-primary text-white font-bold py-3 px-4 rounded-lg hover:bg-primary-dark transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
           Sign In
+        </button>
+
+        <button
+          v-if="isDev"
+          type="button"
+          @click="previewAdmin"
+          class="w-full rounded-lg border border-gray-300 px-4 py-3 font-bold text-gray-700 transition hover:bg-gray-50"
+        >
+          Preview Admin Dashboard
         </button>
       </form>
       

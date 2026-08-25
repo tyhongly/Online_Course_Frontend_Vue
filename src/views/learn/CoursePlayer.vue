@@ -45,7 +45,7 @@ const goToNext = () => {
     const nextLesson = course.value.lessons[currentLessonIndex.value + 1];
     router.push(`/learn/${courseId}/lesson/${nextLesson.id}`);
   } else {
-    router.push('/student/my-courses');
+    router.push('/student/dashboard');
   }
 };
 
@@ -70,7 +70,7 @@ const submitQuiz = () => {
     <!-- Sidebar -->
     <aside class="w-full md:w-80 bg-white border-r border-gray-200 shadow-sm flex flex-col h-screen sticky top-0">
       <div class="p-4 border-b border-gray-200">
-        <router-link to="/student/my-courses" class="text-sm text-gray-500 hover:text-primary mb-2 inline-flex items-center gap-1">
+        <router-link to="/student/dashboard" class="text-sm text-gray-500 hover:text-primary mb-2 inline-flex items-center gap-1">
           &larr; Back to Dashboard
         </router-link>
         <h2 class="text-lg font-bold text-gray-800 line-clamp-2 mt-2">{{ course.title }}</h2>

@@ -41,7 +41,7 @@ const deleteCourse = (id) => {
             <td class="p-4">
               <div class="flex items-center gap-3">
                 <div class="w-12 h-12 bg-gray-200 rounded-md overflow-hidden shrink-0">
-                  <img :src="course.image" alt="" class="w-full h-full object-cover" />
+                  <img :src="course.thumbnailUrl || course.image" alt="" class="w-full h-full object-cover" />
                 </div>
                 <div>
                   <div class="font-bold text-gray-800 line-clamp-1 max-w-xs">{{ course.title }}</div>

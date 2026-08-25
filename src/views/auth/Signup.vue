@@ -7,12 +7,15 @@ const router = useRouter();
 const name = ref('');
 const email = ref('');
 const password = ref('');
+const error = ref('');
 
 const handleSignup = () => {
-  // Mock signup logic - just logs them in as a student
-  authStore.user = { id: Date.now(), name: name.value, email: email.value, role: 'student', avatar: '' };
-  localStorage.setItem('auth_user', JSON.stringify(authStore.user));
-  router.push('/student/my-courses');
+  if (!authStore.signup({ name: name.value, email: email.value, password: password.value })) {
+    error.value = 'A user with that email already exists.';
+    return;
+  }
+
+  router.push('/student/dashboard');
 };
 </script>
 
@@ -25,6 +28,9 @@ const handleSignup = () => {
       </div>
       
       <form @submit.prevent="handleSignup" class="space-y-5">
+        <div v-if="error" class="rounded-lg bg-red-50 p-3 text-center text-sm text-red-500">
+          {{ error }}
+        </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
           <input v-model="name" type="text" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="John Doe" />
