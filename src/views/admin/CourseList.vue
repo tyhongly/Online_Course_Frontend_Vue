@@ -1,20 +1,34 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { courseStore } from '../../store/courseStore.js';
 
 const router = useRouter();
 const courses = computed(() => courseStore.courses);
+const error = ref('');
 
-const deleteCourse = (id) => {
+onMounted(async () => {
+  try {
+    await courseStore.fetchCourses();
+  } catch (requestError) {
+    error.value = requestError.response?.data?.message || requestError.response?.data?.massage || 'Unable to load courses.';
+  }
+});
+
+const removeCourse = async (id) => {
   if (confirm('Are you sure you want to delete this course?')) {
-    courseStore.deleteCourse(id);
+    try {
+      await courseStore.deleteCourse(id);
+    } catch (requestError) {
+      error.value = requestError.response?.data?.message || requestError.response?.data?.massage || 'Unable to delete course.';
+    }
   }
 };
 </script>
 
 <template>
   <div class="p-8">
+    <div v-if="error" class="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">{{ error }}</div>
     <header class="mb-8 flex justify-between items-center">
       <div>
         <h1 class="text-3xl font-bold text-gray-800">Manage Courses</h1>
@@ -58,9 +72,11 @@ const deleteCourse = (id) => {
                 {{ course.status }}
               </span>
             </td>
-            <td class="p-4 text-right space-x-2">
-              <router-link :to="`/admin/courses/${course.id}/edit`" class="text-primary hover:underline text-sm font-medium">Edit</router-link>
-              <button @click="deleteCourse(course.id)" class="text-red-500 hover:underline text-sm font-medium">Delete</button>
+            <td class="p-4 text-right">
+              <div class="inline-flex items-center gap-2">
+                <router-link :to="`/admin/courses/${course.id}/edit`" class="inline-flex items-center rounded-md border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1">Edit</router-link>
+                <button @click="removeCourse(course.id)" class="inline-flex items-center rounded-md border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 transition-colors hover:border-red-300 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1">Delete</button>
+              </div>
             </td>
           </tr>
           <tr v-if="courses.length === 0">

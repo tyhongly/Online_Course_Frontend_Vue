@@ -15,7 +15,7 @@ const modules = [Pagination, Navigation];
     <div class="container mx-auto px-4 md:px-6">
       
       <div class="text-center max-w-2xl mx-auto mb-16">
-        <span class="text-primary font-medium tracking-wider uppercase text-sm mb-3 block">Top Instructors</span>
+        <span class="text-primary font-medium tracking-wider uppercase text-sm mb-3 block">Popular Category</span>
         <h2 class="text-3xl md:text-4xl font-bold font-heading mb-4">Our Top Class & Professional Instructors in One Place</h2>
       </div>
 

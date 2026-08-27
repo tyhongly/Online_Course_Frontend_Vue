@@ -1,5 +1,6 @@
 import { reactive } from 'vue';
 import { courses as initialCourses } from '../data/index.js';
+import { createCourse, deleteCourse, getAllCourses, updateCourse } from '../services/courseApi.js';
 
 // Get from localStorage if exists, else use mock data
 const storedCourses = localStorage.getItem('course_data');
@@ -18,32 +19,42 @@ let defaultCourses = storedCourses ? JSON.parse(storedCourses) : initialCourses.
 export const courseStore = reactive({
   courses: defaultCourses,
 
+  async fetchCourses() {
+    const response = await getAllCourses();
+    const payload = response?.data?.data || response?.data || [];
+    this.courses = Array.isArray(payload) ? payload : payload.courses || [];
+    this.save();
+    return this.courses;
+  },
+
   save() {
     localStorage.setItem('course_data', JSON.stringify(this.courses));
   },
 
-  addCourse(course) {
+  async addCourse(course) {
     const newCourse = {
       ...course,
       thumbnailUrl: course.thumbnailUrl || course.image || '',
       image: course.image || course.thumbnailUrl || '',
       published: course.published ?? course.status !== 'draft',
-      id: Date.now(),
       lessons: [],
       status: course.status || 'draft',
       students: '0',
       rating: 0,
       reviews: 0
     };
-    this.courses.push(newCourse);
+    const response = await createCourse(newCourse);
+    const payload = response?.data?.data || response?.data || response;
+    const createdCourse = payload?.course || payload;
+    this.courses.push({ ...newCourse, ...createdCourse });
     this.save();
-    return newCourse;
+    return { ...newCourse, ...createdCourse };
   },
 
-  updateCourse(id, updatedData) {
+  async updateCourse(id, updatedData) {
     const index = this.courses.findIndex(c => c.id === id);
     if (index !== -1) {
-      this.courses[index] = {
+      const nextCourse = {
         ...this.courses[index],
         ...updatedData,
         thumbnailUrl: updatedData.thumbnailUrl || updatedData.image || this.courses[index].thumbnailUrl || this.courses[index].image || '',
@@ -51,12 +62,17 @@ export const courseStore = reactive({
         published: updatedData.published ?? this.courses[index].published ?? this.courses[index].status !== 'draft',
         status: updatedData.status || this.courses[index].status || 'draft',
       };
+      const response = await updateCourse(id, nextCourse);
+      const payload = response?.data?.data || response?.data || response;
+      this.courses[index] = { ...nextCourse, ...(payload?.course || payload) };
       this.save();
+      return this.courses[index];
     }
   },
 
-  deleteCourse(id) {
-    this.courses = this.courses.filter(c => c.id !== id);
+  async deleteCourse(id) {
+    await deleteCourse(id);
+    this.courses = this.courses.filter(c => String(c.id) !== String(id));
     this.save();
   },
 

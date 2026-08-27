@@ -61,9 +61,9 @@ const removeLesson = (courseId, lessonId) => {
               </span>
             </td>
             <td class="px-5 py-4 text-right">
-              <div class="inline-flex gap-3">
-                <button class="text-sm font-medium text-red-600 hover:underline" @click="removeLesson(lesson.courseId, lesson.id)">Delete</button>
-                <button class="text-sm font-medium text-slate-700 hover:underline" @click="router.push(`/admin/lessons/${lesson.id}/edit?courseId=${lesson.courseId}`)">Edit</button>
+              <div class="inline-flex items-center gap-2">
+                <button class="inline-flex items-center rounded-md border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 transition-colors hover:border-red-300 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1" @click="removeLesson(lesson.courseId, lesson.id)">Delete</button>
+                <button class="inline-flex items-center rounded-md border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1" @click="router.push(`/admin/lessons/${lesson.id}/edit?courseId=${lesson.courseId}`)">Edit</button>
               </div>
             </td>
           </tr>

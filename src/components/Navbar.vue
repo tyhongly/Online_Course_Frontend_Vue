@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue';
-import { ShoppingCart, User, Menu, X, ChevronDown } from 'lucide-vue-next';
+import { ShoppingCart, Menu, X, ChevronDown } from 'lucide-vue-next';
 import { authStore } from '../store/authStore.js';
 import { cartCount } from '../store/cartStore.js';
 
@@ -70,32 +70,13 @@ const appRoute = computed(() => '/dashboard');
           <span v-if="cartCount" class="absolute top-0 right-0 w-5 h-5 bg-primary text-white text-xs font-bold flex items-center justify-center rounded-full border-2 border-white">{{ cartCount }}</span>
         </router-link>
 
-        <button class="p-2 text-dark hover:text-primary transition-colors">
-          <User class="w-6 h-6" />
-        </button>
+        <router-link to="/login" class="font-medium text-dark hover:text-primary transition-colors">
+          Login
+        </router-link>
 
-        <template v-if="isLoggedIn">
-          <router-link
-            :to="appRoute"
-            class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-          >
-            Open App
-          </router-link>
-        </template>
-        <template v-else>
-          <router-link
-            to="/login"
-            class="font-medium text-dark-light hover:text-primary transition-colors"
-          >
-            Login
-          </router-link>
-          <router-link
-            to="/signup"
-            class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-          >
-            Sign Up
-          </router-link>
-        </template>
+        <router-link to="/signup" class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+          Sign Up
+        </router-link>
       </div>
 
       <!-- Mobile Menu Toggle -->
@@ -129,13 +110,12 @@ const appRoute = computed(() => '/dashboard');
             <router-link to="/" class="font-medium text-primary py-2 border-b" @click="mobileMenuOpen = false">Home</router-link>
             <a href="/#courses" class="font-medium text-dark py-2 border-b" @click="mobileMenuOpen = false">Courses</a>
             <router-link to="/about" class="font-medium text-dark py-2 border-b" @click="mobileMenuOpen = false">Pages</router-link>
-            <template v-if="isLoggedIn">
-              <router-link :to="appRoute" class="font-medium text-dark py-2 border-b" @click="mobileMenuOpen = false">Open App</router-link>
-            </template>
-            <template v-else>
-              <router-link to="/login" class="font-medium text-dark py-2 border-b" @click="mobileMenuOpen = false">Login</router-link>
-              <router-link to="/signup" class="font-medium text-dark py-2 border-b" @click="mobileMenuOpen = false">Sign Up</router-link>
-            </template>
+            <router-link :to="dashboardRoute" class="font-medium text-dark py-2 border-b" @click="mobileMenuOpen = false">Dashboard</router-link>
+            
+            <div class="mt-4 flex gap-3">
+              <router-link to="/login" class="flex-1 border border-primary text-primary text-center py-3 rounded-xl font-medium" @click="mobileMenuOpen = false">Login</router-link>
+              <router-link to="/signup" class="flex-1 bg-primary text-white text-center py-3 rounded-xl font-medium" @click="mobileMenuOpen = false">Sign Up</router-link>
+            </div>
           </div>
         </div>
       </div>

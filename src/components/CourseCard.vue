@@ -1,7 +1,5 @@
 <script setup>
-import { Star, BookOpen, Clock, Users, ShoppingCart } from 'lucide-vue-next';
-
-defineEmits(['add-to-cart']);
+import { Star } from 'lucide-vue-next';
 
 defineProps({
   course: {
@@ -12,63 +10,34 @@ defineProps({
 </script>
 
 <template>
-  <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full group">
+  <div class="bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 flex flex-col h-full group">
     <!-- Thumbnail -->
-    <router-link :to="`/course/${course.id}`" class="relative h-56 overflow-hidden">
-      <img :src="course.image" :alt="course.title" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-      <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-primary">
+    <router-link :to="`/course/${course.id}`" class="relative aspect-[1.65] overflow-hidden">
+      <img :src="course.image" :alt="course.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+      <div class="absolute top-2 left-2 bg-white/90 px-2 py-0.5 text-[9px] font-bold text-primary">
         {{ course.category }}
       </div>
     </router-link>
     
     <!-- Content -->
-    <div class="p-6 flex flex-col flex-grow">
-      <!-- Price & Rating -->
-      <div class="flex justify-between items-center mb-3">
-        <div class="flex items-center gap-2">
-          <span class="text-xl font-bold text-accent">${{ course.price }}</span>
-          <span class="text-sm text-dark-lighter line-through">${{ course.originalPrice }}</span>
-        </div>
-        <div class="flex items-center gap-1 text-sm font-medium text-dark-lighter">
-          <Star class="w-4 h-4 text-amber-400 fill-amber-400" />
-          {{ course.rating }} ({{ course.reviews }})
-        </div>
-      </div>
+    <div class="p-3 flex flex-col flex-grow">
+      <div class="text-[9px] text-primary font-medium mb-1">{{ course.category }}</div>
       
       <!-- Title -->
-      <router-link :to="`/course/${course.id}`" class="text-xl font-bold font-heading mb-4 hover:text-primary transition-colors line-clamp-2">
+      <router-link :to="`/course/${course.id}`" class="text-xs font-bold font-heading leading-tight mb-3 hover:text-primary transition-colors line-clamp-2">
         {{ course.title }}
       </router-link>
       
-      <!-- Instructor -->
-      <div class="flex items-center gap-3 mb-6 mt-auto border-t border-gray-100 pt-4">
-        <img :src="course.instructorAvatar" :alt="course.instructor" class="w-10 h-10 rounded-full object-cover" />
-        <span class="font-medium text-dark">{{ course.instructor }}</span>
-      </div>
-      
-      <!-- Meta info -->
-      <div class="flex items-center justify-between text-sm text-dark-lighter border-t border-gray-100 pt-4">
-        <div class="flex items-center gap-1">
-          <BookOpen class="w-4 h-4 text-primary" />
-          <span>{{ course.lessons }} Lessons</span>
+      <div class="mt-auto flex items-center justify-between border-t border-gray-100 pt-2">
+        <div class="flex items-center gap-1 text-[9px] text-dark-lighter">
+          <Star class="w-3 h-3 text-amber-400 fill-amber-400" />
+          {{ course.rating }} ({{ course.reviews }})
         </div>
         <div class="flex items-center gap-1">
-          <Clock class="w-4 h-4 text-primary" />
-          <span>{{ course.duration }}</span>
-        </div>
-        <div class="flex items-center gap-1">
-          <Users class="w-4 h-4 text-primary" />
-          <span>{{ course.students }}</span>
+          <span class="text-sm font-bold text-primary">${{ course.price }}</span>
+          <span class="text-[9px] text-dark-lighter line-through">${{ course.originalPrice }}</span>
         </div>
       </div>
-
-      <button
-        @click="$emit('add-to-cart', course)"
-        class="mt-5 w-full inline-flex items-center justify-center gap-2 bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary-dark transition-colors"
-      >
-        <ShoppingCart class="w-4 h-4" />
-        Add to Cart
-      </button>
     </div>
   </div>
 </template>

@@ -1,20 +1,35 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { categoryStore } from '../../store/categoryStore.js';
 
 const router = useRouter();
 const categories = computed(() => [...categoryStore.categories].sort((a, b) => a.name.localeCompare(b.name)));
+const error = ref('');
 
-const removeCategory = (id) => {
+onMounted(async () => {
+  try {
+    await categoryStore.fetchCategories();
+  } catch (requestError) {
+    error.value = requestError.response?.data?.message || requestError.response?.data?.massage || 'Unable to load categories.';
+  }
+});
+
+const removeCategory = async (id) => {
   if (confirm('Delete this category?')) {
-    categoryStore.deleteCategory(id);
+    try {
+      error.value = '';
+      await categoryStore.deleteCategory(id);
+    } catch (requestError) {
+      error.value = requestError.response?.data?.message || requestError.response?.data?.massage || 'Unable to delete category.';
+    }
   }
 };
 </script>
 
 <template>
   <div class="p-4 sm:p-6 lg:p-8">
+    <div v-if="error" class="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">{{ error }}</div>
     <header class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div>
         <p class="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">Categories</p>
@@ -45,9 +60,9 @@ const removeCategory = (id) => {
             <td class="px-5 py-4 text-slate-600">{{ category.slug }}</td>
             <td class="px-5 py-4 text-slate-600">{{ new Date(category.createdAt).toLocaleDateString() }}</td>
             <td class="px-5 py-4 text-right">
-              <div class="inline-flex gap-3">
-                <button class="text-sm font-medium text-red-600 hover:underline" @click="removeCategory(category.id)">Delete</button>
-                <button class="text-sm font-medium text-slate-700 hover:underline" @click="router.push(`/admin/categories/${category.id}/edit`)">Edit</button>
+              <div class="inline-flex items-center gap-2">
+                <button class="inline-flex items-center rounded-md border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-700 transition-colors hover:border-red-300 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1" @click="removeCategory(category.id)">Delete</button>
+                <button class="inline-flex items-center rounded-md border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1" @click="router.push(`/admin/categories/${category.id}/edit`)">Edit</button>
               </div>
             </td>
           </tr>

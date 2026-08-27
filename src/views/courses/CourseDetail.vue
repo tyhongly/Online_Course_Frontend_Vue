@@ -4,6 +4,8 @@ import { useRoute, useRouter } from 'vue-router';
 import { courseStore } from '../../store/courseStore.js';
 import { authStore } from '../../store/authStore.js';
 import { enrollmentStore } from '../../store/enrollmentStore.js';
+import { wishlistStore } from '../../store/wishlistStore.js';
+import { Heart } from 'lucide-vue-next';
 
 const route = useRoute();
 const router = useRouter();
@@ -17,6 +19,14 @@ const isEnrolled = computed(() => {
 });
 
 const showPaymentModal = ref(false);
+
+const toggleWishlist = () => {
+  if (!authStore.user) {
+    router.push('/login');
+    return;
+  }
+  wishlistStore.toggle(courseId);
+};
 
 const handleEnrollment = () => {
   if (!authStore.user) {
@@ -90,6 +100,14 @@ const enroll = () => {
               class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-xl transition-colors shadow-lg hover:shadow-xl"
             >
               Enroll Now
+            </button>
+            <button
+              type="button"
+              @click="toggleWishlist"
+              class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-gray-200 py-3 text-sm font-bold text-gray-700 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600"
+            >
+              <Heart class="h-4 w-4" :class="wishlistStore.isWishlisted(course.id) ? 'fill-current text-rose-500' : ''" />
+              {{ wishlistStore.isWishlisted(course.id) ? 'Saved to Wishlist' : 'Add to Wishlist' }}
             </button>
             
             <p class="text-center text-sm text-gray-500 mt-4 font-medium">30-Day Money-Back Guarantee</p>

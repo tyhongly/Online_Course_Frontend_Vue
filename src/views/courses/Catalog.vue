@@ -1,6 +1,8 @@
 <script setup>
 import { ref, computed } from 'vue';
+import { Heart } from 'lucide-vue-next';
 import { courseStore } from '../../store/courseStore.js';
+import { wishlistStore } from '../../store/wishlistStore.js';
 
 const searchQuery = ref('');
 const selectedCategory = ref('All');
@@ -18,6 +20,10 @@ const filteredCourses = computed(() => {
   }
   return result;
 });
+
+const toggleWishlist = (courseId) => {
+  wishlistStore.toggle(courseId);
+};
 </script>
 
 <template>
@@ -52,6 +58,14 @@ const filteredCourses = computed(() => {
             <div class="absolute top-4 left-4 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full text-primary">
               {{ course.category }}
             </div>
+            <button
+              type="button"
+              @click.stop.prevent="toggleWishlist(course.id)"
+              :aria-label="wishlistStore.isWishlisted(course.id) ? 'Remove from wishlist' : 'Add to wishlist'"
+              class="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/95 text-rose-500 shadow-sm transition hover:bg-rose-50"
+            >
+              <Heart class="h-5 w-5" :class="wishlistStore.isWishlisted(course.id) ? 'fill-current' : ''" />
+            </button>
           </div>
           
           <div class="p-6 flex flex-col flex-grow">

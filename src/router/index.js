@@ -17,6 +17,7 @@ import StudentLayout from '../views/student/StudentLayout.vue';
 import Dashboard from '../views/student/Dashboard.vue';
 import MyCourses from '../views/student/MyCourses.vue';
 import Profile from '../views/student/Profile.vue';
+import Wishlist from '../views/student/Wishlist.vue';
 import CoursePlayer from '../views/learn/CoursePlayer.vue';
 
 // Admin Views
@@ -63,7 +64,8 @@ const routes = [
       { path: '', redirect: '/student/dashboard' },
       { path: 'dashboard', name: 'StudentDashboard', component: Dashboard },
       { path: 'my-courses', name: 'StudentMyCourses', component: MyCourses },
-      { path: 'profile', name: 'Profile', component: Profile }
+      { path: 'profile', name: 'Profile', component: Profile },
+      { path: 'wishlist', name: 'StudentWishlist', component: Wishlist }
     ]
   },
   { 

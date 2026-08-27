@@ -8,14 +8,24 @@ const name = ref('');
 const email = ref('');
 const password = ref('');
 const error = ref('');
+const isSubmitting = ref(false);
 
-const handleSignup = () => {
-  if (!authStore.signup({ name: name.value, email: email.value, password: password.value })) {
-    error.value = 'A user with that email already exists.';
-    return;
+const handleSignup = async () => {
+  error.value = '';
+  isSubmitting.value = true;
+
+  try {
+    await authStore.signup({
+      name: name.value,
+      email: email.value,
+      password: password.value
+    });
+    router.push('/student/my-courses');
+  } catch (requestError) {
+    error.value = requestError.response?.data?.message || requestError.response?.data?.massage || 'Unable to create your account. Please try again.';
+  } finally {
+    isSubmitting.value = false;
   }
-
-  router.push('/student/dashboard');
 };
 </script>
 
@@ -28,9 +38,10 @@ const handleSignup = () => {
       </div>
       
       <form @submit.prevent="handleSignup" class="space-y-5">
-        <div v-if="error" class="rounded-lg bg-red-50 p-3 text-center text-sm text-red-500">
+        <div v-if="error" class="bg-red-50 text-red-500 p-3 rounded-lg text-sm text-center">
           {{ error }}
         </div>
+
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
           <input v-model="name" type="text" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="John Doe" />
@@ -46,8 +57,8 @@ const handleSignup = () => {
           <input v-model="password" type="password" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="••••••••" />
         </div>
         
-        <button type="submit" class="w-full bg-primary text-white font-bold py-3 px-4 rounded-lg hover:bg-primary-dark transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-          Sign Up
+        <button type="submit" :disabled="isSubmitting" class="w-full bg-primary text-white font-bold py-3 px-4 rounded-lg hover:bg-primary-dark disabled:opacity-60 disabled:cursor-not-allowed transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+          {{ isSubmitting ? 'Creating Account...' : 'Sign Up' }}
         </button>
       </form>
       

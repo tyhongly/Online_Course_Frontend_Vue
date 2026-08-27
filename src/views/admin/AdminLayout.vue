@@ -2,6 +2,7 @@
 import { onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { authStore } from '../../store/authStore.js';
+import { courseStore } from '../../store/courseStore.js';
 
 const router = useRouter();
 const route = useRoute();
@@ -23,7 +24,7 @@ const navigation = [
   { name: 'Analytics', path: '/admin/analytics' },
 ];
 
-onMounted(() => {
+onMounted(async () => {
   if (!authStore.user) {
     router.replace('/login');
     return;
@@ -31,6 +32,12 @@ onMounted(() => {
 
   if (authStore.user.role !== 'admin') {
     router.replace('/unauthorized');
+    return;
+  }
+
+  try {
+    await courseStore.fetchCourses();
+  } catch {
   }
 });
 </script>

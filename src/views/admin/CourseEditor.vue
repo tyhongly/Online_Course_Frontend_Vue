@@ -35,13 +35,17 @@ onMounted(() => {
   }
 });
 
-const saveCourse = () => {
-  if (isNew.value) {
-    const created = courseStore.addCourse(courseData.value);
-    router.push(`/admin/courses/${created.id}/edit`);
-  } else {
-    courseStore.updateCourse(courseId.value, courseData.value);
-    alert('Course saved successfully!');
+const saveCourse = async () => {
+  try {
+    if (isNew.value) {
+      const created = await courseStore.addCourse(courseData.value);
+      router.push(`/admin/courses/${created.id}/edit`);
+    } else {
+      await courseStore.updateCourse(courseId.value, courseData.value);
+      alert('Course saved successfully!');
+    }
+  } catch (requestError) {
+    alert(requestError.response?.data?.message || requestError.response?.data?.massage || 'Unable to save course.');
   }
 };
 
