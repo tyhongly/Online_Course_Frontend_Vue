@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { Home } from 'lucide-vue-next';
 import { authStore } from '../../store/authStore.js';
 import { courseStore } from '../../store/courseStore.js';
 
@@ -8,6 +9,10 @@ const router = useRouter();
 const route = useRoute();
 
 const displayName = computed(() => authStore.user?.name || 'Admin');
+
+const goHome = () => {
+  router.push('/');
+};
 
 const logout = () => {
   authStore.logout();
@@ -70,7 +75,15 @@ onMounted(async () => {
           </router-link>
         </nav>
 
-        <div class="mt-auto border-t border-slate-200 p-4">
+        <div class="mt-auto border-t border-slate-200 p-4 space-y-3">
+          <button
+            @click="goHome"
+            class="flex w-full items-center justify-center gap-2 rounded-2xl border border-indigo-200 bg-indigo-50 px-4 py-3 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100"
+          >
+            <Home class="h-4 w-4" />
+            Back to Home
+          </button>
+
           <button
             @click="logout"
             class="w-full rounded-2xl bg-slate-950 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-slate-800"

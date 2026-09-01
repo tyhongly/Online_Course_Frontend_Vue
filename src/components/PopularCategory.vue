@@ -8,7 +8,7 @@ import { popularCategories } from '../data/index.js';
       <div class="flex items-start justify-between gap-6 mb-8">
         <div class="max-w-2xl">
           <span class="text-primary font-medium tracking-wider uppercase text-sm mb-3 block">Explore Categories</span>
-          <h2 class="text-2xl md:text-3xl font-bold font-heading mb-2">Find the right course for you</h2>
+          <h2 class="text-2xl md:text-3xl font-bold font-heading mb-2">Find the right Category for you</h2>
           <p class="text-sm text-dark-lighter">Browse our most popular learning paths.</p>
         </div>
 

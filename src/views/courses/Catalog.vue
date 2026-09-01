@@ -35,7 +35,7 @@ const toggleWishlist = (courseId) => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 pb-10 pt-28">
+  <div class="bg-gray-50 min-h-screen pt-32 pb-10">
     <div class="container mx-auto px-4">
       <div class="text-center max-w-2xl mx-auto mb-12">
         <h1 class="text-4xl font-bold text-gray-800 mb-4">Course Catalog</h1>
