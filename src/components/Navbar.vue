@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from 'vue';
-import { ShoppingCart, Menu, X, ChevronDown } from 'lucide-vue-next';
+import { ShoppingCart, Menu, X } from 'lucide-vue-next';
 import { authStore } from '../store/authStore.js';
 import { cartCount } from '../store/cartStore.js';
 
@@ -21,6 +21,9 @@ onUnmounted(() => {
 
 const isLoggedIn = computed(() => !!authStore.user);
 const appRoute = computed(() => '/dashboard');
+
+// Close the mobile drawer on navigation
+const closeMenu = () => { mobileMenuOpen.value = false; };
 </script>
 
 <template>
@@ -32,49 +35,33 @@ const appRoute = computed(() => '/dashboard');
   >
     <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
       <!-- Logo -->
-      <router-link to="/" class="flex items-center gap-2 group">
-        <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xl group-hover:bg-primary-dark transition-colors">
-          S
+      <router-link to="/" class="flex items-center gap-2">
+        <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xl">
+          T
         </div>
-        <span class="font-heading font-bold text-2xl text-dark">SkillGro</span>
+        <span class="font-heading font-bold text-2xl text-dark">TosRean</span>
       </router-link>
 
       <!-- Desktop Nav -->
       <nav class="hidden lg:flex items-center gap-8">
-        <router-link to="/" class="font-medium text-primary hover:text-primary-dark transition-colors">Home</router-link>
-        <a href="/#courses" class="font-medium text-dark-light hover:text-primary transition-colors">Courses</a>
-        
-        <div class="relative group">
-          <button class="flex items-center gap-1 font-medium text-dark-light hover:text-primary transition-colors">
-            Pages <ChevronDown class="w-4 h-4" />
-          </button>
-          <div class="absolute top-full left-0 mt-2 w-48 bg-white shadow-xl rounded-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all translate-y-2 group-hover:translate-y-0">
-            <router-link to="/about" class="block px-4 py-2 hover:bg-light hover:text-primary transition-colors">About Us</router-link>
-            <router-link to="/instructors" class="block px-4 py-2 hover:bg-light hover:text-primary transition-colors">Instructors</router-link>
-            <router-link to="/pricing" class="block px-4 py-2 hover:bg-light hover:text-primary transition-colors">Pricing</router-link>
-          </div>
-        </div>
+        <router-link to="/" class="font-medium text-dark-light hover:text-primary transition" active-class="text-primary" exact-active-class="text-primary">Home</router-link>
+        <router-link to="/courses" class="font-medium text-dark-light hover:text-primary transition" active-class="text-primary">Courses</router-link>
+        <router-link to="/categories" class="font-medium text-dark-light hover:text-primary transition" active-class="text-primary">Categories</router-link>
+        <router-link to="/about" class="font-medium text-dark-light hover:text-primary transition" active-class="text-primary">About</router-link>
       </nav>
 
       <!-- Right Actions -->
       <div class="hidden lg:flex items-center gap-5">
-        <div class="relative group">
-          <button class="flex items-center gap-1 text-sm font-medium bg-light px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">
-            Categories <ChevronDown class="w-4 h-4" />
-          </button>
-          <!-- Dropdown omitted for brevity -->
-        </div>
-
-        <router-link to="/cart" class="relative p-2 text-dark hover:text-primary transition-colors" aria-label="Open shopping cart">
+        <router-link to="/cart" class="relative p-2 text-dark" aria-label="Open shopping cart">
           <ShoppingCart class="w-6 h-6" />
           <span v-if="cartCount" class="absolute top-0 right-0 w-5 h-5 bg-primary text-white text-xs font-bold flex items-center justify-center rounded-full border-2 border-white">{{ cartCount }}</span>
         </router-link>
 
-        <router-link to="/login" class="font-medium text-dark hover:text-primary transition-colors">
+        <router-link to="/login" class="font-medium text-dark">
           Login
         </router-link>
 
-        <router-link to="/signup" class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+        <router-link to="/signup" class="bg-primary text-white px-6 py-2.5 rounded-full font-medium shadow-md">
           Sign Up
         </router-link>
       </div>
@@ -101,20 +88,21 @@ const appRoute = computed(() => '/dashboard');
         <!-- Drawer content -->
         <div class="relative w-4/5 max-w-sm bg-white h-full flex flex-col shadow-2xl overflow-y-auto">
           <div class="p-5 border-b flex justify-between items-center">
-            <span class="font-heading font-bold text-xl">SkillGro</span>
+            <span class="font-heading font-bold text-xl">TosRean</span>
             <button @click="mobileMenuOpen = false" class="p-2 rounded-full hover:bg-light">
               <X class="w-6 h-6" />
             </button>
           </div>
           <div class="p-5 flex flex-col gap-4">
-            <router-link to="/" class="font-medium text-primary py-2 border-b" @click="mobileMenuOpen = false">Home</router-link>
-            <a href="/#courses" class="font-medium text-dark py-2 border-b" @click="mobileMenuOpen = false">Courses</a>
-            <router-link to="/about" class="font-medium text-dark py-2 border-b" @click="mobileMenuOpen = false">Pages</router-link>
-            <router-link :to="dashboardRoute" class="font-medium text-dark py-2 border-b" @click="mobileMenuOpen = false">Dashboard</router-link>
+            <router-link to="/" class="font-medium text-dark py-2 border-b" active-class="text-primary" exact-active-class="text-primary" @click="closeMenu">Home</router-link>
+            <router-link to="/courses" class="font-medium text-dark py-2 border-b" active-class="text-primary" @click="closeMenu">Courses</router-link>
+            <router-link to="/categories" class="font-medium text-dark py-2 border-b" active-class="text-primary" @click="closeMenu">Categories</router-link>
+            <router-link to="/about" class="font-medium text-dark py-2 border-b" active-class="text-primary" @click="closeMenu">AboutUs</router-link>
+            <router-link v-if="isLoggedIn" :to="appRoute" class="font-medium text-dark py-2 border-b" @click="closeMenu">Dashboard</router-link>
             
             <div class="mt-4 flex gap-3">
-              <router-link to="/login" class="flex-1 border border-primary text-primary text-center py-3 rounded-xl font-medium" @click="mobileMenuOpen = false">Login</router-link>
-              <router-link to="/signup" class="flex-1 bg-primary text-white text-center py-3 rounded-xl font-medium" @click="mobileMenuOpen = false">Sign Up</router-link>
+              <router-link to="/login" class="flex-1 border border-primary text-primary text-center py-3 rounded-xl font-medium" @click="closeMenu">Login</router-link>
+              <router-link to="/signup" class="flex-1 bg-primary text-white text-center py-3 rounded-xl font-medium" @click="closeMenu">Sign Up</router-link>
             </div>
           </div>
         </div>

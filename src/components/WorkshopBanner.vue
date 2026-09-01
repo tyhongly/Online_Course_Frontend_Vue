@@ -6,7 +6,7 @@ import { CheckCircle, Play } from 'lucide-vue-next';
 const { target, isVisible } = useInView({ threshold: 0.5 });
 
 const studentsCount = ref(0);
-const instructorsCount = ref(0);
+const coursesCount = ref(0);
 
 const animateValue = (refVar, start, end, duration) => {
   let startTimestamp = null;
@@ -24,7 +24,7 @@ const animateValue = (refVar, start, end, duration) => {
 watch(isVisible, (val) => {
   if (val) {
     animateValue(studentsCount, 0, 15, 2000);
-    animateValue(instructorsCount, 0, 200, 2000);
+    animateValue(coursesCount, 0, 120, 2000);
   }
 });
 </script>
@@ -43,7 +43,7 @@ watch(isVisible, (val) => {
           <div class="flex-1 text-white">
             <span class="inline-block px-4 py-1.5 bg-white/20 rounded-full text-sm font-medium mb-4 backdrop-blur-md">Join Our Free Workshops</span>
             <h2 class="text-3xl md:text-5xl font-bold font-heading mb-6 leading-tight text-white">
-              SkillGro is Built for People Like You
+              TosRean is Built for People Like You
             </h2>
             <p class="text-white/80 text-lg mb-8 max-w-xl">
               Learn from industry experts, join a community of passionate learners, and achieve your personal and professional goals with our interactive workshops.
@@ -72,8 +72,8 @@ watch(isVisible, (val) => {
               <p class="text-white/80 font-medium">Active Students</p>
             </div>
             <div class="bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-2xl text-center flex-1 lg:w-48 transform transition-transform hover:-translate-y-2">
-              <div class="text-4xl md:text-5xl font-bold font-heading text-white mb-2">{{ instructorsCount }}+</div>
-              <p class="text-white/80 font-medium">Best Instructors</p>
+              <div class="text-4xl md:text-5xl font-bold font-heading text-white mb-2">{{ coursesCount }}+</div>
+              <p class="text-white/80 font-medium">Curated Courses</p>
             </div>
           </div>
           

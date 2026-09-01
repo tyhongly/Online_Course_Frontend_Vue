@@ -11,14 +11,16 @@ const lessonId = computed(() => Number(route.params.id));
 const courses = computed(() => courseStore.courses);
 const selectedCourseId = ref(courses.value[0]?.id || null);
 
+const selectedCourse = computed(() => courseStore.courses.find((course) => course.id === Number(selectedCourseId.value)));
+const isDocumentCourse = computed(() => selectedCourse.value?.type === 'document' || Number(selectedCourse.value?.price) === 0);
+
 const form = ref({
   title: '',
+  type: 'text',
   order: 1,
   content: '',
   published: true,
 });
-
-const selectedCourse = computed(() => courseStore.courses.find((course) => course.id === Number(selectedCourseId.value)));
 
 onMounted(() => {
   if (!courses.value.length) {
@@ -43,6 +45,7 @@ onMounted(() => {
     selectedCourseId.value = course.id;
     form.value = {
       title: lesson.title || '',
+      type: lesson.type || 'text',
       order: lesson.order || 1,
       content: lesson.content || '',
       published: lesson.published !== false,
@@ -52,10 +55,13 @@ onMounted(() => {
 
 const saveLesson = () => {
   const courseId = Number(selectedCourseId.value);
+  // Document courses always use text type
+  const resolvedType = isDocumentCourse.value ? 'text' : (form.value.type || 'text');
 
   if (isNew.value) {
     courseStore.addLesson(courseId, {
       title: form.value.title,
+      type: resolvedType,
       order: Number(form.value.order) || 1,
       content: form.value.content,
       published: form.value.published,
@@ -74,6 +80,7 @@ const saveLesson = () => {
 
   courseStore.updateLesson(courseId, lessonId.value, {
     title: form.value.title,
+    type: resolvedType,
     order: Number(form.value.order) || 1,
     content: form.value.content,
     published: form.value.published,
@@ -96,6 +103,11 @@ const saveLesson = () => {
           <select v-model="selectedCourseId" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-slate-950">
             <option v-for="course in courses" :key="course.id" :value="course.id">{{ course.title }}</option>
           </select>
+          <!-- Course type indicator -->
+          <div v-if="isDocumentCourse" class="mt-2 flex items-center gap-1.5 text-xs text-emerald-700 font-medium">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+            Free Document Course — lessons are text-based only
+          </div>
         </div>
         <div>
           <label class="mb-2 block text-sm font-medium text-slate-700">Lesson Title</label>
@@ -114,9 +126,23 @@ const saveLesson = () => {
             </select>
           </div>
         </div>
+        <!-- Lesson type selector: only for video courses -->
+        <div v-if="!isDocumentCourse">
+          <label class="mb-2 block text-sm font-medium text-slate-700">Content Type</label>
+          <select v-model="form.type" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-slate-950">
+            <option value="video">Video (URL)</option>
+            <option value="text">Text (HTML)</option>
+            <option value="quiz">Quiz (JSON)</option>
+          </select>
+        </div>
         <div>
-          <label class="mb-2 block text-sm font-medium text-slate-700">Content</label>
-          <textarea v-model="form.content" rows="8" class="w-full rounded-2xl border border-slate-300 px-4 py-3 font-mono text-sm outline-none focus:border-slate-950" placeholder="Lesson content or URL"></textarea>
+          <label class="mb-2 block text-sm font-medium text-slate-700">
+            {{ isDocumentCourse ? 'Document Content (HTML)' : (form.type === 'video' ? 'Video URL' : (form.type === 'quiz' ? 'Quiz JSON' : 'HTML Content')) }}
+          </label>
+          <textarea v-model="form.content" rows="8" class="w-full rounded-2xl border border-slate-300 px-4 py-3 font-mono text-sm outline-none focus:border-slate-950" :placeholder="isDocumentCourse ? '<h2>Lesson Title</h2><p>Your document content here...</p>' : 'Lesson content or URL'"></textarea>
+          <p v-if="!isDocumentCourse && form.type === 'quiz'" class="mt-2 text-xs text-slate-500">
+            Example: <code>[{"q": "Question?", "options": ["A", "B"], "answer": "A"}]</code>
+          </p>
         </div>
       </div>
 

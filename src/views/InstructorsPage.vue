@@ -1,9 +1,13 @@
 <script setup>
-import Instructors from '../components/Instructors.vue';
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+onMounted(() => {
+  router.replace('/courses');
+});
 </script>
 
 <template>
-  <main class="pt-16">
-    <Instructors />
-  </main>
+  <div class="py-20 text-center text-gray-500">Redirecting to courses...</div>
 </template>

@@ -14,15 +14,20 @@ const courseData = ref({
   title: '',
   description: '',
   category: categoryStore.categories[0]?.name || 'Development',
+  type: 'document',
   price: 0,
   image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80',
   thumbnailUrl: '',
-  instructor: 'Admin Instructor',
-  instructorAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80',
   status: 'draft',
   published: false,
   lessons: []
 });
+
+const onTypeChange = () => {
+  if (courseData.value.type === 'document') {
+    courseData.value.price = 0;
+  }
+};
 
 onMounted(() => {
   if (!isNew.value) {
@@ -54,6 +59,8 @@ const showLessonModal = ref(false);
 const editingLessonIndex = ref(-1);
 const lessonForm = ref({ title: '', type: 'video', content: '' });
 
+const isDocumentCourse = computed(() => courseData.value.type === 'document');
+
 const openLessonModal = (index = -1) => {
   editingLessonIndex.value = index;
   if (index >= 0) {
@@ -61,15 +68,17 @@ const openLessonModal = (index = -1) => {
     const l = courseData.value.lessons[index];
     lessonForm.value = { ...l, content: l.type === 'quiz' ? JSON.stringify(l.content, null, 2) : l.content };
   } else {
-    // New lesson
-    lessonForm.value = { title: '', type: 'video', content: '' };
+    // New lesson — default type based on course format
+    lessonForm.value = { title: '', type: isDocumentCourse.value ? 'text' : 'video', content: '' };
   }
   showLessonModal.value = true;
 };
 
 const saveLesson = () => {
+  // For document courses, always force lesson type to 'text'
+  const resolvedType = isDocumentCourse.value ? 'text' : lessonForm.value.type;
   let content = lessonForm.value.content;
-  if (lessonForm.value.type === 'quiz') {
+  if (resolvedType === 'quiz') {
     try {
       content = JSON.parse(content);
     } catch(e) {
@@ -78,7 +87,7 @@ const saveLesson = () => {
     }
   }
 
-  const lessonToSave = { ...lessonForm.value, content };
+  const lessonToSave = { ...lessonForm.value, type: resolvedType, content };
   
   if (editingLessonIndex.value >= 0) {
     courseData.value.lessons[editingLessonIndex.value] = { ...courseData.value.lessons[editingLessonIndex.value], ...lessonToSave };
@@ -130,7 +139,7 @@ const deleteLesson = (index) => {
             <textarea v-model="courseData.description" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-primary"></textarea>
           </div>
           
-    <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
               <select v-model="courseData.category" class="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-primary">
@@ -140,10 +149,37 @@ const deleteLesson = (index) => {
               </select>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Price ($)</label>
-              <input v-model="courseData.price" type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-primary" />
+              <label class="block text-sm font-medium text-gray-700 mb-2">Course Format / Type</label>
+              <select v-model="courseData.type" @change="onTypeChange" class="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-primary">
+                <option value="document">Document (100% Free)</option>
+                <option value="video">Video Course (Paid / Admin Access)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">
+                Price ($)
+                <span v-if="courseData.type === 'document'" class="text-xs text-emerald-600 font-bold ml-1">(Free)</span>
+              </label>
+              <input 
+                v-model="courseData.price" 
+                type="number" 
+                :disabled="courseData.type === 'document'"
+                :class="[
+                  'w-full px-4 py-2 border rounded-lg outline-none transition',
+                  courseData.type === 'document' 
+                    ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed' 
+                    : 'border-gray-300 focus:border-primary'
+                ]" 
+                placeholder="0"
+              />
             </div>
           </div>
+          <p v-if="courseData.type === 'document'" class="text-xs text-emerald-600">
+            * All document courses are free for all students.
+          </p>
+          <p v-else class="text-xs text-primary">
+            * For video courses, students contact the admin on Telegram to purchase and unlock access.
+          </p>
           
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Thumbnail URL</label>
@@ -216,7 +252,13 @@ const deleteLesson = (index) => {
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Content Type</label>
-            <select v-model="lessonForm.type" class="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-primary">
+            <!-- Document courses: locked to text only -->
+            <div v-if="isDocumentCourse" class="flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-lg text-sm text-emerald-700 font-medium">
+              <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+              Document / Text — Free courses only support text-based lessons
+            </div>
+            <!-- Video courses: full type selector -->
+            <select v-else v-model="lessonForm.type" class="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-primary">
               <option value="video">Video (URL)</option>
               <option value="text">Text (HTML)</option>
               <option value="quiz">Quiz (JSON)</option>
@@ -225,10 +267,10 @@ const deleteLesson = (index) => {
           
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">
-              {{ lessonForm.type === 'video' ? 'Video URL' : (lessonForm.type === 'quiz' ? 'Quiz JSON' : 'HTML Content') }}
+              {{ isDocumentCourse ? 'Document Content (HTML)' : (lessonForm.type === 'video' ? 'Video URL' : (lessonForm.type === 'quiz' ? 'Quiz JSON' : 'HTML Content')) }}
             </label>
-            <textarea v-model="lessonForm.content" rows="6" class="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-primary font-mono text-sm" placeholder="Enter content here..."></textarea>
-            <p v-if="lessonForm.type === 'quiz'" class="text-xs text-gray-500 mt-2">
+            <textarea v-model="lessonForm.content" rows="6" class="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-primary font-mono text-sm" :placeholder="isDocumentCourse ? '<h2>Lesson Title</h2><p>Your document content here...</p>' : 'Enter content here...'"></textarea>
+            <p v-if="!isDocumentCourse && lessonForm.type === 'quiz'" class="text-xs text-gray-500 mt-2">
               Example format: <br>
               <code>[{"q": "Question?", "options": ["A", "B"], "answer": "A"}]</code>
             </p>

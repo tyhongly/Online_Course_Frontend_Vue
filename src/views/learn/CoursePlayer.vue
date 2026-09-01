@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { courseStore } from '../../store/courseStore.js';
 import { enrollmentStore } from '../../store/enrollmentStore.js';
 import { authStore } from '../../store/authStore.js';
+import { FileText, Video, BookOpen, Clock, CheckCircle2, Award } from 'lucide-vue-next';
 
 const route = useRoute();
 const router = useRouter();
@@ -12,21 +13,30 @@ const courseId = Number(route.params.courseId);
 const lessonId = ref(Number(route.params.lessonId));
 
 const course = computed(() => courseStore.courses.find(c => c.id === courseId));
+const isDocumentCourse = computed(() => course.value?.type === 'document' || Number(course.value?.price) === 0);
+
 const enrollment = computed(() => authStore.user ? enrollmentStore.getEnrollment(authStore.user.id, courseId) : null);
 
 const currentLessonIndex = computed(() => {
-  if (!course.value) return -1;
+  if (!course.value || !course.value.lessons) return -1;
   return course.value.lessons.findIndex(l => l.id === lessonId.value);
 });
 
 const currentLesson = computed(() => {
-  if (currentLessonIndex.value === -1) return null;
+  if (currentLessonIndex.value === -1) return course.value?.lessons?.[0] || null;
   return course.value.lessons[currentLessonIndex.value];
 });
 
 watch(() => route.params.lessonId, (newVal) => {
   if (newVal) lessonId.value = Number(newVal);
 });
+
+// If no lessonId in route or invalid, auto select first lesson
+watch(course, (newCourse) => {
+  if (newCourse?.lessons?.length && (!lessonId.value || currentLessonIndex.value === -1)) {
+    lessonId.value = newCourse.lessons[0].id;
+  }
+}, { immediate: true });
 
 const isComplete = computed(() => {
   if (!enrollment.value || !currentLesson.value) return false;
@@ -73,8 +83,19 @@ const submitQuiz = () => {
         <router-link to="/student/dashboard" class="text-sm text-gray-500 hover:text-primary mb-2 inline-flex items-center gap-1">
           &larr; Back to Dashboard
         </router-link>
-        <h2 class="text-lg font-bold text-gray-800 line-clamp-2 mt-2">{{ course.title }}</h2>
+        <div class="mt-2 flex items-center gap-2">
+          <span 
+            :class="[
+              'px-2 py-0.5 rounded text-[10px] font-bold uppercase',
+              isDocumentCourse ? 'bg-emerald-100 text-emerald-800' : 'bg-primary/10 text-primary'
+            ]"
+          >
+            {{ isDocumentCourse ? 'Free Document Course' : 'Video Course' }}
+          </span>
+        </div>
+        <h2 class="text-base font-bold text-gray-800 line-clamp-2 mt-1">{{ course.title }}</h2>
       </div>
+
       <div class="flex-grow overflow-y-auto">
         <div class="divide-y divide-gray-100">
           <router-link 
@@ -85,7 +106,7 @@ const submitQuiz = () => {
           >
             <div class="mt-1">
               <!-- Check icon if complete -->
-              <svg v-if="enrollment?.progress[lesson.id]" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+              <svg v-if="enrollment?.progress[lesson.id]" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-500" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
               </svg>
               <!-- Number if not -->
@@ -93,9 +114,20 @@ const submitQuiz = () => {
                 {{ idx + 1 }}
               </div>
             </div>
-            <div>
-              <p :class="['text-sm font-medium', lesson.id === currentLesson?.id ? 'text-primary font-bold' : 'text-gray-700']">{{ lesson.title }}</p>
-              <p class="text-xs text-gray-400 uppercase mt-1">{{ lesson.type }}</p>
+            <div class="flex-grow min-w-0">
+              <p :class="['text-sm font-medium line-clamp-2', lesson.id === currentLesson?.id ? 'text-primary font-bold' : 'text-gray-700']">
+                {{ lesson.title }}
+              </p>
+              <div class="flex items-center gap-1.5 mt-1">
+                <span 
+                  :class="[
+                    'text-[10px] font-bold uppercase px-1.5 py-0.5 rounded',
+                    (isDocumentCourse || lesson.type === 'text') ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'
+                  ]"
+                >
+                  {{ (isDocumentCourse || lesson.type === 'text') ? 'Document' : lesson.type }}
+                </span>
+              </div>
             </div>
           </router-link>
         </div>
@@ -103,57 +135,94 @@ const submitQuiz = () => {
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-grow flex flex-col h-screen overflow-y-auto bg-white">
-      <div v-if="currentLesson" class="max-w-4xl mx-auto w-full p-8 flex-grow flex flex-col">
+    <main class="flex-grow flex flex-col h-screen overflow-y-auto bg-gray-50/50">
+      <div v-if="currentLesson" class="max-w-4xl mx-auto w-full p-6 md:p-10 flex-grow flex flex-col">
         
-        <header class="mb-8">
-          <h1 class="text-3xl font-bold text-gray-800">{{ currentLesson.title }}</h1>
-        </header>
+        <!-- Document Lesson Reader View (For Free Document Courses & Text Lessons) -->
+        <div v-if="isDocumentCourse || currentLesson.type === 'text'" class="flex-grow flex flex-col">
+          <!-- Document Header -->
+          <header class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 mb-8">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full uppercase tracking-wider">
+                <FileText class="w-3.5 h-3.5" /> Document Module {{ currentLessonIndex + 1 }} of {{ course.lessons.length }}
+              </span>
+              <span class="text-xs text-gray-400 font-medium flex items-center gap-1">
+                <Clock class="w-3.5 h-3.5" /> Self-paced Reading
+              </span>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 leading-tight">{{ currentLesson.title }}</h1>
+          </header>
 
-        <!-- Video Lesson -->
-        <div v-if="currentLesson.type === 'video'" class="flex-grow flex flex-col">
-          <div class="aspect-video w-full bg-black rounded-xl overflow-hidden shadow-lg mb-8">
+          <!-- Document Body -->
+          <article class="bg-white rounded-2xl p-8 md:p-10 shadow-sm border border-gray-100 flex-grow mb-8">
+            <div class="prose max-w-none text-gray-800 leading-relaxed text-base space-y-4" v-html="currentLesson.content"></div>
+          </article>
+          
+          <!-- Bottom Navigation Bar -->
+          <div class="mt-auto pt-6 border-t border-gray-200 flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <button 
+              @click="markComplete" 
+              :disabled="isComplete" 
+              :class="[
+                'px-6 py-3 rounded-xl font-bold transition-colors flex items-center gap-2',
+                isComplete ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              ]"
+            >
+              <CheckCircle2 class="w-5 h-5" />
+              {{ isComplete ? 'Read & Completed' : 'Mark as Read' }}
+            </button>
+            <button 
+              @click="goToNext" 
+              class="bg-primary text-white px-8 py-3 rounded-xl font-bold hover:bg-primary-dark transition-all shadow-md hover:shadow-lg"
+            >
+              {{ currentLessonIndex < course.lessons.length - 1 ? 'Next Document →' : 'Finish Course' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Video Lesson (For Paid Video Courses Only) -->
+        <div v-else-if="currentLesson.type === 'video'" class="flex-grow flex flex-col">
+          <header class="mb-6">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="inline-flex items-center gap-1 text-xs font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-full uppercase tracking-wider">
+                <Video class="w-3.5 h-3.5" /> Video Lesson {{ currentLessonIndex + 1 }}
+              </span>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">{{ currentLesson.title }}</h1>
+          </header>
+
+          <div class="aspect-video w-full bg-black rounded-2xl overflow-hidden shadow-lg mb-8">
             <iframe 
-              v-if="currentLesson.content.includes('youtube.com') || currentLesson.content.includes('vimeo.com')"
+              v-if="currentLesson.content?.includes('youtube.com') || currentLesson.content?.includes('vimeo.com')"
               :src="currentLesson.content" 
               class="w-full h-full" 
               frameborder="0" 
               allowfullscreen
             ></iframe>
-            <div v-else class="w-full h-full flex flex-col items-center justify-center text-white p-8 text-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mb-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <p>Video loaded from: {{ currentLesson.content }}</p>
-              <p class="text-sm text-gray-400 mt-2">(Mock video player for non-iframe URLs)</p>
+            <div v-else class="w-full h-full flex flex-col items-center justify-center text-white p-8 text-center bg-slate-900">
+              <Video class="h-16 w-16 mb-4 text-gray-500" />
+              <p class="font-bold text-lg">Video Lesson Content</p>
+              <p class="text-sm text-gray-400 mt-1">{{ currentLesson.content }}</p>
             </div>
           </div>
           
-          <div class="mt-auto pt-8 border-t border-gray-100 flex justify-between items-center">
-            <button @click="markComplete" :disabled="isComplete" :class="['px-6 py-2.5 rounded-lg font-bold transition-colors', isComplete ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200']">
+          <div class="mt-auto pt-6 border-t border-gray-200 flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <button @click="markComplete" :disabled="isComplete" :class="['px-6 py-3 rounded-xl font-bold transition-colors', isComplete ? 'bg-emerald-50 text-emerald-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200']">
               {{ isComplete ? 'Completed' : 'Mark as Complete' }}
             </button>
-            <button @click="goToNext" class="bg-primary text-white px-6 py-2.5 rounded-lg font-bold hover:bg-primary-dark transition-colors shadow-md">
-              {{ currentLessonIndex < course.lessons.length - 1 ? 'Next Lesson' : 'Finish Course' }}
-            </button>
-          </div>
-        </div>
-
-        <!-- Text Lesson -->
-        <div v-else-if="currentLesson.type === 'text'" class="flex-grow flex flex-col">
-          <div class="prose max-w-none mb-12 text-gray-700 leading-relaxed" v-html="currentLesson.content"></div>
-          
-          <div class="mt-auto pt-8 border-t border-gray-100 flex justify-between items-center">
-            <button @click="markComplete" :disabled="isComplete" :class="['px-6 py-2.5 rounded-lg font-bold transition-colors', isComplete ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200']">
-              {{ isComplete ? 'Completed' : 'Mark as Complete' }}
-            </button>
-            <button @click="goToNext" class="bg-primary text-white px-6 py-2.5 rounded-lg font-bold hover:bg-primary-dark transition-colors shadow-md">
-              {{ currentLessonIndex < course.lessons.length - 1 ? 'Next Lesson' : 'Finish Course' }}
+            <button @click="goToNext" class="bg-primary text-white px-8 py-3 rounded-xl font-bold hover:bg-primary-dark transition-colors shadow-md">
+              {{ currentLessonIndex < course.lessons.length - 1 ? 'Next Lesson →' : 'Finish Course' }}
             </button>
           </div>
         </div>
 
         <!-- Quiz Lesson -->
         <div v-else-if="currentLesson.type === 'quiz'" class="flex-grow flex flex-col">
-          <div v-if="!quizSubmitted && !isComplete" class="space-y-8 mb-12">
+          <header class="mb-6">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">{{ currentLesson.title }}</h1>
+          </header>
+
+          <div v-if="!quizSubmitted && !isComplete" class="space-y-6 mb-12">
             <div v-for="(q, idx) in currentLesson.content" :key="idx" class="bg-white border border-gray-200 p-6 rounded-xl shadow-sm">
               <h3 class="font-bold text-lg mb-4">{{ idx + 1 }}. {{ q.q }}</h3>
               <div class="space-y-3">
@@ -169,12 +238,12 @@ const submitQuiz = () => {
             </button>
           </div>
           
-          <div v-else class="text-center py-12">
-            <div class="w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-6" :class="quizScore >= 80 ? 'bg-green-100 text-green-500' : 'bg-amber-100 text-amber-500'">
+          <div v-else class="text-center py-12 bg-white rounded-2xl p-8 border border-gray-100 shadow-sm">
+            <div class="w-24 h-24 mx-auto rounded-full flex items-center justify-center mb-6" :class="quizScore >= 80 ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-500'">
               <span class="text-3xl font-bold">{{ quizScore || enrollment?.quizScores?.[currentLesson.id] || 100 }}%</span>
             </div>
             <h2 class="text-2xl font-bold mb-2">Quiz Completed!</h2>
-            <p class="text-gray-500 mb-8">You have successfully finished this assessment.</p>
+            <p class="text-gray-500 mb-8">You have successfully completed this assessment.</p>
             
             <button @click="goToNext" class="bg-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-primary-dark transition-colors shadow-md">
               {{ currentLessonIndex < course.lessons.length - 1 ? 'Continue to Next Lesson' : 'Finish Course' }}
@@ -184,7 +253,7 @@ const submitQuiz = () => {
 
       </div>
       <div v-else class="flex items-center justify-center h-full">
-        <p class="text-gray-500 text-lg">Select a lesson to begin.</p>
+        <p class="text-gray-500 text-lg">Select a lesson from the sidebar to begin.</p>
       </div>
     </main>
   </div>

@@ -20,11 +20,11 @@ import { ArrowRight, Play, Star } from 'lucide-vue-next';
           
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold font-heading leading-tight mb-6">
             Learning is What You Make of it. <br class="hidden lg:block"/>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Make it Yours</span> at SkillGro.
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Make it Yours</span> at TosRean.
           </h1>
           
           <p class="text-lg md:text-xl text-dark-lighter mb-8 max-w-2xl mx-auto lg:mx-0">
-            Unlock your potential with world-class instructors. Build skills for today, tomorrow, and beyond with our comprehensive courses.
+            Unlock your potential with free document courses and expert video masterclasses. Build skills for today, tomorrow, and beyond.
           </p>
           
           <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">

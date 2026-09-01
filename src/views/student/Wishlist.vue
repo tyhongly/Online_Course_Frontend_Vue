@@ -36,9 +36,19 @@ const removeCourse = (courseId) => {
           </div>
           <div class="p-5">
             <h2 class="line-clamp-2 text-lg font-semibold leading-7 text-slate-950 group-hover:text-indigo-600">{{ course.title }}</h2>
-            <p class="mt-2 text-sm text-slate-500">{{ course.instructor }}</p>
+            <div class="mt-2 flex items-center gap-2">
+              <span 
+                :class="[
+                  'px-2.5 py-0.5 rounded text-xs font-semibold',
+                  (course.type === 'document' || course.price === 0) ? 'bg-emerald-50 text-emerald-700' : 'bg-indigo-50 text-indigo-700'
+                ]"
+              >
+                {{ (course.type === 'document' || course.price === 0) ? 'Free Document' : 'Video Course' }}
+              </span>
+            </div>
             <div class="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
-              <span class="text-xl font-bold text-indigo-600">${{ course.price }}</span>
+              <span v-if="course.type === 'document' || course.price === 0" class="text-lg font-bold text-emerald-600">FREE</span>
+              <span v-else class="text-xl font-bold text-indigo-600">${{ course.price }}</span>
               <span class="inline-flex items-center gap-1 text-sm font-semibold text-slate-600">View course <ArrowRight class="h-4 w-4" /></span>
             </div>
           </div>

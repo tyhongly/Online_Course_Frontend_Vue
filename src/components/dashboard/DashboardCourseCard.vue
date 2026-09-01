@@ -37,9 +37,16 @@ defineProps({
       <div class="flex flex-col p-5">
         <h3 class="min-h-[3.5rem] text-lg font-bold leading-6 text-slate-950">{{ course.title }}</h3>
         <div class="mt-4 flex items-center gap-2 text-sm text-slate-500">
-          <img v-if="course.instructorAvatar" :src="course.instructorAvatar" :alt="course.instructor || 'Instructor'" class="h-8 w-8 rounded-full object-cover" />
-          <span v-else class="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100"><Award class="h-4 w-4" /></span>
-          <span class="truncate">{{ course.instructor || 'Instructor' }}</span>
+          <span 
+            :class="[
+              'px-2.5 py-0.5 rounded text-xs font-semibold',
+              (course.type === 'document' || course.price === 0) ? 'bg-emerald-50 text-emerald-700' : 'bg-indigo-50 text-indigo-700'
+            ]"
+          >
+            {{ (course.type === 'document' || course.price === 0) ? 'Document' : 'Video' }}
+          </span>
+          <span class="text-xs text-slate-400">•</span>
+          <span class="text-xs text-slate-500">{{ course.category || 'General' }}</span>
           <Star class="ml-auto h-4 w-4 fill-[#fbbd24] text-[#fbbd24]" />
           <span>{{ course.rating || '4.8' }}</span>
         </div>

@@ -45,6 +45,7 @@ const removeCourse = async (id) => {
           <tr class="bg-gray-50 text-gray-500 text-sm border-b border-gray-100">
             <th class="p-4 font-medium">Course Title</th>
             <th class="p-4 font-medium">Category</th>
+            <th class="p-4 font-medium">Format</th>
             <th class="p-4 font-medium">Price</th>
             <th class="p-4 font-medium">Status</th>
             <th class="p-4 font-medium text-right">Actions</th>
@@ -64,7 +65,20 @@ const removeCourse = async (id) => {
               </div>
             </td>
             <td class="p-4 text-gray-600">{{ course.category }}</td>
-            <td class="p-4 font-bold text-gray-800">${{ course.price }}</td>
+            <td class="p-4">
+              <span 
+                :class="[
+                  'px-2.5 py-0.5 rounded-full text-xs font-semibold',
+                  (course.type === 'document' || course.price === 0) ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'
+                ]"
+              >
+                {{ (course.type === 'document' || course.price === 0) ? 'Document' : 'Video' }}
+              </span>
+            </td>
+            <td class="p-4 font-bold text-gray-800">
+              <span v-if="course.type === 'document' || course.price === 0" class="text-emerald-600">FREE</span>
+              <span v-else>${{ course.price }}</span>
+            </td>
             <td class="p-4">
               <span 
                 :class="['px-3 py-1 rounded-full text-xs font-bold uppercase', course.status === 'live' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700']"
