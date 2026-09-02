@@ -118,7 +118,7 @@ const toggleWishlist = (courseId) => {
               </div>
               <div>
                 <template v-if="course.type === 'document' || course.price === 0">
-                  <span class="font-bold text-lg text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full uppercase tracking-wider text-xs">FREE</span>
+                  <span class="font-bold text-xs text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full uppercase tracking-wide">FREE</span>
                 </template>
                 <template v-else>
                   <span class="font-bold text-xl text-primary">${{ course.price }}</span>
