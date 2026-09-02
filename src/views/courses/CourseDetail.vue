@@ -42,9 +42,9 @@ const telegramAdminUrl = 'https://t.me/tosrean_admin';
 </script>
 
 <template>
-  <div v-if="course" class="bg-gray-50 min-h-screen pb-20">
+  <div v-if="course" class="bg-white min-h-screen pb-20">
     <!-- Hero Header -->
-    <div class="bg-whute text-black pt-20 pb-24 px-4 relative overflow-hidden">
+    <div class="bg-light-dark text-dark pt-24 pb-12 px-4 relative overflow-hidden">
       <!-- <img :src="course.image" class="absolute inset-0 w-full h-full object-cover opacity-20" /> -->
       <div class="absolute inset-0 "></div>
       <!-- bg-gradient-to-r from-dark to-dark/50 -->

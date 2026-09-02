@@ -35,42 +35,39 @@ const toggleWishlist = (courseId) => {
 </script>
 
 <template>
-  <div class="bg-gray-50 min-h-screen pt-32 pb-10">
-    <div class="container mx-auto px-4">
-      <div class="text-center max-w-2xl mx-auto mb-12">
-        <h1 class="text-4xl font-bold text-gray-800 mb-4">Course Catalog</h1>
-        <p class="text-gray-500">Discover free document courses and expert video masterclasses.</p>
+  <div class="bg-white min-h-screen pt-32 pb-16">
+    <div class="container mx-auto px-4 md:px-6">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold text-dark mb-4 font-heading">Course Catalog</h1>
+        <p class="text-lg md:text-xl text-dark-lighter">Discover free document courses and expert video masterclasses tailored to your learning goals.</p>
         
         <!-- Search and Category Filters -->
-        <div class="mt-6 flex flex-col md:flex-row gap-4 justify-center">
+        <div class="mt-10 flex flex-col md:flex-row gap-4 justify-center">
           <input 
             v-model="searchQuery" 
             type="text" 
-            placeholder="Search courses..." 
-            class="px-5 py-3 rounded-full border border-gray-300 w-full md:w-80 outline-none focus:border-primary shadow-sm"
+            placeholder="Search courses by name or category..." 
+            class="px-6 py-3.5 rounded-lg border-2 border-gray-200 w-full md:w-96 outline-none focus:border-primary shadow-sm text-base font-medium transition-colors"
           />
-          <!-- <select v-model="selectedCategory" class="px-5 py-3 rounded-full border border-gray-300 outline-none focus:border-primary bg-white shadow-sm">
-            <option v-for="cat in categories" :key="cat" :value="cat">{{ cat }}</option>
-          </select> -->
         </div>
 
         <!-- Type Selector Tabs -->
-        <div class="mt-6 flex items-center justify-center gap-2">
+        <div class="mt-8 flex items-center justify-center gap-3 flex-wrap">
           <button 
             @click="selectedType = 'All'" 
-            :class="['px-5 py-2 rounded-full text-sm font-semibold transition-colors', selectedType === 'All' ? 'bg-primary text-white shadow-md' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100']"
+            :class="['px-6 py-3 rounded-lg text-sm font-bold transition-all shadow-md', selectedType === 'All' ? 'bg-primary text-white shadow-lg' : 'bg-light text-dark border-2 border-gray-200 hover:border-primary hover:text-primary']"
           >
             All Courses
           </button>
           <button 
             @click="selectedType = 'document'" 
-            :class="['px-5 py-2 rounded-full text-sm font-semibold transition-colors flex items-center gap-1.5', selectedType === 'document' ? 'bg-emerald-600 text-white shadow-md' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100']"
+            :class="['px-6 py-3 rounded-lg text-sm font-bold transition-all shadow-md flex items-center gap-2', selectedType === 'document' ? 'bg-emerald-600 text-white shadow-lg' : 'bg-light text-dark border-2 border-gray-200 hover:border-emerald-500 hover:text-emerald-600']"
           >
             <FileText class="w-4 h-4" /> Free Documents
           </button>
           <button 
             @click="selectedType = 'video'" 
-            :class="['px-5 py-2 rounded-full text-sm font-semibold transition-colors flex items-center gap-1.5', selectedType === 'video' ? 'bg-primary text-white shadow-md' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-100']"
+            :class="['px-6 py-3 rounded-lg text-sm font-bold transition-all shadow-md flex items-center gap-2', selectedType === 'video' ? 'bg-primary text-white shadow-lg' : 'bg-light text-dark border-2 border-gray-200 hover:border-primary hover:text-primary']"
           >
             <Video class="w-4 h-4" /> Video Courses
           </button>
