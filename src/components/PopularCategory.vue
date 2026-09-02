@@ -11,6 +11,9 @@ import PopularCategoryCard from './PopularCategoryCard.vue';
           <span class="mb-3 block text-sm font-medium uppercase tracking-wider text-primary">Popular Categories</span>
           <h2 class="mb-3 text-3xl font-bold font-heading md:text-4xl">Find the right learning path</h2>
           <p class="text-sm text-dark-lighter">Browse our most popular subjects and jump into a focused track.</p>
+          <span class="text-primary font-medium tracking-wider uppercase text-sm mb-3 block">Explore Categories</span>
+          <h2 class="text-2xl md:text-3xl font-bold font-heading mb-2">Find the right Category for you</h2>
+          <p class="text-sm text-dark-lighter">Browse our most popular learning paths.</p>
         </div>
 
         <router-link

@@ -1,11 +1,15 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router';
 import { computed } from 'vue';
-import { BookOpen, Heart, LayoutDashboard, LogOut, User } from 'lucide-vue-next';
+import { BookOpen, Heart, Home, LayoutDashboard, LogOut, User } from 'lucide-vue-next';
 import { authStore } from '../../store/authStore.js';
 
 const router = useRouter();
 const route = useRoute();
+
+const goHome = () => {
+  router.push('/');
+};
 
 const logout = () => {
   authStore.logout();
@@ -64,7 +68,15 @@ const userInitials = computed(() => {
           </router-link>
         </nav>
 
-        <div class="border-t border-slate-200 p-4">
+        <div class="border-t border-slate-200 p-4 space-y-3">
+          <button
+            @click="goHome"
+            class="flex w-full items-center justify-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50 px-4 py-3 text-sm font-semibold text-indigo-700 transition hover:bg-indigo-100"
+          >
+            <Home class="h-4 w-4" />
+            Back to Home
+          </button>
+
           <button
             @click="logout"
             class="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-950"

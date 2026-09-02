@@ -15,6 +15,10 @@ onMounted(() => {
   }
 });
 
+const goToHome = () => {
+  router.push('/');
+};
+
 const handleLogin = async () => {
   error.value = '';
   isSubmitting.value = true;
@@ -36,7 +40,16 @@ const handleLogin = async () => {
 
 <template>
   <div class="min-h-[80vh] flex items-center justify-center bg-gray-50 px-4">
-    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md relative">
+      <button
+        type="button"
+        @click="goToHome"
+        class="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-2xl text-gray-600 transition hover:bg-gray-200 hover:text-gray-800"
+        aria-label="Go to home"
+      >
+        ×
+      </button>
+
       <div class="text-center mb-8">
         <h1 class="text-3xl font-bold text-gray-800">Welcome Back</h1>
       <p class="text-gray-500 mt-2">Sign in to continue learning</p>
