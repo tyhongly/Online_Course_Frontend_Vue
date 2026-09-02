@@ -45,11 +45,11 @@ const closeMenu = () => {
         <span class="font-heading font-bold text-2xl text-dark">TosRean</span>
       </router-link>
 
-      <nav class="hidden lg:flex items-center gap-8">
-        <router-link to="/" class="font-medium text-dark-light hover:text-primary transition" active-class="text-primary" exact-active-class="text-primary">Home</router-link>
-        <router-link to="/courses" class="font-medium text-dark-light hover:text-primary transition" active-class="text-primary">Courses</router-link>
-        <router-link to="/categories" class="font-medium text-dark-light hover:text-primary transition" active-class="text-primary">Categories</router-link>
-        <router-link to="/about" class="font-medium text-dark-light hover:text-primary transition" active-class="text-primary">About</router-link>
+      <nav class="hidden lg:flex items-center gap-10">
+        <router-link to="/" class="font-medium text-base text-dark-light hover:text-primary transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all" active-class="text-primary" exact-active-class="text-primary">Home</router-link>
+        <router-link to="/courses" class="font-medium text-base text-dark-light hover:text-primary transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all" active-class="text-primary">Courses</router-link>
+        <router-link to="/categories" class="font-medium text-base text-dark-light hover:text-primary transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all" active-class="text-primary">Categories</router-link>
+        <router-link to="/about" class="font-medium text-base text-dark-light hover:text-primary transition-colors duration-200 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all" active-class="text-primary">About</router-link>
       </nav>
 
       <div class="hidden lg:flex items-center gap-5">
@@ -59,12 +59,12 @@ const closeMenu = () => {
         </router-link>
 
         <template v-if="!isLoggedIn">
-          <router-link to="/login" class="font-medium text-dark hover:text-primary transition-colors">Login</router-link>
-          <router-link to="/signup" class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">Sign Up</router-link>
+          <router-link to="/login" class="font-semibold text-base text-dark hover:text-primary transition-colors duration-200">Login</router-link>
+          <router-link to="/signup" class="bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1 text-base">Sign Up</router-link>
         </template>
 
         <template v-else>
-          <router-link :to="profileRoute" class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">Profile</router-link>
+          <router-link :to="profileRoute" class="bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg transform hover:-translate-y-1 text-base">Profile</router-link>
         </template>
       </div>
 

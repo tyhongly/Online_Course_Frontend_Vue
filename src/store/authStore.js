@@ -77,14 +77,12 @@ export const authStore = reactive({
   async signup(account) {
     const response = await createAccount(account);
     const payload = response?.data?.data || response?.data || response;
-    const token = extractToken(payload);
-    const user = extractUser(payload, account.email);
 
-    this.user = user;
-    this.token = token || this.token;
+    if (!payload || typeof payload !== 'object') {
+      return response;
+    }
 
-    persistAuth(this.user, this.token);
-    return this.user;
+    return payload;
   },
   
   async login(email, password) {

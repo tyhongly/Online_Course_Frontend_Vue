@@ -24,7 +24,7 @@ const handleSignup = async () => {
       email: email.value,
       password: password.value
     });
-    router.push('/student/my-courses');
+    await router.push('/login');
   } catch (requestError) {
     error.value = requestError.response?.data?.message || requestError.response?.data?.massage || 'Unable to create your account. Please try again.';
   } finally {

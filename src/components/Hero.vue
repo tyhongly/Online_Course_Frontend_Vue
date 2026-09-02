@@ -18,17 +18,19 @@ import { ArrowRight, Play, Star } from 'lucide-vue-next';
             #1 e-Learning Platform
           </div>
           
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold font-heading leading-tight mb-6">
-            Learning is What You Make of it. <br class="hidden lg:block"/>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Make it Yours</span> at TosRean.
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold font-heading leading-tight mb-8 text-dark">
+            Learning is What You <br class="hidden lg:block"/>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Make of It</span>.
+            <br class="block"/>
+            Make it <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Yours</span> at TosRean.
           </h1>
           
-          <p class="text-lg md:text-xl text-dark-lighter mb-8 max-w-2xl mx-auto lg:mx-0">
+          <p class="text-lg md:text-xl text-dark-lighter mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
             Unlock your potential with free document courses and expert video masterclasses. Build skills for today, tomorrow, and beyond.
           </p>
           
           <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-            <a href="#" class="w-full sm:w-auto px-8 py-4 bg-primary hover:bg-primary-dark text-white rounded-full font-medium flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-primary/30 transform hover:-translate-y-1">
+            <a href="#" class="w-full sm:w-auto px-8 py-4 bg-primary hover:bg-primary-dark text-white rounded-lg font-semibold flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-primary/40 transform hover:-translate-y-1 text-base">
               Start Free Trial <ArrowRight class="w-5 h-5" />
             </a>
             

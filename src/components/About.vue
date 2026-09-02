@@ -3,16 +3,16 @@ import { CheckCircle2, ArrowRight } from 'lucide-vue-next';
 </script>
 
 <template>
-  <section class="py-20 md:py-32">
+  <section class="py-24 md:py-32 bg-light-dark">
     <div class="container mx-auto px-4 md:px-6">
-      <div class="flex flex-col lg:flex-row items-center gap-16">
+      <div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
         
         <!-- Left Image -->
         <div class="flex-1 relative w-full max-w-lg lg:max-w-none mx-auto">
           <!-- Decorative Background Shape -->
-          <div class="absolute inset-0 bg-primary/10 rounded-[3rem] transform -rotate-6 scale-105 -z-10"></div>
+          <div class="absolute inset-0 bg-primary/15 rounded-[3rem] transform -rotate-6 scale-105 -z-10 blur-2xl"></div>
           
-          <div class="relative rounded-[2rem] overflow-hidden shadow-xl border-4 border-white h-[500px]">
+          <div class="relative rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white h-[500px] hover:shadow-3xl transition-shadow duration-300">
             <img src="/src/image/Group_Meeting.jpg" alt="Students learning together" class="w-full h-full object-cover" />
           </div>
 
@@ -29,30 +29,30 @@ import { CheckCircle2, ArrowRight } from 'lucide-vue-next';
 
         <!-- Right Content -->
         <div class="flex-1">
-          <span class="text-primary font-medium tracking-wider uppercase text-sm mb-3 block">Get More About Us</span>
-          <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold font-heading mb-6 leading-tight">
-            Thousand Of Top Courses Now in One Place
+          <span class="text-primary font-bold tracking-wider uppercase text-sm mb-4 block">About TosRean</span>
+          <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold font-heading mb-6 leading-tight text-dark">
+            Thousands of Top Courses in One Place
           </h2>
-          <p class="text-lg text-dark-lighter mb-8 leading-relaxed">
+          <p class="text-lg text-dark-lighter mb-10 leading-relaxed font-medium">
             TosRean is a global training provider based across the UK that specializes in accredited and bespoke training courses. We crush the barriers to finding a quality learning path.
           </p>
 
-          <ul class="space-y-4 mb-10">
-            <li class="flex items-center gap-3">
-              <CheckCircle2 class="w-6 h-6 text-accent flex-shrink-0" />
-              <span class="text-dark font-medium">Free Document & Video Learning Materials</span>
+          <ul class="space-y-5 mb-12">
+            <li class="flex items-start gap-4">
+              <CheckCircle2 class="w-7 h-7 text-accent flex-shrink-0 mt-1" />
+              <span class="text-dark font-semibold text-base">Free Document & Video Learning Materials</span>
             </li>
-            <li class="flex items-center gap-3">
-              <CheckCircle2 class="w-6 h-6 text-accent flex-shrink-0" />
-              <span class="text-dark font-medium">Access Your Class Anywhere</span>
+            <li class="flex items-start gap-4">
+              <CheckCircle2 class="w-7 h-7 text-accent flex-shrink-0 mt-1" />
+              <span class="text-dark font-semibold text-base">Access Your Classes Anywhere, Anytime</span>
             </li>
-            <li class="flex items-center gap-3">
-              <CheckCircle2 class="w-6 h-6 text-accent flex-shrink-0" />
-              <span class="text-dark font-medium">Flexible Course Plan</span>
+            <li class="flex items-start gap-4">
+              <CheckCircle2 class="w-7 h-7 text-accent flex-shrink-0 mt-1" />
+              <span class="text-dark font-semibold text-base">Flexible Learning Plans & Pace</span>
             </li>
           </ul>
 
-          <a href="#" class="inline-flex items-center gap-2 px-8 py-4 bg-dark hover:bg-dark-light text-white rounded-full font-medium transition-all shadow-lg transform hover:-translate-y-1">
+          <a href="#" class="inline-flex items-center gap-2 px-8 py-4 bg-primary hover:bg-primary-dark text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-primary/40 transform hover:-translate-y-1 text-base">
             Start Free Trial <ArrowRight class="w-5 h-5" />
           </a>
         </div>

@@ -12,15 +12,15 @@ defineProps({
 <template>
   <div class="bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 flex flex-col h-full group">
     <!-- Thumbnail -->
-    <router-link :to="`/course/${course.id}`" class="relative aspect-[1.65] overflow-hidden">
-      <img :src="course.image" :alt="course.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-      <div class="absolute top-2 left-2 flex gap-1">
-        <span class="bg-white/95 px-2 py-0.5 text-[9px] font-bold text-primary rounded">
+    <router-link :to="`/course/${course.id}`" class="relative aspect-[1.65] overflow-hidden rounded-lg">
+      <img :src="course.image" :alt="course.title" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+      <div class="absolute top-3 left-3 flex gap-2">
+        <span class="bg-white/95 backdrop-blur px-3 py-1.5 text-xs font-bold text-primary rounded-lg shadow-md">
           {{ course.category }}
         </span>
         <span 
           :class="[
-            'px-2 py-0.5 text-[9px] font-bold rounded',
+            'px-3 py-1.5 text-xs font-bold rounded-lg shadow-md',
             (course.type === 'document' || course.price === 0)
               ? 'bg-emerald-500 text-white' 
               : 'bg-primary text-white'
@@ -32,27 +32,33 @@ defineProps({
     </router-link>
     
     <!-- Content -->
-    <div class="p-3 flex flex-col flex-grow">
-      <div class="text-[9px] text-primary font-medium mb-1">{{ course.category }}</div>
-      
+    <div class="p-4 flex flex-col flex-grow">
       <!-- Title -->
-      <router-link :to="`/course/${course.id}`" class="text-xs font-bold font-heading leading-tight mb-3 hover:text-primary transition-colors line-clamp-2">
+      <router-link :to="`/course/${course.id}`" class="text-base font-bold font-heading leading-snug mb-2 hover:text-primary transition-colors line-clamp-2">
         {{ course.title }}
       </router-link>
       
-      <div class="mt-auto flex items-center justify-between border-t border-gray-100 pt-2">
-        <div class="flex items-center gap-1 text-[9px] text-dark-lighter">
-          <Star class="w-3 h-3 text-amber-400 fill-amber-400" />
-          {{ course.rating }} ({{ course.reviews }})
+      <div class="mt-auto space-y-3">
+        <!-- Rating -->
+        <div class="flex items-center gap-1.5 text-sm text-dark-lighter">
+          <Star class="w-4 h-4 text-amber-400 fill-amber-400" />
+          <span class="font-semibold text-dark">{{ course.rating }}</span>
+          <span class="text-xs">({{ course.reviews }} reviews)</span>
         </div>
-        <div class="flex items-center gap-1">
-          <template v-if="course.type === 'document' || course.price === 0">
-            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full uppercase tracking-wider">FREE</span>
-          </template>
-          <template v-else>
-            <span class="text-sm font-bold text-primary">${{ course.price }}</span>
-            <span v-if="course.originalPrice" class="text-[9px] text-dark-lighter line-through">${{ course.originalPrice }}</span>
-          </template>
+        
+        <!-- Price -->
+        <div class="border-t border-gray-200 pt-3 flex items-center justify-between">
+          <div>
+            <template v-if="course.type === 'document' || course.price === 0">
+              <span class="text-sm font-bold text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full inline-block uppercase tracking-wide">FREE</span>
+            </template>
+            <template v-else>
+              <div class="flex items-center gap-2">
+                <span class="text-lg font-bold text-primary">${{ course.price }}</span>
+                <span v-if="course.originalPrice" class="text-xs text-dark-lighter line-through opacity-70">${{ course.originalPrice }}</span>
+              </div>
+            </template>
+          </div>
         </div>
       </div>
     </div>
