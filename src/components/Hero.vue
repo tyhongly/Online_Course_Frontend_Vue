@@ -13,10 +13,10 @@ import { ArrowRight, Play, Star } from 'lucide-vue-next';
         
         <!-- Left Content -->
         <div class="flex-1 text-center lg:text-left">
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-medium mb-6 animate-fade-in-up">
+          <!-- <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-medium mb-6 animate-fade-in-up">
             <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
             #1 e-Learning Platform
-          </div>
+          </div> -->
           
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold font-heading leading-tight mb-6">
             Learning is What You Make of it. <br class="hidden lg:block"/>

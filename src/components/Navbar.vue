@@ -52,10 +52,10 @@ const closeMenu = () => { mobileMenuOpen.value = false; };
 
       <!-- Right Actions -->
       <div class="hidden lg:flex items-center gap-5">
-        <router-link to="/cart" class="relative p-2 text-dark" aria-label="Open shopping cart">
+        <!-- <router-link to="/cart" class="relative p-2 text-dark" aria-label="Open shopping cart">
           <ShoppingCart class="w-6 h-6" />
           <span v-if="cartCount" class="absolute top-0 right-0 w-5 h-5 bg-primary text-white text-xs font-bold flex items-center justify-center rounded-full border-2 border-white">{{ cartCount }}</span>
-        </router-link>
+        </router-link> -->
 
         <router-link to="/login" class="font-medium text-dark">
           Login

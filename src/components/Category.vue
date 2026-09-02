@@ -3,6 +3,7 @@ import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { Search, X, ChevronRight, Star, Clock, Users } from 'lucide-vue-next';
 import { categories, findCategory } from '../data/categories.js';
+import { courseStore } from '../store/courseStore.js';
 
 const route = useRoute();
 
@@ -12,9 +13,6 @@ const category = computed(() => findCategory(slug.value));
 // --- Replace this with your real API / store call -------------------
 // e.g. const courses = ref([]); watch(slug, async s => courses.value = await api.getCourses(s), { immediate: true })
 const allCourses = [
-  { id: 1,  slug: 'web-development', title: 'Modern Web Development with Vue 3', instructor: 'Sok Dara',    price: 39.99, oldPrice: 89.99, rating: 4.8, reviews: 1240, hours: 22, students: 5300, level: 'Beginner' },
-  { id: 2,  slug: 'web-development', title: 'Tailwind CSS from Zero to Pro',      instructor: 'Chan Nita',   price: 24.99, oldPrice: 59.99, rating: 4.7, reviews: 860,  hours: 14, students: 3100, level: 'Beginner' },
-  { id: 3,  slug: 'web-development', title: 'Full-Stack Laravel + Vue',           instructor: 'Vireak Pich', price: 49.99, oldPrice: 119.99, rating: 4.9, reviews: 2010, hours: 38, students: 7800, level: 'Intermediate' },
   { id: 4,  slug: 'mobile-development', title: 'Flutter Complete Course',         instructor: 'Sreyneang L.', price: 44.99, oldPrice: 99.99, rating: 4.6, reviews: 990,  hours: 30, students: 4200, level: 'Beginner' },
   { id: 5,  slug: 'artificial-intelligence', title: 'Machine Learning Foundations', instructor: 'Dr. Kimsan', price: 59.99, oldPrice: 149.99, rating: 4.9, reviews: 3100, hours: 45, students: 11200, level: 'Intermediate' },
   { id: 6,  slug: 'artificial-intelligence', title: 'Building Apps with LLMs',    instructor: 'Rathana S.',  price: 34.99, oldPrice: 79.99, rating: 4.7, reviews: 540,  hours: 12, students: 1900, level: 'Advanced' },
@@ -39,6 +37,33 @@ const allCourses = [
   { id: 25, slug: 'devops-software-engineering', title: 'Software Testing Essentials', instructor: 'Sokhom Chea', price: 33.99, oldPrice: 76.99, rating: 4.6, reviews: 650, hours: 16, students: 2900, level: 'Beginner' },
 ];
 
+const parseStudents = (students) => {
+  const value = String(students || '0').trim().toUpperCase();
+  const number = Number.parseFloat(value);
+  if (value.endsWith('K')) return Math.round(number * 1000);
+  if (value.endsWith('M')) return Math.round(number * 1000000);
+  return Number.isFinite(number) ? number : 0;
+};
+
+const toCategoryCourse = (course) => ({
+  id: course.id,
+  slug: 'web-development',
+  title: course.title,
+  instructor: course.instructor || 'Course Team',
+  price: Number(course.price) || 0,
+  oldPrice: Number(course.originalPrice) || 0,
+  rating: Number(course.rating) || 0,
+  reviews: Number(course.reviews) || 0,
+  hours: Number.parseFloat(String(course.duration || '0')) || 0,
+  students: parseStudents(course.students),
+  level: course.level || (course.type === 'document' || Number(course.price) === 0 ? 'Beginner' : 'Intermediate'),
+  free: course.type === 'document' || Number(course.price) === 0,
+});
+
+const storedWebCourses = computed(() => courseStore.courses
+  .filter((course) => course.category === 'Development' && /web|html|css|javascript|vue|full-stack/i.test(course.title || ''))
+  .map(toCategoryCourse));
+
 const levels = ['All levels', 'Beginner', 'Intermediate', 'Advanced'];
 const sorts = [
   { value: 'popular', label: 'Most popular' },
@@ -60,7 +85,9 @@ watch(slug, () => {
 
 const courses = computed(() => {
   const q = query.value.trim().toLowerCase();
-  let list = allCourses.filter((c) => c.slug === slug.value);
+  let list = slug.value === 'web-development'
+    ? storedWebCourses.value
+    : allCourses.filter((c) => c.slug === slug.value);
 
   if (q) {
     list = list.filter(
@@ -190,8 +217,11 @@ const related = computed(() =>
               </div>
 
               <div class="mt-auto flex items-baseline gap-2">
-                <span class="font-heading font-bold text-lg text-dark">${{ course.price }}</span>
-                <span class="text-sm text-dark-light line-through">${{ course.oldPrice }}</span>
+                <span v-if="course.free" class="font-heading font-bold text-lg text-emerald-600">FREE</span>
+                <template v-else>
+                  <span class="font-heading font-bold text-lg text-dark">${{ course.price }}</span>
+                  <span class="text-sm text-dark-light line-through">${{ course.oldPrice }}</span>
+                </template>
               </div>
             </div>
           </router-link>

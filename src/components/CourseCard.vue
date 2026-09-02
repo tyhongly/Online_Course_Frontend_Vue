@@ -10,51 +10,76 @@ defineProps({
 </script>
 
 <template>
-  <div class="bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 flex flex-col h-full group">
-    <!-- Thumbnail -->
-    <router-link :to="`/course/${course.id}`" class="relative aspect-[1.65] overflow-hidden">
-      <img :src="course.image" :alt="course.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-      <div class="absolute top-2 left-2 flex gap-1">
-        <span class="bg-white/95 px-2 py-0.5 text-[9px] font-bold text-primary rounded">
+  <router-link
+    :to="`/course/${course.id}`"
+    class="group flex h-full flex-col overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_18px_50px_-32px_rgba(15,23,42,0.2)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_70px_-35px_rgba(15,23,42,0.28)]"
+  >
+    <div class="relative aspect-[1.45] overflow-hidden bg-slate-100">
+      <img
+        :src="course.image"
+        :alt="course.title"
+        class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-slate-950/18 via-transparent to-transparent"></div>
+      <div class="absolute left-4 top-4 flex flex-wrap gap-2">
+        <span class="rounded-full bg-white/90 px-3 py-1 text-[11px] font-bold text-primary backdrop-blur">
           {{ course.category }}
         </span>
-        <span 
+        <span
           :class="[
-            'px-2 py-0.5 text-[9px] font-bold rounded',
+            'rounded-full px-3 py-1 text-[11px] font-bold text-white shadow-sm',
             (course.type === 'document' || course.price === 0)
-              ? 'bg-emerald-500 text-white' 
-              : 'bg-primary text-white'
+              ? 'bg-emerald-600'
+              : 'bg-primary'
           ]"
         >
           {{ (course.type === 'document' || course.price === 0) ? 'Free Document' : 'Video Course' }}
         </span>
       </div>
-    </router-link>
-    
-    <!-- Content -->
-    <div class="p-3 flex flex-col flex-grow">
-      <div class="text-[9px] text-primary font-medium mb-1">{{ course.category }}</div>
-      
-      <!-- Title -->
-      <router-link :to="`/course/${course.id}`" class="text-xs font-bold font-heading leading-tight mb-3 hover:text-primary transition-colors line-clamp-2">
+    </div>
+
+    <div class="flex flex-1 flex-col p-6">
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary/70">
+        {{ course.category }}
+      </p>
+
+      <h3 class="mt-3 line-clamp-2 text-lg font-bold leading-snug text-slate-900 transition-colors group-hover:text-primary">
         {{ course.title }}
-      </router-link>
-      
-      <div class="mt-auto flex items-center justify-between border-t border-gray-100 pt-2">
-        <div class="flex items-center gap-1 text-[9px] text-dark-lighter">
-          <Star class="w-3 h-3 text-amber-400 fill-amber-400" />
-          {{ course.rating }} ({{ course.reviews }})
+      </h3>
+
+      <div class="mt-5 flex items-center gap-4 text-sm text-slate-500">
+        <span class="inline-flex items-center gap-1.5">
+          <Star class="h-4 w-4 fill-amber-400 text-amber-400" />
+          <span class="font-semibold text-slate-700">{{ course.rating }}</span>
+          <span>({{ course.reviews }})</span>
+        </span>
+        <span v-if="course.lessons" class="text-slate-400">
+          {{ course.lessons }} lessons
+        </span>
+      </div>
+
+      <div class="mt-auto flex items-end justify-between border-t border-slate-100 pt-5">
+        <div class="text-sm text-slate-500">
+          <p v-if="course.duration" class="font-medium text-slate-700">{{ course.duration }}</p>
+          <p v-else>Self-paced learning</p>
         </div>
-        <div class="flex items-center gap-1">
+
+        <div class="text-right">
           <template v-if="course.type === 'document' || course.price === 0">
-            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full uppercase tracking-wider">FREE</span>
+            <span class="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-emerald-600">
+              FREE
+            </span>
           </template>
           <template v-else>
-            <span class="text-sm font-bold text-primary">${{ course.price }}</span>
-            <span v-if="course.originalPrice" class="text-[9px] text-dark-lighter line-through">${{ course.originalPrice }}</span>
+            <div class="flex items-center gap-2">
+              <span class="text-2xl font-bold text-primary">${{ course.price }}</span>
+              <span v-if="course.originalPrice" class="text-sm text-slate-400 line-through">
+                ${{ course.originalPrice }}
+              </span>
+            </div>
           </template>
         </div>
       </div>
     </div>
-  </div>
+  </router-link>
 </template>
