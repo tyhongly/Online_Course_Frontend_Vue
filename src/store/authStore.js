@@ -57,10 +57,12 @@ const extractToken = (payload) => {
 
 const extractUser = (payload, fallbackEmail = '') => {
   const user = payload?.user || payload?.account || payload?.authResponse || payload?.data || payload || {};
+  const name = user?.name || user?.username || fallbackEmail || 'User';
 
   return {
     id: user?.id ?? null,
-    name: user?.name || user?.username || fallbackEmail || 'User',
+    name,
+    username: user?.username || name,
     email: user?.email || fallbackEmail,
     role: String(user?.role || payload?.role || 'student').toLowerCase(),
     avatar: user?.avatar || ''

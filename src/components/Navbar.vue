@@ -20,6 +20,12 @@ onUnmounted(() => {
 });
 
 const isLoggedIn = computed(() => !!authStore.user);
+const displayName = computed(() => authStore.user?.username || authStore.user?.name || 'User');
+const profileInitials = computed(() => {
+  const parts = displayName.value.trim().split(/\s+/).filter(Boolean);
+  const initials = parts.slice(0, 2).map(part => part[0]).join('');
+  return (initials || 'U').toUpperCase();
+});
 const profileRoute = computed(() => {
   if (!authStore.user) return '/login';
   return authStore.user.role === 'admin' ? '/admin/profile' : '/student/profile';
@@ -59,12 +65,28 @@ const closeMenu = () => {
         </router-link> -->
 
         <template v-if="!isLoggedIn">
-          <router-link to="/login" class="font-medium text-dark hover:text-primary transition-colors">Login</router-link>
-          <router-link to="/signup" class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">Sign Up</router-link>
+          <router-link to="/signup" class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+            Sign Up
+          </router-link>
         </template>
 
         <template v-else>
-          <router-link :to="profileRoute" class="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">Profile</router-link>
+          <router-link
+            :to="profileRoute"
+            class="flex items-center gap-3 rounded-full border border-slate-200 bg-white/95 px-3 py-2 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+            :aria-label="`Open ${displayName}'s profile`"
+          >
+            <span class="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-primary text-sm font-semibold text-white">
+              <img
+                v-if="authStore.user?.avatar"
+                :src="authStore.user.avatar"
+                :alt="`${displayName} avatar`"
+                class="h-full w-full object-cover"
+              >
+              <span v-else>{{ profileInitials }}</span>
+            </span>
+            <span class="max-w-[150px] truncate font-medium text-dark">{{ displayName }}</span>
+          </router-link>
         </template>
       </div>
 
@@ -99,14 +121,33 @@ const closeMenu = () => {
             <router-link to="/about" class="font-medium text-dark py-2 border-b" active-class="text-primary" @click="closeMenu">About</router-link>
             <router-link v-if="isLoggedIn" :to="appRoute" class="font-medium text-dark py-2 border-b" @click="closeMenu">Dashboard</router-link>
 
-            <div class="mt-4 flex gap-3">
-              <template v-if="isLoggedIn">
-                <router-link :to="profileRoute" class="flex-1 bg-primary text-white text-center py-3 rounded-xl font-medium" @click="closeMenu">Profile</router-link>
-              </template>
-              <template v-else>
-                <router-link to="/login" class="flex-1 border border-primary text-primary text-center py-3 rounded-xl font-medium" @click="closeMenu">Login</router-link>
-                <router-link to="/signup" class="flex-1 bg-primary text-white text-center py-3 rounded-xl font-medium" @click="closeMenu">Sign Up</router-link>
-              </template>
+            <div v-if="isLoggedIn" class="mt-4 rounded-2xl bg-slate-50 p-4">
+              <div class="flex items-center gap-3">
+                <span class="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-primary text-sm font-semibold text-white">
+                  <img
+                    v-if="authStore.user?.avatar"
+                    :src="authStore.user.avatar"
+                    :alt="`${displayName} avatar`"
+                    class="h-full w-full object-cover"
+                  >
+                  <span v-else>{{ profileInitials }}</span>
+                </span>
+
+                <div class="min-w-0">
+                  <p class="text-xs font-medium uppercase tracking-[0.2em] text-slate-500">Signed in as</p>
+                  <p class="truncate font-semibold text-dark">{{ displayName }}</p>
+                </div>
+              </div>
+
+              <router-link :to="profileRoute" class="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-primary px-4 py-3 font-medium text-white transition hover:bg-primary-dark" @click="closeMenu">
+                Open Profile
+              </router-link>
+            </div>
+
+            <div v-else class="mt-4">
+              <router-link to="/signup" class="inline-flex w-full items-center justify-center rounded-xl bg-primary px-4 py-3 font-medium text-white transition hover:bg-primary-dark" @click="closeMenu">
+                Sign Up
+              </router-link>
             </div>
           </div>
         </div>
