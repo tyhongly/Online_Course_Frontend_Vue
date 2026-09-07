@@ -35,13 +35,10 @@ const currentYear = new Date().getFullYear();
           </div>
         </div>
 
-        <div class="min-w-0">
-          <h2 class="font-heading text-xl font-bold text-white">Find your next skill.</h2>
-          <p class="mt-3 text-sm leading-relaxed text-white/65">Choose a learning path that fits the future you want to build.</p>
-          <router-link to="/courses" class="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-dark transition hover:-translate-y-0.5 hover:bg-light">
-            Browse courses <ArrowRight class="h-4 w-4" />
-          </router-link>
-        </div>
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-primary font-bold tracking-wider uppercase text-sm mb-4 block">Our Latest Articles</span>
+        <h2 class="text-3xl md:text-4xl font-bold font-heading text-white">Stay Updated With Latest News</h2>
+      </div>
 
         <div class="min-w-0">
           <h2 class="font-heading text-base font-bold text-white">Explore</h2>
