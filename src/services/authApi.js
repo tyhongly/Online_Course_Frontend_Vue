@@ -6,3 +6,6 @@ const apiClient = axios.create({
 
 export const loginAccount = (credentials) => apiClient.post('/auth/login', credentials);
 export const createAccount = (account) => apiClient.post('/auth/createAcc', account);
+export const verifyOtp = (data) => apiClient.post('/auth/verify-otp', data);
+export const requestPasswordReset = (email) => apiClient.post('/auth/request-reset', { email });
+export const resetPassword = (data) => apiClient.post('/auth/reset-password', data);

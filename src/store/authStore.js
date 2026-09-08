@@ -1,5 +1,5 @@
 import { reactive } from 'vue';
-import { createAccount, loginAccount } from '../services/authApi.js';
+import { createAccount, loginAccount, verifyOtp, requestPasswordReset, resetPassword } from '../services/authApi.js';
 
 const safeRead = (key) => {
   try {
@@ -69,8 +69,24 @@ const extractUser = (payload, fallbackEmail = '') => {
   };
 };
 
-const storedUser = safeReadJson('auth_user');
 const storedToken = safeRead('access_token');
+const storedUser = storedToken ? safeReadJson('auth_user') : null;
+
+const responsePayload = (response) => response?.data?.data || response?.data || response;
+
+const setSession = (payload, fallbackEmail = '') => {
+  const token = extractToken(payload);
+  const user = extractUser(payload, fallbackEmail);
+
+  if (!token) {
+    throw new Error('Authentication response is missing an access token');
+  }
+
+  authStore.token = token;
+  authStore.user = user;
+  persistAuth(user, token);
+  return user;
+};
 
 export const authStore = reactive({
   user: storedUser,
@@ -78,30 +94,80 @@ export const authStore = reactive({
 
   async signup(account) {
     const response = await createAccount(account);
-    const payload = response?.data?.data || response?.data || response;
+    const payload = responsePayload(response);
+    const email = account.email;
 
-    if (!payload || typeof payload !== 'object') {
-      return response;
+    // Some APIs return a token on registration, while others require a
+    // normal login immediately after creating the account.
+    if (extractToken(payload)) {
+      return setSession(payload, email);
     }
 
-    return payload;
+    return this.login(email, account.password);
   },
   
+  // State for OTP flows
+  requiresOtp: false,
+  _pendingLogin: null,
+
+  // Login flow with optional OTP
   async login(email, password) {
     const response = await loginAccount({ email, password });
-    const payload = response?.data?.data || response?.data || response;
-    const token = extractToken(payload);
-    const user = extractUser(payload, email);
-
-    if (!token) {
-      throw new Error('Login response is missing an access token');
+    const payload = responsePayload(response);
+    if (payload && payload.needOtp) {
+      // Backend indicates OTP is required
+      this.requiresOtp = true;
+      this._pendingLogin = { email, password };
+      return null; // UI will handle OTP step
     }
+    // No OTP required, establish session directly
+    return setSession(payload, email);
+  },
 
-    this.token = token;
-    this.user = user;
+  // Verify OTP for login
+  async verifyLoginOtp(otp) {
+    if (!this._pendingLogin) throw new Error('No pending login for OTP');
+    const { email, password } = this._pendingLogin;
+    const response = await verifyOtp({ email, password, otp });
+    this._pendingLogin = null;
+    this.requiresOtp = false;
+    const payload = responsePayload(response);
+    return setSession(payload, email);
+  },
 
-    persistAuth(this.user, this.token);
-    return this.user;
+  // Forgot password state
+  resetPhase: 'email', // 'email' | 'otp' | 'newPassword'
+  _resetEmail: null,
+  _resetToken: null,
+
+  // Initiate forgot password (send OTP)
+  async requestPasswordReset(email) {
+    const response = await requestPasswordReset(email);
+    this._resetEmail = email;
+    this.resetPhase = 'otp';
+    return response;
+  },
+
+  // Verify OTP for password reset
+  async verifyResetOtp(otp) {
+    if (!this._resetEmail) throw new Error('No password reset request pending');
+    const response = await verifyOtp({ email: this._resetEmail, otp, purpose: 'reset' });
+    // Expect backend to return a temporary token for resetting password
+    const payload = responsePayload(response);
+    this._resetToken = payload?.resetToken || null;
+    this.resetPhase = 'newPassword';
+    return payload;
+  },
+
+  // Set new password after OTP verification
+  async resetPassword(newPassword) {
+    if (!this._resetToken) throw new Error('Reset token missing');
+    await resetPassword({ token: this._resetToken, password: newPassword });
+    // Reset flow finished, revert to login mode
+    this.resetPhase = 'email';
+    this._resetEmail = null;
+    this._resetToken = null;
+    return true;
   },
   
   logout() {

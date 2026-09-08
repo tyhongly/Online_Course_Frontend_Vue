@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import { authStore } from '../../store/authStore.js';
 
 const router = useRouter();
-const name = ref('');
+const username = ref('');
 const email = ref('');
 const password = ref('');
 const error = ref('');
@@ -20,11 +20,12 @@ const handleSignup = async () => {
 
   try {
     await authStore.signup({
-      name: name.value,
+      username: username.value,
+      name: username.value,
       email: email.value,
       password: password.value
     });
-    await router.push('/login');
+    await router.push('/dashboard');
   } catch (requestError) {
     error.value = requestError.response?.data?.message || requestError.response?.data?.massage || 'Unable to create your account. Please try again.';
   } finally {
@@ -56,8 +57,8 @@ const handleSignup = async () => {
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-          <input v-model="name" type="text" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="John Doe" />
+          <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+          <input v-model="username" type="text" required autocomplete="username" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="jane_doe" />
         </div>
         
         <div>
