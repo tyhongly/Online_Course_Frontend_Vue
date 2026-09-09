@@ -1,0 +1,5 @@
+# pack-refs with: peeled fully-peeled sorted 
+2b60f51ea176e8d872dbf7a2cff93baedae1db57 refs/remotes/origin/develop
+283a8f68eff21aaa7c4571f38d2d09e39a135772 refs/remotes/origin/main
+bfe4891414b8e962e954e533a5cc2eb296a2f4dd refs/remotes/origin/savry-front
+c15c6c55bda12b3e4345bf19f2f67399f140aeac refs/remotes/origin/sinat-frontend

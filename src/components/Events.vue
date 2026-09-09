@@ -2,8 +2,11 @@
 import { events } from '../data/index.js';
 import { MapPin, Calendar, ArrowRight } from 'lucide-vue-next';
 </script>
-
 <template>
+  <div></div>
+</template>
+
+<!-- <template>
   <section class="py-20 bg-white">
     <div class="container mx-auto px-4 md:px-6">
       
@@ -48,4 +51,4 @@ import { MapPin, Calendar, ArrowRight } from 'lucide-vue-next';
 
     </div>
   </section>
-</template>
+</template> -->

@@ -1,6 +1,4 @@
 <script setup>
-import { Star } from 'lucide-vue-next';
-
 defineProps({
   course: {
     type: Object,
@@ -46,17 +44,6 @@ defineProps({
       <h3 class="mt-3 line-clamp-2 text-lg font-bold leading-snug text-slate-900 transition-colors group-hover:text-primary">
         {{ course.title }}
       </h3>
-
-      <div class="mt-5 flex items-center gap-4 text-sm text-slate-500">
-        <span class="inline-flex items-center gap-1.5">
-          <Star class="h-4 w-4 fill-amber-400 text-amber-400" />
-          <span class="font-semibold text-slate-700">{{ course.rating }}</span>
-          <span>({{ course.reviews }})</span>
-        </span>
-        <span v-if="course.lessons" class="text-slate-400">
-          {{ course.lessons }} lessons
-        </span>
-      </div>
 
       <div class="mt-auto flex items-end justify-between border-t border-slate-100 pt-5">
         <div class="text-sm text-slate-500">
