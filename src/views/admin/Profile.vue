@@ -313,7 +313,7 @@ const saveProfile = async () => {
         </div>
       </section>
 
-      <section
+      <!-- <section
         class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
       >
         <p
@@ -412,7 +412,7 @@ const saveProfile = async () => {
             </button>
           </div>
         </form>
-      </section>
+      </section> -->
     </div>
   </div>
 </template>
