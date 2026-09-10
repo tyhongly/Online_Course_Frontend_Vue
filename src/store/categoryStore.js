@@ -1,10 +1,11 @@
 import { reactive } from 'vue';
 import { courses as seedCourses } from '../data/index.js';
 import { createCategory, deleteCategory, getAllCategories, updateCategory } from '../services/categoryApi.js';
+import { isTechnologyCourse } from '../utils/technologyContent.js';
 
 const storedCategories = localStorage.getItem('category_data');
 
-const defaultCategories = storedCategories
+const categorySource = storedCategories
   ? JSON.parse(storedCategories)
   : Array.from(new Set(seedCourses.map((course) => course.category)))
       .filter(Boolean)
@@ -15,6 +16,10 @@ const defaultCategories = storedCategories
         createdAt: new Date().toISOString(),
       }));
 
+const defaultCategories = categorySource.filter((category) =>
+  isTechnologyCourse({ category: category.name || category })
+);
+
 export const categoryStore = reactive({
   categories: defaultCategories,
 
@@ -22,7 +27,7 @@ export const categoryStore = reactive({
     const response = await getAllCategories();
     const payload = response?.data?.data || response?.data || [];
     const categories = Array.isArray(payload) ? payload : payload.categories || [];
-    this.categories = categories.map((category) => ({
+    this.categories = categories.filter((category) => isTechnologyCourse({ category: category.categoryName || category.name })).map((category) => ({
       ...category,
       id: category.categoryId || category.id,
       name: category.categoryName || category.name,

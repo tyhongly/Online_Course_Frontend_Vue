@@ -4,7 +4,7 @@ import { popularCategories } from '../data/index.js';
 
 <template>
   <section class="py-24 bg-white">
-    <div class="container mx-auto px-4 md:px-6">
+    <div class="mx-auto max-w-7xl px-4 md:px-6">
       <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-12">
         <div class="max-w-2xl">
           <span class="text-primary font-bold tracking-wider uppercase text-sm mb-4 block">Explore Categories</span>

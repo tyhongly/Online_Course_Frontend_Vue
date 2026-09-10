@@ -36,10 +36,10 @@ export const courses = [
   },
   {
     id: 2,
-    title: 'Financial Analysis and Valuation for Startups',
-    category: 'Business',
+    title: 'SQL for Data Analytics and Reporting',
+    category: 'Data Science',
     type: 'document',
-    image: 'https://images.unsplash.com/photo-1591696205602-2f950c417cb9?w=500&q=80',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80',
     originalPrice: 0,
     price: 0,
     rating: 4.7,
@@ -64,10 +64,10 @@ export const courses = [
   },
   {
     id: 4,
-    title: 'Mastering Digital Marketing: Strategy to Execution',
-    category: 'Business',
+    title: 'Web Performance Optimization with JavaScript',
+    category: 'Development',
     type: 'document',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&q=80',
+    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80',
     originalPrice: 0,
     price: 0,
     rating: 4.6,
@@ -106,7 +106,7 @@ export const courses = [
   },
   {
     id: 7,
-    title: 'Graphic Design Masterclass & Brand Guide',
+    title: 'UI/UX Design Systems and Accessibility',
     category: 'Design',
     type: 'document',
     image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&q=80',
@@ -190,10 +190,10 @@ export const courses = [
   },
   {
     id: 17,
-    title: 'Entrepreneurship 101: Founder Playbook & Guide',
-    category: 'Business',
+    title: 'Software Product Engineering Fundamentals',
+    category: 'Development',
     type: 'document',
-    image: 'https://images.unsplash.com/photo-1591696205602-2f950c417cb9?w=500&q=80',
+    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80',
     originalPrice: 0,
     price: 0,
     rating: 4.8,
@@ -230,9 +230,9 @@ export const popularCategories = [
   },
   {
     id: 2,
-    name: 'Business',
-    courses: 36,
-    image: 'https://images.unsplash.com/photo-1591696205602-2f950c417cb9?w=600&q=80',
+    name: 'Cybersecurity',
+    courses: 34,
+    image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&q=80',
     iconBg: 'bg-blue-100',
     iconColor: 'text-blue-600',
     badge: 'Trending',
@@ -287,7 +287,6 @@ export const blogs = [
     title: 'How to Become a Successful UI/UX Designer in 2024',
     category: 'Design',
     date: 'Oct 05, 2024',
-    author: 'Jane Doe',
     image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500&q=80'
   },
   {
@@ -295,23 +294,20 @@ export const blogs = [
     title: '10 Essential JavaScript Frameworks You Must Know',
     category: 'Development',
     date: 'Oct 02, 2024',
-    author: 'Alex Johnson',
     image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80'
   },
   {
     id: 3,
-    title: 'The Psychology of Colors in Modern Branding',
-    category: 'Marketing',
+    title: 'Design Tokens for Modern Product Interfaces',
+    category: 'Design',
     date: 'Sep 28, 2024',
-    author: 'Sarah Lee',
     image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=500&q=80'
   },
   {
     id: 4,
-    title: 'A Guide to Financial Planning for Freelancers',
-    category: 'Business',
+    title: 'Cloud Cost Optimization for Developers',
+    category: 'Cloud Computing',
     date: 'Sep 24, 2024',
-    author: 'Mark Smith',
     image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&q=80'
   }
 ];

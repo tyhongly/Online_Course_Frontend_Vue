@@ -5,11 +5,13 @@ import Home from '../views/Home.vue';
 import Login from '../views/auth/Login.vue';
 import Signup from '../views/auth/Signup.vue';
 import Catalog from '../views/courses/Catalog.vue';
+import Favorites from '../views/courses/Favorites.vue';
 import CourseDetail from '../views/courses/CourseDetail.vue';
 import Cart from '../views/Cart.vue';
 import AboutPage from '../views/AboutPage.vue';
 import PricingPage from '../views/PricingPage.vue';
 import CategoriesPage from '../views/CategoriesPage.vue';
+import ContactPage from '../views/ContactPage.vue';
 import Unauthorized from '../views/Unauthorized.vue';
 import AdminPreview from '../views/dev/AdminPreview.vue';
 import Category from '../components/Category.vue';
@@ -50,6 +52,7 @@ const routes = [
   { path: '/login', name: 'Login', component: Login },
   { path: '/signup', name: 'Signup', component: Signup },
   { path: '/courses', name: 'Catalog', component: Catalog },
+  { path: '/favorites', name: 'Favorites', component: Favorites, meta: { requiresAuth: true } },
   { path: '/categories', name: 'Categories', component: CategoriesPage },
   { path: '/categories/:slug', name: 'Category', component: Category },
   { path: '/course/:id', name: 'CourseDetail', component: CourseDetail },
@@ -57,6 +60,7 @@ const routes = [
   { path: '/about', name: 'About', component: AboutPage },
   { path: '/instructors', redirect: '/courses' },
   { path: '/pricing', name: 'Pricing', component: PricingPage },
+  { path: '/contact', name: 'Contact', component: ContactPage },
   { path: '/unauthorized', name: 'Unauthorized', component: Unauthorized },
   ...(import.meta.env.DEV ? [{ path: '/preview/admin', name: 'AdminPreview', component: AdminPreview }] : []),
   { 

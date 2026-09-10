@@ -1,7 +1,8 @@
 <script setup>
 import { computed, ref } from 'vue';
-import { Link2, Mail, Save, ShieldCheck, UserCircle2 } from 'lucide-vue-next';
+import { Mail, Save, ShieldCheck, UserCircle2 } from 'lucide-vue-next';
 import { authStore } from '../../store/authStore.js';
+import ProfileImageUpload from '../../components/ProfileImageUpload.vue';
 
 const user = ref({
   name: authStore.user?.name || '',
@@ -10,6 +11,9 @@ const user = ref({
 });
 
 const message = ref('');
+const selectedImage = ref(null);
+const imageRemoved = ref(false);
+const profileImageUpload = ref(null);
 let messageTimer = null;
 
 const initials = computed(() => {
@@ -17,7 +21,7 @@ const initials = computed(() => {
   return name
     .split(' ')
     .filter(Boolean)
-    .slice(0, 2)
+    .slice(0, 1)
     .map((part) => part[0])
     .join('')
     .toUpperCase();
@@ -25,12 +29,37 @@ const initials = computed(() => {
 
 const displayName = computed(() => user.value.name || 'Student');
 
-const saveProfile = () => {
+const readImage = (file) => new Promise((resolve, reject) => {
+  const reader = new FileReader();
+  reader.onload = () => resolve(reader.result);
+  reader.onerror = () => reject(new Error('Unable to read the selected image.'));
+  reader.readAsDataURL(file);
+});
+
+const selectImage = (file) => {
+  selectedImage.value = file;
+  imageRemoved.value = false;
+};
+
+const removeImage = () => {
+  selectedImage.value = null;
+  imageRemoved.value = true;
+};
+
+const saveProfile = async () => {
+  let avatar = user.value.avatar;
+  if (imageRemoved.value) avatar = '';
+  if (selectedImage.value) avatar = await readImage(selectedImage.value);
+
   authStore.updateProfile({
     name: user.value.name.trim(),
     email: user.value.email.trim(),
-    avatar: user.value.avatar.trim(),
+    avatar,
   });
+
+  user.value.avatar = avatar;
+  selectedImage.value = null;
+  imageRemoved.value = false;
 
   message.value = 'Profile updated successfully.';
   window.clearTimeout(messageTimer);
@@ -66,14 +95,17 @@ const saveProfile = () => {
     <section class="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
       <aside class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-[0_18px_50px_-32px_rgba(15,23,42,0.14)]">
         <div class="flex flex-col items-center text-center">
-          <div class="flex h-28 w-28 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-indigo-600 to-sky-500 text-3xl font-semibold text-white shadow-lg shadow-indigo-200">
-            <img
-              v-if="user.avatar"
-              :src="user.avatar"
-              alt="Avatar"
-              class="h-full w-full object-cover"
-            />
-            <span v-else>{{ initials }}</span>
+          <button
+            v-if="user.avatar"
+            type="button"
+            class="flex h-28 w-28 items-center justify-center overflow-hidden rounded-full bg-primary text-3xl font-semibold text-white shadow-lg shadow-indigo-200 transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            aria-label="View profile picture"
+            @click="profileImageUpload?.openPreview()"
+          >
+            <img :src="user.avatar" alt="Profile picture" class="h-full w-full object-cover" />
+          </button>
+          <div v-else class="flex h-28 w-28 items-center justify-center overflow-hidden rounded-full bg-primary text-3xl font-semibold text-white shadow-lg shadow-indigo-200">
+            <span>{{ initials }}</span>
           </div>
 
           <h2 class="mt-5 text-2xl font-semibold tracking-tight text-slate-950">
@@ -90,7 +122,7 @@ const saveProfile = () => {
         <div class="mt-6 space-y-3 rounded-3xl bg-slate-50 p-4">
           <div class="flex items-center gap-3 text-sm text-slate-600">
             <UserCircle2 class="h-4 w-4 text-slate-400" />
-            Name, email, and avatar
+            Name, email, and profile picture
           </div>
           <div class="flex items-center gap-3 text-sm text-slate-600">
             <Mail class="h-4 w-4 text-slate-400" />
@@ -130,21 +162,13 @@ const saveProfile = () => {
             </div>
           </div>
 
-          <div class="space-y-2">
-            <label class="text-sm font-medium text-slate-700">Avatar URL</label>
-            <div class="relative">
-              <Link2 class="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-              <input
-                v-model="user.avatar"
-                type="text"
-                class="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100"
-                placeholder="https://example.com/avatar.png"
-              />
-            </div>
-            <p class="text-sm leading-6 text-slate-500">
-              Paste a direct image link if you want a custom profile picture.
-            </p>
-          </div>
+          <ProfileImageUpload
+            ref="profileImageUpload"
+            :image="user.avatar"
+            :name="user.name"
+            @select="selectImage"
+            @remove="removeImage"
+          />
 
           <div class="flex flex-col gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-end">
             <p class="text-sm text-slate-500">

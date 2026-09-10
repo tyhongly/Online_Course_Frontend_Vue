@@ -370,7 +370,7 @@ const defaultDocumentLessons = [
 ];
 
 function getCourseLessons(course) {
-  if (documentLessonsMap[course.id]) {
+  if (documentLessonsMap[course.id] && ![2, 4, 17].includes(Number(course.id))) {
     return documentLessonsMap[course.id];
   }
   if (course.type === 'document' || Number(course.price) === 0) {

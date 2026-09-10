@@ -40,7 +40,7 @@ const journeySteps = [
 
 <template>
   <main class="overflow-hidden bg-light pt-28">
-    <section class="relative pb-20 pt-10 md:pb-28 md:pt-16">
+    <section class="relative pb-20 pt-0 md:pb-28 md:pt-0">
       <div class="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(99,102,241,0.12)_1px,transparent_0)] bg-[size:24px_24px] [mask-image:linear-gradient(to_bottom,black,transparent)]"></div>
       <div class="absolute -right-32 top-8 h-80 w-80 rounded-full bg-primary/15 blur-3xl"></div>
       <div class="absolute -left-24 bottom-0 h-64 w-64 rounded-full bg-accent/15 blur-3xl"></div>
@@ -117,7 +117,7 @@ const journeySteps = [
     </section>
 <!-- 
     <section class="relative z-10 -mt-8 pb-12 md:-mt-12 md:pb-16">
-      <div class="container mx-auto px-4 md:px-6">
+      <div class="mx-auto max-w-7xl px-4 md:px-6">
         <div class="grid overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-xl shadow-dark/5 sm:grid-cols-3">
           <div v-for="(stat, index) in stats" :key="stat.label" :class="['px-6 py-6 text-center md:py-7', index !== stats.length - 1 ? 'border-b border-gray-100 sm:border-b-0 sm:border-r' : '']">
             <p class="font-heading text-2xl font-bold text-primary md:text-3xl">{{ stat.value }}</p>
@@ -128,7 +128,7 @@ const journeySteps = [
     </section> -->
 
     <section class="bg-white py-20 md:py-24">
-      <div class="container mx-auto grid gap-12 px-4 md:px-6 lg:grid-cols-2 lg:items-center lg:gap-20">
+      <div class="mx-auto grid max-w-7xl gap-12 px-4 md:px-6 lg:grid-cols-2 lg:items-center lg:gap-20">
         <div>
           <span class="mb-4 block text-sm font-semibold uppercase tracking-wider text-primary">Our mission</span>
           <h2 class="font-heading text-3xl font-bold leading-tight text-dark md:text-4xl">Make a great education feel possible for everyone.</h2>
@@ -156,7 +156,7 @@ const journeySteps = [
     </section>
 
     <section class="py-20 md:py-24">
-      <div class="container mx-auto px-4 md:px-6">
+      <div class="mx-auto max-w-7xl px-4 md:px-6">
         <div class="relative overflow-hidden rounded-3xl bg-dark px-6 py-12 text-center shadow-xl md:px-12 md:py-16">
           <div class="absolute -right-16 -top-20 h-64 w-64 rounded-full bg-primary/30 blur-2xl"></div>
           <div class="absolute -bottom-20 -left-16 h-56 w-56 rounded-full bg-accent/20 blur-2xl"></div>

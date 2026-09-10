@@ -1,7 +1,9 @@
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue';
-import { ChevronDown, LogOut, Menu, X } from 'lucide-vue-next';
+import { ChevronDown, Heart, LogOut, Menu, X } from 'lucide-vue-next';
 import { authStore } from '../store/authStore.js';
+import { wishlistCount } from '../store/wishlistStore.js';
+import BrandLogo from './BrandLogo.vue';
 
 const isScrolled = ref(false);
 const mobileMenuOpen = ref(false);
@@ -15,7 +17,8 @@ const links = [
   { to: '/', label: 'Home' },
   { to: '/courses', label: 'Courses' },
   { to: '/categories', label: 'Categories' },
-  { to: '/about', label: 'About' }
+  { to: '/about', label: 'About Us' },
+  { to: '/contact', label: 'Contact' }
 ];
 
 const isLoggedIn = computed(() => Boolean(authStore.user && authStore.token));
@@ -99,10 +102,14 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll));
 <template>
   <header :class="['fixed top-0 z-50 w-full transition-all duration-300', isScrolled ? 'bg-white/95 py-3 shadow-md backdrop-blur' : 'bg-transparent py-5']">
     <div class="container mx-auto flex items-center justify-between px-4 md:px-6">
-      <router-link to="/" class="flex items-center gap-2" @click="profileMenuOpen = false"><span class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-xl font-bold text-white">T</span><span class="font-heading text-2xl font-bold text-dark">TosRean</span></router-link>
+      <router-link to="/" class="flex items-center gap-2" @click="profileMenuOpen = false"><BrandLogo /><span class="font-heading text-2xl font-bold text-dark">TosRean</span></router-link>
       <nav class="hidden items-center gap-10 lg:flex"><router-link v-for="link in links" :key="link.to" :to="link.to" class="font-medium text-dark-light transition hover:text-primary" active-class="text-primary">{{ link.label }}</router-link></nav>
 
       <div class="hidden items-center lg:flex">
+        <router-link to="/favorites" aria-label="Favorite courses" class="relative mr-5 inline-flex h-10 w-10 items-center justify-center rounded-full text-dark-light transition hover:bg-rose-50 hover:text-rose-500">
+          <Heart class="h-5 w-5 transition-transform duration-200 hover:scale-110" />
+          <span v-if="wishlistCount" class="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-bold leading-none text-white">{{ wishlistCount }}</span>
+        </router-link>
         <button v-if="!isLoggedIn" type="button" class="rounded-full bg-primary px-6 py-2.5 font-semibold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-lg" @click="openAuth('login')">Get Started</button>
         <div v-else class="relative">
           <button type="button" class="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-2 py-1.5 shadow-sm transition hover:shadow-md" :aria-expanded="profileMenuOpen" @click="profileMenuOpen = !profileMenuOpen">
@@ -121,8 +128,8 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll));
     <div v-if="mobileMenuOpen" class="fixed inset-0 z-50 flex lg:hidden">
       <button type="button" class="fixed inset-0 bg-dark/50" aria-label="Close menu" @click="closeMenu"></button>
       <aside class="relative h-full w-4/5 max-w-sm overflow-y-auto bg-white p-5 shadow-2xl">
-        <div class="flex items-center justify-between border-b pb-5"><span class="font-heading text-xl font-bold">TosRean</span><button type="button" class="rounded-full p-2 hover:bg-light" aria-label="Close menu" @click="closeMenu"><X class="h-6 w-6" /></button></div>
-        <nav class="flex flex-col gap-1 py-5"><router-link v-for="link in links" :key="link.to" :to="link.to" class="border-b py-3 font-medium text-dark" @click="closeMenu">{{ link.label }}</router-link></nav>
+        <div class="flex items-center justify-between border-b pb-5"><router-link to="/" class="flex items-center gap-2" @click="closeMenu"><BrandLogo size="sm" /><span class="font-heading text-xl font-bold">TosRean</span></router-link><button type="button" class="rounded-full p-2 hover:bg-light" aria-label="Close menu" @click="closeMenu"><X class="h-6 w-6" /></button></div>
+        <nav class="flex flex-col gap-1 py-5"><router-link v-for="link in links" :key="link.to" :to="link.to" class="border-b py-3 font-medium text-dark" @click="closeMenu">{{ link.label }}</router-link><router-link to="/favorites" class="flex items-center justify-between border-b py-3 font-medium text-dark" @click="closeMenu"><span class="flex items-center gap-2"><Heart class="h-4 w-4 text-rose-500" /> Favorite Courses</span><span v-if="wishlistCount" class="rounded-full bg-rose-100 px-2 py-0.5 text-xs font-bold text-rose-600">{{ wishlistCount }}</span></router-link></nav>
         <div v-if="isLoggedIn" class="rounded-2xl bg-slate-50 p-4"><div class="flex items-center gap-3"><span class="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-primary font-bold text-white"><img v-if="authStore.user?.avatar" :src="authStore.user.avatar" :alt="`${displayName} avatar`" class="h-full w-full object-cover"><span v-else>{{ initials }}</span></span><div class="min-w-0"><p class="text-xs uppercase tracking-widest text-slate-500">Signed in as</p><p class="truncate font-semibold text-dark">{{ displayName }}</p></div></div><router-link :to="profileRoute" class="mt-4 block rounded-xl bg-primary px-4 py-3 text-center font-medium text-white" @click="closeMenu">Open profile</router-link><button type="button" class="mt-2 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 font-medium text-red-600 hover:bg-red-50" @click="logout"><LogOut class="h-4 w-4" /> Log out</button></div>
         <button v-else type="button" class="mt-4 w-full rounded-xl bg-primary px-4 py-3 font-semibold text-white" @click="openAuth('login')">Get Started</button>
       </aside>

@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { Mail } from 'lucide-vue-next';
+import { ArrowRight, Mail } from 'lucide-vue-next';
 
 const email = ref('');
 
@@ -13,36 +13,38 @@ const subscribe = () => {
 </script>
 
 <template>
-  <section class="py-20 relative overflow-hidden bg-dark">
-    <!-- Decorative Shapes -->
-    <div class="absolute top-0 right-0 w-64 h-64 bg-primary rounded-full blur-3xl opacity-20 -translate-y-1/2"></div>
-    <div class="absolute bottom-0 left-0 w-64 h-64 bg-accent rounded-full blur-3xl opacity-20 translate-y-1/2"></div>
+  <section class="relative overflow-hidden bg-white py-10 md:py-12">
+    <div class="absolute right-0 top-0 h-40 w-40 -translate-y-1/2 translate-x-1/2 rounded-full bg-primary opacity-15 blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 h-36 w-36 translate-y-1/2 -translate-x-1/2 rounded-full bg-accent opacity-15 blur-3xl"></div>
     
-    <div class="container mx-auto px-4 md:px-6 relative z-10">
-      <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+    <div class="relative z-10 mx-auto max-w-7xl px-4 md:px-6">
+      <div class="mx-auto flex max-w-6xl flex-col items-center gap-6 rounded-2xl border border-white/10 bg-black/[0.025] px-5 py-6 backdrop-blur-sm md:flex-row md:justify-between md:px-8">
         
         <div class="flex-1 text-center md:text-left">
-          <h2 class="text-3xl md:text-4xl font-bold font-heading text-white mb-4">Want to stay informed about new courses & study?</h2>
-          <p class="text-dark-lighter text-lg">Sign up for our newsletter to receive the latest updates.</p>
+          <h2 class="font-heading text-2xl font-bold leading-tight text-black md:text-3xl">Stay Updated with New Courses</h2>
+          <p class="mt-2 text-sm text-black md:text-base">Get notified about new IT courses and learning resources.</p>
         </div>
         
-        <div class="w-full md:w-[450px]">
-          <form @submit.prevent="subscribe" class="relative">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+        <div class="w-full md:max-w-md md:flex-1">
+          <form @submit.prevent="subscribe" class="flex flex-col gap-2 sm:flex-row">
+            <div class="relative flex-1">
+              <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
               <Mail class="w-5 h-5 text-gray-400" />
+              </div>
+              <input 
+                v-model="email" 
+                type="email" 
+                required 
+                placeholder="Enter your email address" 
+                class="w-full rounded-xl border border-transparent bg-white py-3 pl-11 pr-4 text-sm text-dark shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/40"
+              />
             </div>
-            <input 
-              v-model="email" 
-              type="email" 
-              required 
-              placeholder="Enter your email address" 
-              class="w-full pl-12 pr-36 py-4 rounded-full bg-white text-dark focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-            />
             <button 
               type="submit" 
-              class="absolute right-2 top-2 bottom-2 px-6 bg-primary hover:bg-primary-dark text-white rounded-full font-medium transition-colors"
+              class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-dark"
             >
-              Subscribe Now
+              Subscribe
+              <ArrowRight class="h-4 w-4" aria-hidden="true" />
             </button>
           </form>
         </div>
