@@ -47,6 +47,8 @@ const actionIcons = { 'Create Course': Plus, 'Manage Categories': FolderTree, 'M
 
       <section class="grid gap-3 sm:grid-cols-3">
         <router-link v-for="action in quickActions" :key="action.label" :to="action.to" class="group flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 transition hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-[0_15px_35px_-25px_rgba(79,70,229,0.35)]"><span class="flex items-center gap-3 text-sm font-semibold text-slate-800"><span class="rounded-xl bg-slate-100 p-2 text-slate-600 group-hover:bg-indigo-50 group-hover:text-indigo-600"><component :is="actionIcons[action.label] || ArrowUpRight" class="h-4 w-4" /></span>{{ action.label }}</span><ArrowUpRight class="h-4 w-4 text-slate-400 transition group-hover:text-indigo-600" /></router-link>
+      </section>
+
       <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Total Students" :value="metrics.totalStudents" hint="Students with active accounts" />
         <StatCard label="Total Courses" :value="metrics.totalCourses" hint="All course records" />
