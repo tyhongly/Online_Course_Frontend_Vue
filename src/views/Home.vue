@@ -5,7 +5,6 @@ import Courses from "../components/Courses.vue";
 import WorkshopBanner from "../components/WorkshopBanner.vue";
 import PopularCategory from "../components/PopularCategory.vue";
 import Newsletter from "../components/Newsletter.vue";
-import Events from "../components/Events.vue";
 import Blog from "../components/Blog.vue";
 import DualCta from "../components/DualCta.vue";
 </script>
@@ -13,12 +12,11 @@ import DualCta from "../components/DualCta.vue";
 <template>
   <main class="flex-grow">
     <Hero />
-    <About />
+    <!-- <About /> -->
     <PopularCategory />
     <Courses />
-    <WorkshopBanner />
+    <!-- <WorkshopBanner /> -->
     <Newsletter />
-    <Events />
     <Blog />
     <DualCta />
   </main>

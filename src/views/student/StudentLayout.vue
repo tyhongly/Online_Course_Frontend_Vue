@@ -1,8 +1,9 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router';
 import { computed } from 'vue';
-import { BookOpen, Heart, Home, LayoutDashboard, LogOut, User } from 'lucide-vue-next';
+import { BookOpen, Heart, Home, LayoutDashboard, LogOut } from 'lucide-vue-next';
 import { authStore } from '../../store/authStore.js';
+import DashboardHeader from '../../components/dashboard/DashboardHeader.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -20,7 +21,6 @@ const navigation = [
   { name: 'Dashboard', path: '/student/dashboard', icon: LayoutDashboard },
   { name: 'My Learning', path: '/student/my-courses', icon: BookOpen },
   { name: 'Wishlist', path: '/student/wishlist', icon: Heart },
-  { name: 'My Profile', path: '/student/profile', icon: User },
 ];
 
 const userInitials = computed(() => {
@@ -87,9 +87,12 @@ const userInitials = computed(() => {
         </div>
       </aside>
 
-      <main class="min-w-0 flex-1 overflow-y-auto px-4 py-5 sm:px-6 lg:px-8 lg:py-8 md:ml-[286px] md:h-screen md:px-8 md:pb-8">
-        <router-view />
-      </main>
+      <div class="min-w-0 md:ml-[286px]">
+        <DashboardHeader profile-route="/student/profile" />
+        <main class="min-w-0 flex-1 overflow-y-auto px-4 py-5 sm:px-6 lg:px-8 lg:py-8 md:h-[calc(100vh-5rem)] md:px-8 md:pb-8">
+          <router-view />
+        </main>
+      </div>
     </div>
   </div>
 </template>

@@ -19,7 +19,7 @@ const filteredCategories = computed(() => {
 
 <template>
   <main class="min-h-screen bg-light pb-20 pt-28">
-    <div class="container mx-auto px-4 md:px-6">
+    <div class="mx-auto max-w-7xl px-4 md:px-6">
       <header class="mx-auto mb-12 max-w-2xl text-center">
         <span class="mb-3 block text-sm font-medium uppercase tracking-wider text-primary">Explore categories</span>
         <h1 class="mb-3 font-heading text-3xl font-bold text-dark md:text-4xl">Choose a learning path</h1>

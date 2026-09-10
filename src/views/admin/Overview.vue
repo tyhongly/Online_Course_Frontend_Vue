@@ -16,9 +16,9 @@ const { metrics, recentStudents, recentCourses, recentEnrollments, quickActions 
             <h1 class="mt-3 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">
               Admin dashboard
             </h1>
-            <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+            <!-- <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
               Monitor students, courses, lessons, and enrollments from one protected control panel.
-            </p>
+            </p> -->
           </div>
 
           <div class="flex flex-wrap gap-3">
@@ -26,7 +26,7 @@ const { metrics, recentStudents, recentCourses, recentEnrollments, quickActions 
               v-for="action in quickActions"
               :key="action.label"
               :to="action.to"
-              class="inline-flex items-center justify-center rounded-2xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+              class="inline-flex items-center justify-center rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
             >
               {{ action.label }}
             </router-link>
@@ -35,10 +35,10 @@ const { metrics, recentStudents, recentCourses, recentEnrollments, quickActions 
       </section>
 
       <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <StatCard label="Total Students" :value="metrics.totalStudents" hint="Students with active accounts" tone="from-indigo-500 to-sky-500" />
-        <StatCard label="Total Courses" :value="metrics.totalCourses" hint="All course records" tone="from-sky-500 to-cyan-400" />
-        <StatCard label="Total Lessons" :value="metrics.totalLessons" hint="Published lessons across courses" tone="from-indigo-600 to-violet-500" />
-        <StatCard label="Total Enrollments" :value="metrics.totalEnrollments" hint="All course enrollments" tone="from-cyan-500 to-indigo-500" />
+        <StatCard label="Total Students" :value="metrics.totalStudents" hint="Students with active accounts" />
+        <StatCard label="Total Courses" :value="metrics.totalCourses" hint="All course records" />
+        <StatCard label="Total Lessons" :value="metrics.totalLessons" hint="Published lessons across courses" />
+        <StatCard label="Total Enrollments" :value="metrics.totalEnrollments" hint="All course enrollments" />
       </section>
 
       <div class="grid gap-6 xl:grid-cols-2">

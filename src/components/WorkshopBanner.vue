@@ -31,7 +31,7 @@ watch(isVisible, (val) => {
 
 <template>
   <section class="py-20" ref="target">
-    <div class="container mx-auto px-4 md:px-6">
+    <div class="mx-auto max-w-7xl px-4 md:px-6">
       <div class="bg-primary rounded-3xl overflow-hidden relative shadow-2xl">
         <!-- Decorative bg -->
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>

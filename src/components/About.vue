@@ -4,7 +4,7 @@ import { CheckCircle2, ArrowRight } from 'lucide-vue-next';
 
 <template>
   <section class="py-24 md:py-32 bg-light-dark">
-    <div class="container mx-auto px-4 md:px-6">
+    <div class="mx-auto max-w-7xl px-4 md:px-6">
       <div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-20">
         
         <!-- Left Image -->

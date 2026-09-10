@@ -1,13 +1,13 @@
 <script setup>
 import { courses } from '../data/index.js';
-import CourseCard from './CourseCard.vue';
+import CatalogCourseCard from './CatalogCourseCard.vue';
 
 const popularCourses = courses.slice(0, 4);
 </script>
 
 <template>
   <section id="courses" class="py-24 bg-light-dark">
-    <div class="container mx-auto px-4 md:px-6">
+    <div class="mx-auto max-w-7xl px-4 md:px-6">
       
       <!-- Header -->
       <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-12">
@@ -23,7 +23,7 @@ const popularCourses = courses.slice(0, 4);
 
       <!-- Course Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <CourseCard 
+        <CatalogCourseCard 
           v-for="course in popularCourses" 
           :key="course.id" 
           :course="course" 
