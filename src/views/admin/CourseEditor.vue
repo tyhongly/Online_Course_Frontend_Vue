@@ -29,9 +29,19 @@ const onTypeChange = () => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
   if (!isNew.value) {
-    const existing = courseStore.courses.find(c => c.id === courseId.value);
+    let existing = courseStore.courses.find(c => String(c.id) === String(courseId.value));
+
+    if (!existing) {
+      try {
+        await courseStore.fetchCourses();
+        existing = courseStore.courses.find(c => String(c.id) === String(courseId.value));
+      } catch (requestError) {
+        alert(requestError.response?.data?.message || requestError.response?.data?.massage || 'Unable to load course.');
+      }
+    }
+
     if (existing) {
       courseData.value = JSON.parse(JSON.stringify(existing)); // Deep copy to edit
     } else {

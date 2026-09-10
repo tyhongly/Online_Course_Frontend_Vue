@@ -24,11 +24,14 @@ const handleLogin = async () => {
   isSubmitting.value = true;
 
   try {
-    await authStore.login(email.value, password.value);
-    await router.push('/dashboard');
+    const user = await authStore.login(email.value, password.value);
+    if (user) {
+      await router.push(user.role === 'admin' ? '/admin' : '/student/dashboard');
+    }
   } catch (requestError) {
     error.value = requestError.response?.data?.message
       || requestError.response?.data?.error
+      || requestError.response?.data?.massage
       || requestError.message
       || 'Invalid login credentials';
   } finally {

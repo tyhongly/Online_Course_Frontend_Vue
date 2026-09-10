@@ -25,12 +25,13 @@ import CoursePlayer from '../views/learn/CoursePlayer.vue';
 import AdminLayout from '../views/admin/AdminLayout.vue';
 import Overview from '../views/admin/Overview.vue';
 import AdminProfile from '../views/admin/Profile.vue';
+import AdminWishlist from '../views/admin/Wishlist.vue';
 import CourseList from '../views/admin/CourseList.vue';
 import CourseEditor from '../views/admin/CourseEditor.vue';
+import CourseSections from '../views/admin/CourseSections.vue';
 import StudentList from '../views/admin/StudentList.vue';
 import CategoryList from '../views/admin/CategoryList.vue';
 import CategoryEditor from '../views/admin/CategoryEditor.vue';
-import LessonList from '../views/admin/LessonList.vue';
 import LessonEditor from '../views/admin/LessonEditor.vue';
 
 const routes = [
@@ -85,10 +86,11 @@ const routes = [
       { path: '', name: 'AdminOverview', component: Overview },
       { path: 'dashboard', redirect: '/admin' },
       { path: 'profile', name: 'AdminProfile', component: AdminProfile },
+      { path: 'wishlist', name: 'AdminWishlist', component: AdminWishlist },
       { path: 'courses', name: 'AdminCourseList', component: CourseList },
       { path: 'courses/new', name: 'AdminCourseNew', component: CourseEditor },
       { path: 'courses/:id/edit', name: 'AdminCourseEdit', component: CourseEditor },
-      { path: 'lessons', name: 'AdminLessonList', component: LessonList },
+      { path: 'courses/:id/sections', name: 'AdminCourseSections', component: CourseSections },
       { path: 'lessons/new', name: 'AdminLessonNew', component: LessonEditor },
       { path: 'lessons/:id/edit', name: 'AdminLessonEdit', component: LessonEditor },
       { path: 'categories', name: 'AdminCategoryList', component: CategoryList },

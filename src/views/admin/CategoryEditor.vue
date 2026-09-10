@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { ArrowLeft, Check, FolderTree } from 'lucide-vue-next';
 import { categoryStore } from '../../store/categoryStore.js';
 
 const route = useRoute();
@@ -14,10 +15,11 @@ const form = ref({
 });
 const error = ref('');
 const isSubmitting = ref(false);
+const slugPreview = computed(() => form.value.slug || form.value.name.toLowerCase().trim().replace(/\s+/g, '-'));
 
 onMounted(() => {
   if (!isNew.value) {
-    const existing = categoryStore.categories.find((category) => category.id === categoryId.value);
+    const existing = categoryStore.categories.find((category) => String(category.id) === String(categoryId.value));
     if (!existing) {
       router.push('/admin/categories');
       return;
@@ -49,31 +51,42 @@ const saveCategory = async () => {
 </script>
 
 <template>
-  <div class="flex min-h-screen items-center justify-center bg-slate-950/30 p-4 sm:p-8">
-    <div class="w-full max-w-md rounded-xl border border-slate-200 bg-white shadow-2xl">
-      <div class="flex items-center justify-between border-b border-slate-100 px-6 py-5">
-        <h1 class="text-lg font-semibold text-slate-950">{{ isNew ? 'Add Category' : 'Edit Category' }}</h1>
-        <button type="button" aria-label="Close" class="text-2xl leading-none text-slate-400 hover:text-slate-950" @click="router.push('/admin/categories')">&times;</button>
+  <div class="min-h-full bg-[#f5f3ef] p-5 sm:p-8">
+    <div class="mx-auto max-w-2xl">
+      <button type="button" class="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition hover:text-slate-900" @click="router.push('/admin/categories')">
+        <ArrowLeft class="h-4 w-4" />
+        Back to categories
+      </button>
+
+      <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_18px_45px_-34px_rgba(15,23,42,0.35)]">
+      <div class="border-b border-slate-100 bg-slate-50 px-6 py-6 sm:px-8">
+        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-100 text-indigo-700"><FolderTree class="h-5 w-5" /></div>
+        <p class="mt-5 text-sm font-semibold uppercase tracking-[0.18em] text-indigo-600">Course taxonomy</p>
+        <h1 class="mt-2 text-2xl font-semibold tracking-tight text-slate-950">{{ isNew ? 'Add category' : 'Edit category' }}</h1>
+        <p class="mt-2 text-sm text-slate-600">Use a clear name so students can find the right courses quickly.</p>
       </div>
 
-      <div class="space-y-5 p-6">
-        <div v-if="error" class="rounded-lg bg-red-50 p-3 text-sm text-red-600">{{ error }}</div>
+      <div class="space-y-5 p-6 sm:p-8">
+        <div v-if="error" class="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">{{ error }}</div>
         <div>
-          <label class="mb-2 block text-sm font-medium text-slate-700">Name</label>
-          <input v-model="form.name" type="text" required class="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-slate-950" placeholder="Web Design" />
+          <label class="mb-2 block text-sm font-semibold text-slate-700">Category name</label>
+          <input v-model="form.name" type="text" required class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100" placeholder="Web Design" />
         </div>
-        <div v-if="!isNew">
-          <label class="mb-2 block text-sm font-medium text-slate-700">Slug</label>
-          <input v-model="form.slug" type="text" class="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-slate-950" placeholder="development" />
+        <div>
+          <label class="mb-2 block text-sm font-semibold text-slate-700">Slug</label>
+          <input v-model="form.slug" type="text" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100" placeholder="web-design" />
+          <p class="mt-2 text-xs text-slate-500">Public URL key: <span class="font-medium text-slate-700">{{ slugPreview || 'category-slug' }}</span></p>
         </div>
       </div>
 
       <div class="flex items-center justify-end gap-3 border-t border-slate-100 px-6 py-5">
-        <button type="button" class="px-4 py-2 text-sm font-semibold text-slate-600 hover:text-slate-950" @click="router.push('/admin/categories')">Close</button>
-        <button :disabled="isSubmitting" class="rounded-lg bg-slate-950 px-5 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-50" @click="saveCategory">
-          {{ isSubmitting ? 'Creating...' : (isNew ? 'Create' : 'Save') }}
+        <button type="button" class="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100" @click="router.push('/admin/categories')">Cancel</button>
+        <button :disabled="isSubmitting || !form.name.trim()" class="inline-flex items-center gap-2 rounded-xl bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50" @click="saveCategory">
+          <Check class="h-4 w-4" />
+          {{ isSubmitting ? 'Saving...' : (isNew ? 'Create category' : 'Save changes') }}
         </button>
       </div>
+    </div>
     </div>
   </div>
 </template>

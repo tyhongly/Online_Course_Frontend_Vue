@@ -2,11 +2,14 @@
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { courseStore } from '../../store/courseStore.js';
+import { createSection } from '../../services/sectionApi.js';
 
 const route = useRoute();
 const router = useRouter();
 const isNew = computed(() => route.path.includes('/new'));
 const lessonId = computed(() => Number(route.params.id));
+const saveError = ref('');
+const isSaving = ref(false);
 
 const courses = computed(() => courseStore.courses);
 const selectedCourseId = ref(courses.value[0]?.id || null);
@@ -24,21 +27,21 @@ const form = ref({
 
 onMounted(() => {
   if (!courses.value.length) {
-    router.push('/admin/lessons');
+    router.push('/admin/courses');
     return;
   }
 
-  if (!selectedCourseId.value) {
-    selectedCourseId.value = courses.value[0].id;
-  }
+  const courseIdFromQuery = Number(route.query.courseId);
+  selectedCourseId.value = courses.value.some((course) => course.id === courseIdFromQuery)
+    ? courseIdFromQuery
+    : (selectedCourseId.value || courses.value[0].id);
 
   if (!isNew.value) {
-    const courseIdFromQuery = Number(route.query.courseId);
     const course = courseStore.courses.find((item) => item.id === courseIdFromQuery) || courseStore.courses.find((item) => (item.lessons || []).some((lesson) => lesson.id === lessonId.value));
     const lesson = course?.lessons?.find((item) => item.id === lessonId.value);
 
     if (!course || !lesson) {
-      router.push('/admin/lessons');
+      router.push('/admin/courses');
       return;
     }
 
@@ -53,20 +56,50 @@ onMounted(() => {
   }
 });
 
-const saveLesson = () => {
+const saveLesson = async () => {
+  saveError.value = '';
   const courseId = Number(selectedCourseId.value);
   // Document courses always use text type
   const resolvedType = isDocumentCourse.value ? 'text' : (form.value.type || 'text');
 
   if (isNew.value) {
-    courseStore.addLesson(courseId, {
-      title: form.value.title,
-      type: resolvedType,
-      order: Number(form.value.order) || 1,
-      content: form.value.content,
-      published: form.value.published,
-    });
-    router.push('/admin/lessons');
+    isSaving.value = true;
+
+    try {
+      const position = Number(form.value.order) || 1;
+      const response = await createSection({
+        courseId,
+        title: form.value.title,
+        position,
+        hasDocument: resolvedType !== 'video',
+        body: resolvedType === 'video' ? '' : form.value.content,
+        fileUrl: '',
+        fileType: '',
+        ocrStatus: '',
+        hasVideo: resolvedType === 'video',
+        videoUrl: resolvedType === 'video' ? form.value.content : '',
+        videoDurationSec: 0,
+        hasResources: false,
+        readingMode: 'scroll',
+        isPreview: form.value.published,
+      });
+      const payload = response?.data?.data || response?.data || response;
+      const createdSection = payload?.section || payload;
+
+      courseStore.addLesson(courseId, {
+        id: createdSection?.id || Date.now(),
+        title: createdSection?.title || form.value.title,
+        type: resolvedType,
+        order: createdSection?.position || position,
+        content: resolvedType === 'video' ? form.value.content : form.value.content,
+        published: createdSection?.isPreview ?? form.value.published,
+      });
+      router.push(`/admin/courses/${courseId}/sections`);
+    } catch (requestError) {
+      saveError.value = requestError.response?.data?.message || requestError.response?.data?.massage || 'Unable to create section.';
+    } finally {
+      isSaving.value = false;
+    }
     return;
   }
 
@@ -74,7 +107,7 @@ const saveLesson = () => {
   const lesson = course?.lessons?.find((item) => item.id === lessonId.value);
 
   if (!course || !lesson) {
-    router.push('/admin/lessons');
+    router.push('/admin/courses');
     return;
   }
 
@@ -85,16 +118,18 @@ const saveLesson = () => {
     content: form.value.content,
     published: form.value.published,
   });
-  router.push('/admin/lessons');
+  router.push(`/admin/courses/${courseId}/sections`);
 };
 </script>
 
 <template>
   <div class="p-4 sm:p-6 lg:p-8">
     <div class="mx-auto max-w-3xl rounded-[28px] border border-slate-200 bg-white p-6 shadow-[0_18px_45px_-34px_rgba(15,23,42,0.35)] sm:p-8">
+      <div v-if="saveError" class="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{{ saveError }}</div>
       <div class="mb-6">
-        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">Lessons</p>
-        <h1 class="mt-2 text-3xl font-semibold tracking-tight text-slate-950">{{ isNew ? 'Create Lesson' : 'Edit Lesson' }}</h1>
+        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-indigo-600">Course sections</p>
+        <h1 class="mt-2 text-3xl font-semibold tracking-tight text-slate-950">{{ isNew ? 'Add Section' : 'Edit Section' }}</h1>
+        <p class="mt-2 text-sm text-slate-600">Add structured content to the course learning path.</p>
       </div>
 
       <div class="grid gap-5">
@@ -110,7 +145,7 @@ const saveLesson = () => {
           </div>
         </div>
         <div>
-          <label class="mb-2 block text-sm font-medium text-slate-700">Lesson Title</label>
+          <label class="mb-2 block text-sm font-medium text-slate-700">Section Title</label>
           <input v-model="form.title" type="text" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-slate-950" placeholder="Introduction" />
         </div>
         <div class="grid gap-5 sm:grid-cols-2">
@@ -147,8 +182,8 @@ const saveLesson = () => {
       </div>
 
       <div class="mt-8 flex items-center justify-end gap-3">
-        <router-link to="/admin/lessons" class="rounded-2xl px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100">Cancel</router-link>
-        <button @click="saveLesson" class="rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">Save</button>
+        <router-link :to="selectedCourseId ? `/admin/courses/${selectedCourseId}/sections` : '/admin/courses'" class="rounded-2xl px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100">Cancel</router-link>
+        <button :disabled="isSaving" @click="saveLesson" class="rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60">{{ isSaving ? 'Saving...' : (isNew ? 'Add Section' : 'Save Changes') }}</button>
       </div>
     </div>
   </div>

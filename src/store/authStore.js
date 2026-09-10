@@ -55,16 +55,52 @@ const extractToken = (payload) => {
   return typeof token === 'string' && token.trim() ? token : null;
 };
 
+const decodeTokenPayload = (token) => {
+  try {
+    const encodedPayload = token.split('.')[1];
+    if (!encodedPayload) return null;
+
+    const normalizedPayload = encodedPayload.replace(/-/g, '+').replace(/_/g, '/');
+    const decodedPayload = atob(normalizedPayload.padEnd(Math.ceil(normalizedPayload.length / 4) * 4, '='));
+    return JSON.parse(decodedPayload);
+  } catch {
+    return null;
+  }
+};
+
+const normalizeRole = (role) => {
+  if (Array.isArray(role)) role = role[0];
+  if (typeof role !== 'string') return 'student';
+
+  return role.toLowerCase().replace(/^role_/, '');
+};
+
 const extractUser = (payload, fallbackEmail = '') => {
-  const user = payload?.user || payload?.account || payload?.authResponse || payload?.data || payload || {};
+  const user = payload?.user
+    || payload?.account
+    || payload?.authResponse
+    || payload?.data?.user
+    || payload?.data?.account
+    || payload?.data
+    || payload
+    || {};
+  const token = extractToken(payload);
+  const tokenPayload = token ? decodeTokenPayload(token) : null;
   const name = user?.name || user?.username || fallbackEmail || 'User';
+  const role = user?.role
+    || payload?.role
+    || payload?.data?.role
+    || tokenPayload?.role
+    || tokenPayload?.roles
+    || tokenPayload?.authorities
+    || 'student';
 
   return {
     id: user?.id ?? null,
     name,
     username: user?.username || name,
     email: user?.email || fallbackEmail,
-    role: String(user?.role || payload?.role || 'student').toLowerCase(),
+    role: normalizeRole(role),
     avatar: user?.avatar || ''
   };
 };

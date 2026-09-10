@@ -108,7 +108,6 @@ export const useAdminDashboard = () => {
 
   const quickActions = computed(() => [
     { label: 'Create Course', to: '/admin/courses/new' },
-    { label: 'Create Lesson', to: '/admin/lessons/new' },
     { label: 'Manage Categories', to: '/admin/categories' },
     { label: 'Manage Students', to: '/admin/students' },
   ]);

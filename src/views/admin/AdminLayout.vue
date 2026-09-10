@@ -22,8 +22,8 @@ const logout = () => {
 const navigation = [
   { name: 'Overview', path: '/admin' },
   { name: 'Profile', path: '/admin/profile' },
+  { name: 'Wishlist', path: '/admin/wishlist' },
   { name: 'Courses', path: '/admin/courses' },
-  { name: 'Lessons', path: '/admin/lessons' },
   { name: 'Categories', path: '/admin/categories' },
   { name: 'Students', path: '/admin/students' },
   { name: 'Analytics', path: '/admin/analytics' },
