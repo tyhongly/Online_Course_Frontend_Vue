@@ -37,18 +37,21 @@ const mostWanted = computed(() => wishlistRows.value[0]);
 </script>
 
 <template>
-  <div class="min-h-full bg-[#f5f3ef] p-5 sm:p-8">
+  <div class="min-h-full bg-grey-300 p-5 sm:p-8">
     <div class="mx-auto max-w-6xl space-y-6">
-      <section class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-950 text-white shadow-[0_24px_60px_-38px_rgba(15,23,42,0.75)]">
+      <section>
+        <h1 class="mt-5 text-3xl font-semibold tracking-tight sm:text-4xl">Wishlist analytics</h1>
+      </section>
+      <!-- <section class="overflow-hidden rounded-2xl border border-slate-200 shadow-[0_18px_45px_-34px_rgba(15,23,42,0.25)] bg-white text-white ">
         <div class="flex flex-col gap-6 px-6 py-8 sm:px-9 sm:py-10 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <div class="inline-flex items-center gap-2 rounded-full bg-rose-400/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-rose-200"><Heart class="h-3.5 w-3.5 fill-current" /> Student interest</div>
+            <div class="inline-flex items-center gap-2 rounded-full  px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-indigo-600">Student interest</div>
             <h1 class="mt-5 text-3xl font-semibold tracking-tight sm:text-4xl">Wishlist analytics</h1>
             <p class="mt-2 max-w-xl text-sm leading-6 text-slate-300">See which courses students are saving so you can plan promotions, content, and follow-up.</p>
           </div>
-          <div class="rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm"><span class="text-slate-400">Saved items</span><div class="mt-1 text-2xl font-semibold text-white">{{ totalSaved }}</div></div>
+          <div class="rounded-xl border border-white/10 bg-primary px-4 py-3 text-sm font-semibold "><span class="text-white">Saved items</span><div class="mt-1 text-2xl font-semibold white">{{ totalSaved }}</div></div>
         </div>
-      </section>
+      </section> -->
 
       <section class="grid gap-3 sm:grid-cols-3">
         <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_15px_35px_-28px_rgba(15,23,42,0.35)]"><div class="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">Total saves <Heart class="h-4 w-4 text-rose-500" /></div><div class="mt-3 text-3xl font-semibold tracking-tight text-slate-950">{{ totalSaved }}</div><p class="mt-2 text-sm text-slate-500">Across all student wishlists</p></article>

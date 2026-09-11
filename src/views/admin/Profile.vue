@@ -83,10 +83,10 @@ const saveProfile = async () => {
 </script>
 
 <template>
-  <div class="min-h-full bg-[#f5f3ef] p-5 sm:p-8">
+  <div class="min-h-full bg-grey-300 p-5 sm:p-8">
     <div class="mx-auto max-w-6xl space-y-6">
-      <section
-        class="overflow-hidden rounded-2xl border border-slate-200 bg-slate-950 text-white shadow-[0_24px_60px_-38px_rgba(15,23,42,0.7)]"
+      <!-- <section
+        class="overflow-hidden rounded-2xl border border-slate-200 bg-white text-black shadow-[0_24px_60px_-38px_rgba(15,23,42,0.7)]"
       >
         <div
           class="flex flex-col gap-6 px-6 py-8 sm:px-9 sm:py-10 lg:flex-row lg:items-end lg:justify-between"
@@ -109,7 +109,7 @@ const saveProfile = async () => {
             <CalendarDays class="h-4 w-4" /> Member since {{ joinedDate }}
           </div>
         </div>
-      </section>
+      </section> -->
 
       <div
         v-if="message"
@@ -126,17 +126,15 @@ const saveProfile = async () => {
             class="bg-gradient-to-br from-indigo-700 via-indigo-600 to-sky-500 px-6 pb-8 pt-9 text-white"
           >
             <div class="flex flex-col items-center text-center">
-              <div
-                class="flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border-4 border-white/30 bg-white/15 text-3xl font-semibold shadow-xl"
-              >
-                <img
-                  v-if="user.avatar"
-                  :src="user.avatar"
-                  alt="Admin avatar"
-                  class="h-full w-full object-cover"
-                /><span v-else>{{ initials }}</span>
-              </div>
-              <h2 class="mt-5 text-2xl font-semibold tracking-tight">
+              <ProfileImageUpload
+                inline
+                ref="profileImageUpload"
+                :image="user.avatar"
+                :name="user.name || 'Admin'"
+                @select="selectImage"
+                @remove="removeImage"
+              />
+              <h2 class="mt-5 text-2xl font-semibold tracking-tight text-white">
                 {{ user.name || "Admin User" }}
               </h2>
               <p class="mt-1 break-all text-sm text-indigo-100">
@@ -144,7 +142,7 @@ const saveProfile = async () => {
               </p>
               <div class="mt-5 flex flex-wrap justify-center gap-2">
                 <span
-                  class="rounded-full bg-white/15 px-3 py-1 text-xs font-semibold uppercase"
+                  class="rounded-full bg-white/30 px-3 py-1 text-xs font-semibold uppercase"
                   >{{ user.role || "admin" }}</span
                 ><span
                   :class="[
@@ -185,7 +183,7 @@ const saveProfile = async () => {
         </aside>
 
         <div class="space-y-6">
-          <div class="grid gap-3 sm:grid-cols-3">
+          <!-- <div class="grid gap-3 sm:grid-cols-3">
             <div
               class="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_12px_30px_-25px_rgba(15,23,42,0.3)]"
             >
@@ -223,7 +221,7 @@ const saveProfile = async () => {
                 #{{ user.id || "—" }}
               </div>
             </div>
-          </div>
+          </div> -->
 
           <div
             class="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_18px_45px_-34px_rgba(15,23,42,0.3)] sm:p-8"
@@ -269,28 +267,19 @@ const saveProfile = async () => {
                 </div>
               </div>
               <div class="space-y-2">
-                <label class="text-sm font-semibold text-slate-700"
-                  >Avatar URL</label
-                >
-                <div class="relative">
-                  <Link2
-                    class="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
-                  /><input
-                    v-model="user.avatar"
-                    type="url"
-                    class="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 outline-none transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100"
-                    placeholder="https://example.com/avatar.png"
-                  />
-                </div>
-              </div>
-              <div class="space-y-2">
-                <label class="text-sm font-semibold text-slate-700">Bio</label
-                ><textarea
+                <label for="">Bio</label>
+
+                <textarea
                   v-model="user.bio"
+                  maxlength="100"
                   rows="4"
                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 outline-none transition focus:border-indigo-400 focus:bg-white focus:ring-4 focus:ring-indigo-100"
                   placeholder="Tell your team a little about yourself."
                 ></textarea>
+
+                <div class="text-right text-sm text-slate-500">
+                  {{ (user.bio || "").length }} / 100 characters
+                </div>
               </div>
               <div
                 class="flex flex-col gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-between"
@@ -301,7 +290,7 @@ const saveProfile = async () => {
                 <button
                   :disabled="isSaving"
                   type="submit"
-                  class="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-60"
+                  class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:opacity-60"
                 >
                   <Save class="h-4 w-4" />{{
                     isSaving ? "Saving..." : "Save changes"
@@ -312,107 +301,6 @@ const saveProfile = async () => {
           </div>
         </div>
       </section>
-
-      <!-- <section
-        class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
-      >
-        <p
-          class="text-sm font-semibold uppercase tracking-[0.2em] text-primary"
-        >
-          Profile
-        </p>
-        <h1
-          class="mt-3 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl"
-        >
-          Admin profile
-        </h1>
-        <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-          Update your account details and profile picture for the admin portal.
-        </p>
-      </section>
-
-      <section
-        class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
-      >
-        <div
-          v-if="message"
-          class="mb-6 rounded-2xl bg-emerald-50 px-4 py-3 text-center font-medium text-emerald-700"
-        >
-          {{ message }}
-        </div>
-
-        <form @submit.prevent="saveProfile" class="space-y-6">
-          <ProfileImageUpload
-            :image="user.avatar || ''"
-            :name="user.name || 'Admin'"
-            @select="selectImage"
-            @remove="removeImage"
-          />
-
-          <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div>
-              <label class="mb-2 block text-sm font-medium text-slate-700"
-                >Full Name</label
-              >
-              <input
-                v-model="user.name"
-                type="text"
-                class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
-              />
-            </div>
-
-            <div>
-              <label class="mb-2 block text-sm font-medium text-slate-700"
-                >Email</label
-              >
-              <input
-                v-model="user.email"
-                type="email"
-                class="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
-              />
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div>
-              <label class="mb-2 block text-sm font-medium text-slate-700"
-                >Role</label
-              >
-              <input
-                :value="user.role"
-                type="text"
-                disabled
-                class="w-full cursor-not-allowed rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-500 outline-none"
-              />
-            </div>
-
-            <div>
-              <label class="mb-2 block text-sm font-medium text-slate-700"
-                >Last Activity</label
-              >
-              <input
-                :value="
-                  user.lastActivityAt
-                    ? new Date(user.lastActivityAt).toLocaleString()
-                    : 'Unavailable'
-                "
-                type="text"
-                disabled
-                class="w-full cursor-not-allowed rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-500 outline-none"
-              />
-            </div>
-          </div>
-
-          <div class="flex justify-end pt-4">
-            <button
-              type="submit"
-              class="rounded-2xl bg-primary px-6 py-3 text-sm font-semibold text-white transition hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary/20"
-            >
-              Save Changes
-            </button>
-          </div>
-        </form>
-      </section> -->
     </div>
   </div>
 </template>

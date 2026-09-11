@@ -1,40 +1,42 @@
 <script setup>
-import { computed, ref } from 'vue';
-import { Mail, Save, ShieldCheck, UserCircle2 } from 'lucide-vue-next';
-import { authStore } from '../../store/authStore.js';
-import ProfileImageUpload from '../../components/ProfileImageUpload.vue';
+import { computed, ref } from "vue";
+import { Mail, Save, ShieldCheck, UserCircle2 } from "lucide-vue-next";
+import { authStore } from "../../store/authStore.js";
+import ProfileImageUpload from "../../components/ProfileImageUpload.vue";
 
 const user = ref({
-  name: authStore.user?.name || '',
-  email: authStore.user?.email || '',
-  avatar: authStore.user?.avatar || '',
+  name: authStore.user?.name || "",
+  email: authStore.user?.email || "",
+  avatar: authStore.user?.avatar || "",
 });
 
-const message = ref('');
+const message = ref("");
 const selectedImage = ref(null);
 const imageRemoved = ref(false);
 const profileImageUpload = ref(null);
 let messageTimer = null;
 
 const initials = computed(() => {
-  const name = user.value.name || 'Student';
+  const name = user.value.name || "Student";
   return name
-    .split(' ')
+    .split(" ")
     .filter(Boolean)
     .slice(0, 1)
     .map((part) => part[0])
-    .join('')
+    .join("")
     .toUpperCase();
 });
 
-const displayName = computed(() => user.value.name || 'Student');
+const displayName = computed(() => user.value.name || "Student");
 
-const readImage = (file) => new Promise((resolve, reject) => {
-  const reader = new FileReader();
-  reader.onload = () => resolve(reader.result);
-  reader.onerror = () => reject(new Error('Unable to read the selected image.'));
-  reader.readAsDataURL(file);
-});
+const readImage = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () =>
+      reject(new Error("Unable to read the selected image."));
+    reader.readAsDataURL(file);
+  });
 
 const selectImage = (file) => {
   selectedImage.value = file;
@@ -48,7 +50,7 @@ const removeImage = () => {
 
 const saveProfile = async () => {
   let avatar = user.value.avatar;
-  if (imageRemoved.value) avatar = '';
+  if (imageRemoved.value) avatar = "";
   if (selectedImage.value) avatar = await readImage(selectedImage.value);
 
   authStore.updateProfile({
@@ -61,27 +63,38 @@ const saveProfile = async () => {
   selectedImage.value = null;
   imageRemoved.value = false;
 
-  message.value = 'Profile updated successfully.';
+  message.value = "Profile updated successfully.";
   window.clearTimeout(messageTimer);
   messageTimer = window.setTimeout(() => {
-    message.value = '';
+    message.value = "";
   }, 2500);
 };
 </script>
 
 <template>
   <div class="mx-auto max-w-6xl space-y-6">
-    <section class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-[0_18px_50px_-32px_rgba(15,23,42,0.18)] sm:p-8">
-      <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+    <section
+      class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-[0_18px_50px_-32px_rgba(15,23,42,0.18)] sm:p-8"
+    >
+      <div
+        class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between"
+      >
         <div class="space-y-3">
-          <div class="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-indigo-700">
+          <div
+            class="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-indigo-700"
+          >
             <ShieldCheck class="h-3.5 w-3.5" />
             Student profile
           </div>
           <div>
-            <h1 class="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">My Profile</h1>
+            <h1
+              class="text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl"
+            >
+              My Profile
+            </h1>
             <p class="mt-2 max-w-2xl text-sm leading-7 text-slate-600">
-              Keep your account details up to date so your learning space feels personal and easy to recognize.
+              Keep your account details up to date so your learning space feels
+              personal and easy to recognize.
             </p>
           </div>
         </div>
@@ -93,29 +106,34 @@ const saveProfile = async () => {
     </section>
 
     <section class="grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)]">
-      <aside class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-[0_18px_50px_-32px_rgba(15,23,42,0.14)]">
+      <aside
+        class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-[0_18px_50px_-32px_rgba(15,23,42,0.14)]"
+      >
         <div class="flex flex-col items-center text-center">
-          <button
-            v-if="user.avatar"
-            type="button"
-            class="flex h-28 w-28 items-center justify-center overflow-hidden rounded-full bg-primary text-3xl font-semibold text-white shadow-lg shadow-indigo-200 transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-            aria-label="View profile picture"
-            @click="profileImageUpload?.openPreview()"
-          >
-            <img :src="user.avatar" alt="Profile picture" class="h-full w-full object-cover" />
-          </button>
-          <div v-else class="flex h-28 w-28 items-center justify-center overflow-hidden rounded-full bg-primary text-3xl font-semibold text-white shadow-lg shadow-indigo-200">
-            <span>{{ initials }}</span>
-          </div>
+          <ProfileImageUpload
+            ref="profileImageUpload"
+            :image="user.avatar"
+            :name="user.name"
+            @select="selectImage"
+            @remove="removeImage"
+          />
 
           <h2 class="mt-5 text-2xl font-semibold tracking-tight text-slate-950">
             {{ displayName }}
           </h2>
-          <p class="mt-1 text-sm text-slate-500">{{ user.email || 'No email set yet' }}</p>
+          <p class="mt-1 text-sm text-slate-500">
+            {{ user.email || "No email set yet" }}
+          </p>
 
           <div class="mt-5 flex flex-wrap justify-center gap-2">
-            <span class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">Student account</span>
-            <span class="rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">Editable profile</span>
+            <span
+              class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700"
+              >Student account</span
+            >
+            <span
+              class="rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700"
+              >Editable profile</span
+            >
           </div>
         </div>
 
@@ -131,7 +149,9 @@ const saveProfile = async () => {
         </div>
       </aside>
 
-      <div class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-[0_18px_50px_-32px_rgba(15,23,42,0.14)] sm:p-8">
+      <div
+        class="rounded-[32px] border border-slate-200 bg-white p-6 shadow-[0_18px_50px_-32px_rgba(15,23,42,0.14)] sm:p-8"
+      >
         <div
           v-if="message"
           class="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700"
@@ -140,9 +160,13 @@ const saveProfile = async () => {
         </div>
 
         <form @submit.prevent="saveProfile" class="space-y-6">
-          <div class="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+          <div
+            class="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]"
+          >
             <div class="space-y-2">
-              <label class="text-sm font-medium text-slate-700">Full name</label>
+              <label class="text-sm font-medium text-slate-700"
+                >Full name</label
+              >
               <input
                 v-model="user.name"
                 type="text"
@@ -163,6 +187,7 @@ const saveProfile = async () => {
           </div>
 
           <ProfileImageUpload
+            inline
             ref="profileImageUpload"
             :image="user.avatar"
             :name="user.name"
@@ -170,7 +195,9 @@ const saveProfile = async () => {
             @remove="removeImage"
           />
 
-          <div class="flex flex-col gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-end">
+          <div
+            class="flex flex-col gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-end"
+          >
             <p class="text-sm text-slate-500">
               Save when you’re ready to update your learning profile.
             </p>

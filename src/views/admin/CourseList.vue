@@ -84,7 +84,7 @@ const editCourse = (id) => {
 </script>
 
 <template>
-  <div class="min-h-full bg-[#f5f3ef] p-5 sm:p-8">
+  <div class="min-h-full bg-grey-300 p-5 sm:p-8">
     <div v-if="error" class="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">{{ error }}</div>
 
     <div class="mx-auto max-w-6xl">
@@ -96,7 +96,7 @@ const editCourse = (id) => {
 
         <router-link
           to="/admin/courses/new"
-          class="inline-flex items-center gap-2 rounded-lg bg-[#2e5ebd] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_20px_-12px_rgba(46,94,189,0.8)] transition hover:bg-[#254ea6]"
+          class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-[0_10px_20px_-12px_rgba(46,94,189,0.8)] transition hover:bg-[#254ea6]"
         >
           <Plus class="h-4 w-4" />
           New course
@@ -117,13 +117,13 @@ const editCourse = (id) => {
         <div class="overflow-x-auto">
           <table class="min-w-full border-collapse text-left">
             <thead>
-              <tr class="border-b border-slate-200 bg-slate-50 text-[11px] font-semibold uppercase tracking-[0.13em] text-slate-500">
-                <th class="px-4 py-3.5">Title</th>
-                <th class="px-4 py-3.5">Category</th>
-                <th class="px-4 py-3.5">Sections</th>
-                <th class="px-4 py-3.5">Students</th>
-                <th class="px-4 py-3.5">Status</th>
-                <th class="px-4 py-3.5">Updated</th>
+              <tr class="bg-gray-50 text-gray-500 text-sm border-b border-gray-100">
+                <th class="px-4 py-3.5 font-medium">Title</th>
+                <th class="px-4 py-3.5 font-medium">Category</th>
+                <th class="px-4 py-3.5 font-medium">Sections</th>
+                <th class="px-4 py-3.5 font-medium">Students</th>
+                <th class="px-4 py-3.5 font-medium">Status</th>
+                <th class="px-4 py-3.5 font-medium">Updated</th>
                 <th class="px-4 py-3.5 text-right">&nbsp;</th>
               </tr>
             </thead>

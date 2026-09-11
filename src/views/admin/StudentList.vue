@@ -93,7 +93,7 @@ const toggleUserStatus = () => {
 </script>
 
 <template>
-  <div class="min-h-full bg-[#f5f3ef] p-5 sm:p-8">
+  <div class="min-h-full bg-grey-300 p-5 sm:p-8">
     <div class="mx-auto max-w-6xl">
       <div class="mb-5">
         <h1 class="text-[2.1rem] font-semibold tracking-[-0.03em] text-slate-800">Users</h1>
@@ -104,14 +104,14 @@ const toggleUserStatus = () => {
         <div class="overflow-x-auto">
           <table class="min-w-full border-collapse text-left">
             <thead>
-              <tr class="border-b border-slate-200 bg-slate-50 text-[11px] font-semibold uppercase tracking-[0.13em] text-slate-500">
-                <th class="px-4 py-3.5">Name</th>
-                <th class="px-4 py-3.5">Email</th>
-                <th class="px-4 py-3.5">Role</th>
-                <th class="px-4 py-3.5">Progress</th>
-                <th class="px-4 py-3.5">Status</th>
-                <th class="px-4 py-3.5">Joined</th>
-                <th class="px-4 py-3.5 text-right">&nbsp;</th>
+              <tr class="bg-gray-50 text-gray-500 text-sm border-b border-gray-100">
+                <th class="px-4 py-3.5 font-medium">Name</th>
+                <th class="px-4 py-3.5 font-medium">Email</th>
+                <th class="px-4 py-3.5 font-medium">Role</th>
+                <th class="px-4 py-3.5 font-medium">Progress</th>
+                <th class="px-4 py-3.5 font-medium">Status</th>
+                <th class="px-4 py-3.5 font-medium">Joined</th>
+                <th class="px-4 py-3.5  text-right">&nbsp;</th>
               </tr>
             </thead>
 

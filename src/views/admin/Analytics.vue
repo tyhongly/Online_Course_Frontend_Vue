@@ -47,7 +47,7 @@ const courseStats = computed(() => {
   <div class="p-8">
     <header class="mb-8">
       <h1 class="text-3xl font-bold text-gray-800">Course Analytics</h1>
-      <p class="text-gray-500 mt-2">Track performance metrics across all your courses.</p>
+      <!-- <p class="text-gray-500 mt-2">Track performance metrics across all your courses.</p> -->
     </header>
     
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
