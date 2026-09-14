@@ -19,6 +19,7 @@
 //   }
 // ];
 
+<<<<<<< HEAD
 // export const courses = [
 //   {
 //     id: 1,
@@ -217,6 +218,206 @@
 //     students: '22K'
 //   },
 // ];
+=======
+export const courses = [
+  {
+    id: 1,
+    title: 'Complete Web Design: from Figma to Webflow to HTML/CSS',
+    category: 'Design',
+    type: 'video',
+    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&q=80',
+    originalPrice: 99,
+    price: 49,
+    rating: 4.8,
+    reviews: 1240,
+    lessons: 24,
+    duration: '12h 30m',
+    students: '8.5K'
+  },
+  {
+    id: 2,
+    title: 'SQL for Data Analytics and Reporting',
+    category: 'Data Science',
+    type: 'document',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80',
+    originalPrice: 0,
+    price: 0,
+    rating: 4.7,
+    reviews: 890,
+    lessons: 32,
+    duration: '16h 15m',
+    students: '5.2K'
+  },
+  {
+    id: 3,
+    title: 'The Complete Full-Stack JavaScript Bootcamp 2024',
+    category: 'Development',
+    type: 'video',
+    image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=500&q=80',
+    originalPrice: 199,
+    price: 89,
+    rating: 4.9,
+    reviews: 3400,
+    lessons: 68,
+    duration: '45h 00m',
+    students: '22K'
+  },
+  {
+    id: 4,
+    title: 'Web Performance Optimization with JavaScript',
+    category: 'Development',
+    type: 'document',
+    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80',
+    originalPrice: 0,
+    price: 0,
+    rating: 4.6,
+    reviews: 560,
+    lessons: 18,
+    duration: '8h 45m',
+    students: '3.1K'
+  },
+  {
+    id: 5,
+    title: 'Advanced UI/UX Animation Techniques',
+    category: 'Design',
+    type: 'video',
+    image: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=500&q=80',
+    originalPrice: 110,
+    price: 65,
+    rating: 4.8,
+    reviews: 1120,
+    lessons: 28,
+    duration: '14h 20m',
+    students: '7.8K'
+  },
+  {
+    id: 6,
+    title: 'Python for Data Science and Machine Learning Masterclass',
+    category: 'Data Science',
+    type: 'video',
+    image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&q=80',
+    originalPrice: 150,
+    price: 99,
+    rating: 4.9,
+    reviews: 4500,
+    lessons: 85,
+    duration: '52h 30m',
+    students: '35K'
+  },
+  {
+    id: 7,
+    title: 'UI/UX Design Systems and Accessibility',
+    category: 'Design',
+    type: 'document',
+    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500&q=80',
+    originalPrice: 0,
+    price: 0,
+    rating: 4.7,
+    reviews: 2100,
+    lessons: 30,
+    duration: '18h 00m',
+    students: '12K'
+  },
+  {
+    id: 8,
+    title: 'Modern Web Development & HTML/CSS/JS Reference Guide',
+    category: 'Development',
+    type: 'document',
+    image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=500&q=80',
+    originalPrice: 0,
+    price: 0,
+    rating: 4.9,
+    reviews: 1850,
+    lessons: 40,
+    duration: '20h 00m',
+    students: '14K'
+  },
+  {
+    id: 9,
+    title: 'Python Data Science & Machine Learning Documentation',
+    category: 'Data Science',
+    type: 'document',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80',
+    originalPrice: 0,
+    price: 0,
+    rating: 4.8,
+    reviews: 2400,
+    lessons: 36,
+    duration: '22h 30m',
+    students: '18K'
+  },
+  {
+    id: 10,
+    title: 'UI/UX Design Systems & Figma Components Handbook',
+    category: 'Design',
+    type: 'document',
+    image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=500&q=80',
+    originalPrice: 0,
+    price: 0,
+    rating: 4.9,
+    reviews: 3100,
+    lessons: 25,
+    duration: '15h 00m',
+    students: '16K'
+  },
+  {
+    id: 11,
+    title: 'SQL Database Architecture & Query Optimization Guide',
+    category: 'Development',
+    type: 'document',
+    image: 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=500&q=80',
+    originalPrice: 0,
+    price: 0,
+    rating: 4.7,
+    reviews: 970,
+    lessons: 28,
+    duration: '14h 00m',
+    students: '9.2K'
+  },
+  {
+    id: 12,
+    title: 'Cloud DevOps & Docker Deployment Complete Handbook',
+    category: 'Development',
+    type: 'document',
+    image: 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=500&q=80',
+    originalPrice: 0,
+    price: 0,
+    rating: 4.8,
+    reviews: 1450,
+    lessons: 34,
+    duration: '19h 15m',
+    students: '11K'
+  },
+  {
+    id: 17,
+    title: 'Software Product Engineering Fundamentals',
+    category: 'Development',
+    type: 'document',
+    image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80',
+    originalPrice: 0,
+    price: 0,
+    rating: 4.8,
+    reviews: 3100,
+    lessons: 45,
+    duration: '25h 00m',
+    students: '20K'
+  },
+  {
+    id: 27,
+    title: 'React Native for Mobile Development',
+    category: 'Development',
+    type: 'video',
+    image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=500&q=80',
+    originalPrice: 160,
+    price: 80,
+    rating: 4.8,
+    reviews: 3500,
+    lessons: 50,
+    duration: '28h 00m',
+    students: '22K'
+  },
+];
+>>>>>>> 0d48a8d (Fix unresolved course data merge conflict)
 
 // export const popularCategories = [
 //   {
