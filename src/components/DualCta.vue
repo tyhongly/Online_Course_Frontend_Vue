@@ -10,7 +10,7 @@ import { ArrowRight } from 'lucide-vue-next';
         <!-- Free Document Library -->
         <div class="relative rounded-2xl overflow-hidden group h-96 shadow-lg hover:shadow-2xl transition-all duration-300">
           <div class="absolute inset-0 bg-dark/50 group-hover:bg-dark/60 transition-colors z-10"></div>
-          <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&q=80" alt="Free Document Courses" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          <img src="https://i.pinimg.com/1200x/c5/29/40/c52940bef6c1fa13dcecbaa41d73be50.jpg" alt="Free Document Courses" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
           
           <div class="absolute inset-0 z-20 flex flex-col justify-center p-8 md:p-12">
             <h3 class="text-3xl md:text-4xl font-bold font-heading text-white mb-4">Free Document Library</h3>
@@ -24,7 +24,7 @@ import { ArrowRight } from 'lucide-vue-next';
         <!-- Become a Student -->
         <div class="relative rounded-2xl overflow-hidden group h-96 shadow-lg hover:shadow-2xl transition-all duration-300">
           <div class="absolute inset-0 bg-primary/60 group-hover:bg-primary/70 transition-colors mix-blend-multiply z-10"></div>
-          <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&q=80" alt="Become a Student" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          <img src="https://i.pinimg.com/1200x/bd/dd/48/bddd48e1b77bf16b9bdccd3749c8d2a3.jpg" alt="Become a Student" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
           
           <div class="absolute inset-0 z-20 flex flex-col justify-center p-8 md:p-12">
             <h3 class="text-3xl md:text-4xl font-bold font-heading text-white mb-4">Become a Student</h3>

@@ -10,6 +10,7 @@ import {
 } from "lucide-vue-next";
 import { authStore } from "../../store/authStore.js";
 import DashboardHeader from "../../components/dashboard/DashboardHeader.vue";
+import BrandLogo from "../../components/BrandLogo.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -49,16 +50,18 @@ const userInitials = computed(() => {
       <aside
         class="border-b border-slate-200/80 bg-white md:fixed md:inset-y-0 md:left-0 md:flex md:w-[286px] md:flex-col md:border-b-0 md:border-r"
       >
-        <div class="flex items-center gap-2">
-          <BrandLogo size="lg" cl /><span
-            class="font-heading text-2xl font-bold text-dark"
-            >TosRean</span
+        <div class="p-6">
+          <div class="flex items-center gap-2">
+            <BrandLogo size="lg" cl /><span
+              class="font-heading text-2xl font-bold text-dark"
+              >TosRean</span
+            >
+          </div>
+          <div
+            class="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-primary"
           >
-        </div>
-        <div
-          class="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-primary"
-        >
-          STUDENT SPACE
+            STUDENT SPACE
+          </div>
         </div>
 
         <nav class="flex flex-1 flex-col gap-1 px-4 pb-4">
