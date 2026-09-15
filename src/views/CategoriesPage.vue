@@ -1,18 +1,41 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { ChevronRight, Search } from 'lucide-vue-next';
-import { categories } from '../data/categories.js';
+import { categoryStore } from '../store/categoryStore.js';
 
 const searchQuery = ref('');
 
+onMounted(async () => {
+  try {
+    await categoryStore.fetchCategories();
+  } catch (error) {
+    console.error('Unable to load categories from API:', error);
+  }
+});
+
+const categories = computed(() => categoryStore.categories.map((category) => {
+  const categoryName = category.name ?? category.categoryName ?? '';
+  const categorySlug = category.slug ?? categoryName.toLowerCase().trim().replace(/\s+/g, '-');
+
+  return {
+    ...category,
+    id: category.id ?? category.categoryId,
+    name: categoryName,
+    slug: categorySlug,
+    desc: category.desc ?? category.description ?? categoryName,
+    icon: category.icon ?? '📚',
+  };
+}));
+
 const filteredCategories = computed(() => {
   const query = searchQuery.value.trim().toLowerCase();
+  const list = categories.value;
 
-  if (!query) return categories;
+  if (!query) return list;
 
-  return categories.filter((category) =>
-    category.name.toLowerCase().includes(query) ||
-    category.desc.toLowerCase().includes(query)
+  return list.filter((category) =>
+    (category.name ?? '').toLowerCase().includes(query) ||
+    (category.desc ?? '').toLowerCase().includes(query)
   );
 });
 </script>

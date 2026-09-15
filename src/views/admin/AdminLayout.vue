@@ -19,7 +19,7 @@ const goHome = () => {
 
 const logout = () => {
   authStore.logout();
-  router.push("/login");
+  router.push("/");
 };
 
 const navigation = [
@@ -34,7 +34,7 @@ const navigation = [
 
 onMounted(async () => {
   if (!authStore.user) {
-    router.replace("/login");
+    router.replace("/");
     return;
   }
 

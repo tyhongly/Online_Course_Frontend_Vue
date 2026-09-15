@@ -2,8 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { authStore } from '../store/authStore.js';
 
 import Home from '../views/Home.vue';
-import Login from '../views/auth/Login.vue';
-import Signup from '../views/auth/Signup.vue';
 import Catalog from '../views/courses/Catalog.vue';
 import Favorites from '../views/courses/Favorites.vue';
 import CourseDetail from '../views/courses/CourseDetail.vue';
@@ -21,6 +19,7 @@ import Dashboard from '../views/student/Dashboard.vue';
 import MyCourses from '../views/student/MyCourses.vue';
 import Profile from '../views/student/Profile.vue';
 import Wishlist from '../views/student/Wishlist.vue';
+import AccountSettings from '../views/student/AccountSettings.vue';
 import CoursePlayer from '../views/learn/CoursePlayer.vue';
 
 // Admin Views
@@ -49,8 +48,6 @@ const routes = [
     redirect: '/dashboard',
     meta: { requiresAuth: true },
   },
-  { path: '/login', name: 'Login', component: Login },
-  { path: '/signup', name: 'Signup', component: Signup },
   { path: '/courses', name: 'Catalog', component: Catalog },
   { path: '/favorites', name: 'Favorites', component: Favorites, meta: { requiresAuth: true } },
   { path: '/categories', name: 'Categories', component: CategoriesPage },
@@ -73,7 +70,8 @@ const routes = [
       { path: 'dashboard', name: 'StudentDashboard', component: Dashboard },
       { path: 'my-courses', name: 'StudentMyCourses', component: MyCourses },
       { path: 'profile', name: 'Profile', component: Profile },
-      { path: 'wishlist', name: 'StudentWishlist', component: Wishlist }
+      { path: 'wishlist', name: 'StudentWishlist', component: Wishlist },
+      { path: 'settings', name: 'StudentAccountSettings', component: AccountSettings }
     ]
   },
   { 
@@ -113,16 +111,11 @@ const router = createRouter({
 
 // Simple Navigation Guard
 router.beforeEach((to, from, next) => {
-  if ((to.path === '/login' || to.path === '/signup') && authStore.user) {
-    next('/dashboard');
-    return;
-  }
-
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
   const requiredRole = to.matched.find(record => record.meta.role)?.meta.role || null;
   
   if (requiresAuth && !authStore.user) {
-    next('/login');
+    next('/');
   } else if (requiresAuth && requiredRole && authStore.user.role !== requiredRole) {
     next('/unauthorized'); // Redirect if wrong role
   } else {

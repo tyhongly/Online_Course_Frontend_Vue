@@ -41,6 +41,15 @@ export const wishlistStore = reactive({
     const userKey = getUserKey();
     this.wishlists[userKey] = this.courseIds.filter((id) => String(id) !== String(courseId));
     localStorage.setItem('student_wishlists', JSON.stringify(this.wishlists));
+  },
+
+  removeCourseFromAllWishlists(courseId) {
+    const courseKey = String(courseId);
+    Object.keys(this.wishlists).forEach((userKey) => {
+      const ids = Array.isArray(this.wishlists[userKey]) ? this.wishlists[userKey] : [];
+      this.wishlists[userKey] = ids.filter((id) => String(id) !== courseKey);
+    });
+    localStorage.setItem('student_wishlists', JSON.stringify(this.wishlists));
   }
 });
 

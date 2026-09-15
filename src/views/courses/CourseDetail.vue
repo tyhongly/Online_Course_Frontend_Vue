@@ -1,18 +1,12 @@
 <script setup>
-import { ref, computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { courseStore } from "../../store/courseStore.js";
-import { authStore } from "../../store/authStore.js";
-import { enrollmentStore } from "../../store/enrollmentStore.js";
-import { wishlistStore } from "../../store/wishlistStore.js";
-import { isTechnologyCourse } from "../../utils/technologyContent.js";
-import {
-  Heart,
-  FileText,
-  Video,
-  CheckCircle2,
-  ShieldCheck,
-} from "lucide-vue-next";
+import { ref, computed, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { courseStore } from '../../store/courseStore.js';
+import { authStore } from '../../store/authStore.js';
+import { enrollmentStore } from '../../store/enrollmentStore.js';
+import { wishlistStore } from '../../store/wishlistStore.js';
+import { isTechnologyCourse } from '../../utils/technologyContent.js';
+import { Heart, FileText, Video, CheckCircle2, ShieldCheck } from 'lucide-vue-next';
 
 const route = useRoute();
 const router = useRouter();
@@ -22,9 +16,16 @@ const course = computed(() =>
   courseStore.courses.find((c) => c.id === courseId && isTechnologyCourse(c)),
 );
 
-const isDocument = computed(
-  () => course.value?.type === "document" || course.value?.price === 0,
-);
+onMounted(async () => {
+  try {
+    await courseStore.fetchCourseById(courseId);
+    await courseStore.fetchCourseSections(courseId);
+  } catch (error) {
+    console.error('Unable to load course from API:', error);
+  }
+});
+
+const isDocument = computed(() => course.value?.type === 'document' || course.value?.price === 0);
 
 const isEnrolled = computed(() => {
   if (!authStore.user) return false;
@@ -33,7 +34,7 @@ const isEnrolled = computed(() => {
 
 const toggleWishlist = () => {
   if (!authStore.user) {
-    router.push("/login");
+    router.push('/');
     return;
   }
   wishlistStore.toggle(courseId);
@@ -41,7 +42,7 @@ const toggleWishlist = () => {
 
 const handleFreeEnrollment = () => {
   if (!authStore.user) {
-    router.push("/login");
+    router.push('/');
     return;
   }
 

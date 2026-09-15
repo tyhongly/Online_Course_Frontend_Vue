@@ -7,10 +7,10 @@
         You do not have permission to access this area. Please sign in with an admin account to continue.
       </p>
       <router-link
-        to="/login"
+        to="/"
         class="mt-8 inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-100"
       >
-        Go to Login
+        Go Home
       </router-link>
     </div>
   </div>

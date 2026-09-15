@@ -12,20 +12,36 @@ const categoryId = computed(() => Number(route.params.id));
 const form = ref({
   name: '',
   slug: '',
+  image: null,
 });
 const error = ref('');
 const isSubmitting = ref(false);
+const imagePreview = ref('');
 const slugPreview = computed(() => form.value.slug || form.value.name.toLowerCase().trim().replace(/\s+/g, '-'));
 
-onMounted(() => {
-  if (!isNew.value) {
-    const existing = categoryStore.categories.find((category) => String(category.id) === String(categoryId.value));
-    if (!existing) {
-      router.push('/admin/categories');
-      return;
-    }
+const handleImageChange = (event) => {
+  const [file] = event.target.files;
+  if (!file) return;
 
-    form.value = { name: existing.name, slug: existing.slug };
+  form.value.image = file;
+  imagePreview.value = URL.createObjectURL(file);
+};
+
+onMounted(async () => {
+  if (!isNew.value) {
+    try {
+      const existing = await categoryStore.fetchCategoryById(categoryId.value);
+      if (!existing) throw new Error('Category not found');
+
+      form.value = {
+        name: existing.categoryName || existing.name || '',
+        slug: existing.slug || '',
+        image: null,
+      };
+      imagePreview.value = existing.categoryImage || existing.image || '';
+    } catch {
+      router.push('/admin/categories');
+    }
   }
 });
 
@@ -76,6 +92,17 @@ const saveCategory = async () => {
           <label class="mb-2 block text-sm font-semibold text-slate-700">Slug</label>
           <input v-model="form.slug" type="text" class="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100" placeholder="web-design" />
           <p class="mt-2 text-xs text-slate-500">Public URL key: <span class="font-medium text-slate-700">{{ slugPreview || 'category-slug' }}</span></p>
+        </div>
+        <div>
+          <label class="mb-2 block text-sm font-semibold text-slate-700">Category image</label>
+          <input
+            type="file"
+            accept="image/*"
+            class="block w-full rounded-xl border border-slate-300 px-4 py-3 text-sm text-slate-600 file:mr-4 file:rounded-lg file:border-0 file:bg-indigo-50 file:px-3 file:py-2 file:font-semibold file:text-indigo-700"
+            @change="handleImageChange"
+          />
+          <img v-if="imagePreview" :src="imagePreview" alt="Category preview" class="mt-4 h-32 w-full rounded-xl object-cover" />
+          <p class="mt-2 text-xs text-slate-500">Optional. Upload the image shown for this category.</p>
         </div>
       </div>
 

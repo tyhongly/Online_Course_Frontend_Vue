@@ -1,5 +1,12 @@
 import { reactive } from 'vue';
-import { createAccount, loginAccount, verifyOtp, requestPasswordReset, resetPassword } from '../services/authApi.js';
+import {
+  createAccount,
+  loginAccount,
+  verifyOtp,
+  requestPasswordResetRequest,
+  verifyPasswordResetOtpRequest,
+  resetPasswordRequest
+} from '../services/authApi.js';
 
 const safeRead = (key) => {
   try {
@@ -43,16 +50,23 @@ const persistAuth = (user, token) => {
 
 const extractToken = (payload) => {
   const token = payload?.token
+    || payload?.jwt
     || payload?.accessToken
     || payload?.access_token
+    || payload?.authentication?.token
+    || payload?.authentication?.accessToken
     || payload?.authResponse?.token
+    || payload?.authResponse?.jwt
     || payload?.authResponse?.accessToken
     || payload?.authResponse?.access_token
     || payload?.data?.token
+    || payload?.data?.jwt
     || payload?.data?.accessToken
-    || payload?.data?.access_token;
+    || payload?.data?.access_token
+    || payload?.data?.authentication?.token;
 
-  return typeof token === 'string' && token.trim() ? token : null;
+  if (typeof token !== 'string' || !token.trim()) return null;
+  return token.replace(/^Bearer\s+/i, '').trim();
 };
 
 const decodeTokenPayload = (token) => {
@@ -178,7 +192,7 @@ export const authStore = reactive({
 
   // Initiate forgot password (send OTP)
   async requestPasswordReset(email) {
-    const response = await requestPasswordReset(email);
+    const response = await requestPasswordResetRequest(email);
     this._resetEmail = email;
     this.resetPhase = 'otp';
     return response;
@@ -187,23 +201,31 @@ export const authStore = reactive({
   // Verify OTP for password reset
   async verifyResetOtp(otp) {
     if (!this._resetEmail) throw new Error('No password reset request pending');
-    const response = await verifyOtp({ email: this._resetEmail, otp, purpose: 'reset' });
-    // Expect backend to return a temporary token for resetting password
+    const response = await verifyPasswordResetOtpRequest({ email: this._resetEmail, otp });
     const payload = responsePayload(response);
-    this._resetToken = payload?.resetToken || null;
+    this._resetToken = payload?.resetToken || payload?.token || payload?.accessToken || payload?.access_token || null;
     this.resetPhase = 'newPassword';
     return payload;
   },
 
   // Set new password after OTP verification
   async resetPassword(newPassword) {
-    if (!this._resetToken) throw new Error('Reset token missing');
-    await resetPassword({ token: this._resetToken, password: newPassword });
-    // Reset flow finished, revert to login mode
+    if (!this._resetEmail) throw new Error('No password reset request pending');
+    const response = await resetPasswordRequest({ email: this._resetEmail, newPassword });
+    const payload = responsePayload(response);
+
+    const token = extractToken(payload);
+    if (token) {
+      this.token = token;
+      const user = extractUser(payload, this._resetEmail);
+      this.user = user;
+      persistAuth(user, token);
+    }
+
     this.resetPhase = 'email';
     this._resetEmail = null;
     this._resetToken = null;
-    return true;
+    return payload;
   },
   
   logout() {

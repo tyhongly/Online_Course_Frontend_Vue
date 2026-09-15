@@ -1,24 +1,14 @@
 import { reactive } from 'vue';
-import { courses as seedCourses } from '../data/index.js';
-import { createCategory, deleteCategory, getAllCategories, updateCategory } from '../services/categoryApi.js';
-import { isTechnologyCourse } from '../utils/technologyContent.js';
-
+import {
+  createCategory,
+  deleteCategory,
+  getAllCategories,
+  getCategoryById,
+  updateCategory
+} from '../services/categoryApi.js';
 const storedCategories = localStorage.getItem('category_data');
 
-const categorySource = storedCategories
-  ? JSON.parse(storedCategories)
-  : Array.from(new Set(seedCourses.map((course) => course.category)))
-      .filter(Boolean)
-      .map((name, index) => ({
-        id: index + 1,
-        name,
-        slug: name.toLowerCase().replace(/\s+/g, '-'),
-        createdAt: new Date().toISOString(),
-      }));
-
-const defaultCategories = categorySource.filter((category) =>
-  isTechnologyCourse({ category: category.name || category })
-);
+const defaultCategories = storedCategories ? JSON.parse(storedCategories) : [];
 
 export const categoryStore = reactive({
   categories: defaultCategories,
@@ -27,7 +17,7 @@ export const categoryStore = reactive({
     const response = await getAllCategories();
     const payload = response?.data?.data || response?.data || [];
     const categories = Array.isArray(payload) ? payload : payload.categories || [];
-    this.categories = categories.filter((category) => isTechnologyCourse({ category: category.categoryName || category.name })).map((category) => ({
+    this.categories = categories.map((category) => ({
       ...category,
       id: category.categoryId || category.id,
       name: category.categoryName || category.name,
@@ -37,17 +27,28 @@ export const categoryStore = reactive({
     return this.categories;
   },
 
+  async fetchCategoryById(id) {
+    const response = await getCategoryById(id);
+    const payload = response?.data?.data || response?.data || {};
+    return payload?.category || payload;
+  },
+
   save() {
     localStorage.setItem('category_data', JSON.stringify(this.categories));
   },
 
-  async addCategory({ name, slug }) {
-    const response = await createCategory({ categoryName: name });
+  async addCategory({ name, slug, image }) {
+    const formData = new FormData();
+    formData.append('categoryName', name);
+    if (image) formData.append('categoryImage', image);
+
+    const response = await createCategory(formData);
     const payload = response?.data?.data || response?.data || response;
     const category = {
       id: payload?.categoryId || payload?.id || Date.now(),
       name: payload?.categoryName || payload?.name || name,
       slug: payload?.slug || slug || name.toLowerCase().trim().replace(/\s+/g, '-'),
+      image: payload?.categoryImage || payload?.image || '',
       createdAt: payload?.createdAt || new Date().toISOString(),
     };
 
@@ -57,7 +58,7 @@ export const categoryStore = reactive({
   },
 
   async updateCategory(id, data) {
-    const index = this.categories.findIndex((category) => category.id === id);
+    const index = this.categories.findIndex((category) => String(category.id) === String(id));
     if (index === -1) return null;
 
     const response = await updateCategory(id, { categoryName: data.name });
@@ -76,7 +77,7 @@ export const categoryStore = reactive({
 
   async deleteCategory(id) {
     await deleteCategory(id);
-    this.categories = this.categories.filter((category) => category.id !== id);
+    this.categories = this.categories.filter((category) => String(category.id) !== String(id));
     this.save();
   },
 

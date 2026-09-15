@@ -5,10 +5,14 @@ import { authStore } from '../../store/authStore.js';
 
 const router = useRouter();
 
-onMounted(() => {
-  // Dev-only helper: seed an admin session locally so the protected dashboard can be previewed.
-  authStore.login('admin@example.com', 'admin');
-  router.replace('/admin');
+onMounted(async () => {
+  // Only enter the protected dashboard after the login response has stored its JWT.
+  try {
+    await authStore.login('admin@example.com', 'admin');
+    await router.replace('/admin');
+  } catch (error) {
+    await router.replace('/');
+  }
 });
 </script>
 

@@ -20,8 +20,10 @@ const loadCourse = async () => {
 
   try {
     if (!course.value) {
-      await courseStore.fetchCourses();
+      await courseStore.fetchCourseById(courseId.value);
     }
+
+    await courseStore.fetchCourseSections(courseId.value);
 
     if (!course.value) {
       router.replace('/admin/courses');

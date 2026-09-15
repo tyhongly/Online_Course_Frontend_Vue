@@ -9,8 +9,6 @@ const hideNavAndFooter = computed(() => {
   return route.path.startsWith('/admin')
     || route.path.startsWith('/student')
     || route.path.startsWith('/dashboard')
-    || route.path.startsWith('/login')
-    || route.path.startsWith('/signup')
     || route.path.startsWith('/learn');
 });
 </script>

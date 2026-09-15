@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { Eye, PencilLine, Lock } from 'lucide-vue-next';
 import { usersStore } from '../../store/usersStore.js';
 
@@ -9,6 +9,14 @@ const selectedUser = ref(null);
 const draftRole = ref('Student');
 const statusDialogOpen = ref(false);
 const selectedStatusUser = ref(null);
+
+onMounted(async () => {
+  try {
+    await usersStore.fetchUsers();
+  } catch (error) {
+    console.error('Unable to fetch users from API:', error);
+  }
+});
 
 const users = computed(() =>
   usersStore.users

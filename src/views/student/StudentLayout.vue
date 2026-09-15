@@ -7,6 +7,7 @@ import {
   Home,
   LayoutDashboard,
   LogOut,
+  Settings,
 } from "lucide-vue-next";
 import { authStore } from "../../store/authStore.js";
 import DashboardHeader from "../../components/dashboard/DashboardHeader.vue";
@@ -21,13 +22,14 @@ const goHome = () => {
 
 const logout = () => {
   authStore.logout();
-  router.push("/login");
+  router.push("/");
 };
 
 const navigation = [
   { name: "Dashboard", path: "/student/dashboard", icon: LayoutDashboard },
   { name: "My Learning", path: "/student/my-courses", icon: BookOpen },
   { name: "Wishlist", path: "/student/wishlist", icon: Heart },
+  { name: "Account Settings", path: "/student/settings", icon: Settings },
 ];
 
 const userInitials = computed(() => {

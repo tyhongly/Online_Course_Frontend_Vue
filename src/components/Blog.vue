@@ -1,5 +1,5 @@
 <script setup>
-import { blogs } from '../data/index.js';
+const blogs = [];
 </script>
 
 <template>
@@ -12,7 +12,7 @@ import { blogs } from '../data/index.js';
         <p class="text-lg text-dark-lighter">Stay updated with the latest insights and tips from our learning community.</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div v-if="blogs.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div 
           v-for="blog in blogs" 
           :key="blog.id"
@@ -39,6 +39,7 @@ import { blogs } from '../data/index.js';
           </div>
         </div>
       </div>
+      <div v-else class="text-center text-dark-lighter">No articles available yet.</div>
 
     </div>
   </section>

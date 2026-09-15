@@ -12,21 +12,42 @@ const courseId = computed(() => isNew.value ? null : Number(route.params.id));
 
 const courseData = ref({
   title: '',
+  slug: '',
   description: '',
   category: categoryStore.categories[0]?.name || 'Development',
   type: 'document',
+  format: 'document',
   price: 0,
   image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80',
   thumbnailUrl: '',
+  coverImageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&q=80',
+  badgeLabel: '',
+  accessType: 'public',
+  pacing: 'self-paced',
   status: 'draft',
   published: false,
+  isPublished: false,
   lessons: []
 });
 
 const onTypeChange = () => {
+  const format = courseData.value.type === 'document' ? 'document' : 'video';
+  courseData.value.format = format;
   if (courseData.value.type === 'document') {
     courseData.value.price = 0;
   }
+};
+
+const handleThumbnailChange = (event) => {
+  const [file] = event.target.files;
+  if (!file) return;
+
+  courseData.value.coverImage = file;
+  const reader = new FileReader();
+  reader.onload = () => {
+    courseData.value.thumbnailUrl = reader.result;
+  };
+  reader.readAsDataURL(file);
 };
 
 onMounted(async () => {
@@ -192,8 +213,13 @@ const deleteLesson = (index) => {
           </p>
           
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Thumbnail URL</label>
-          <input v-model="courseData.thumbnailUrl" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-primary" />
+          <label class="block text-sm font-medium text-gray-700 mb-2">Thumbnail File</label>
+          <input
+            type="file"
+            accept="image/*"
+            @change="handleThumbnailChange"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-primary"
+          />
         </div>
         </div>
 

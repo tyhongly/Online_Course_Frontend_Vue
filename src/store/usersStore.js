@@ -1,55 +1,52 @@
 import { reactive } from 'vue';
-
-const storedUsers = localStorage.getItem('users_data');
-
-const defaultUsers = storedUsers
-  ? JSON.parse(storedUsers)
-  : [
-      {
-        id: 1,
-        name: 'Admin User',
-        email: 'admin@example.com',
-        password: 'admin',
-        role: 'admin',
-        createdAt: '2026-08-01T08:00:00.000Z',
-        lastActivityAt: '2026-08-24T09:00:00.000Z',
-      },
-      {
-        id: 2,
-        name: 'Student User',
-        email: 'student@example.com',
-        password: 'student',
-        role: 'student',
-        avatar: '',
-        createdAt: '2026-08-10T10:00:00.000Z',
-        lastActivityAt: '2026-08-24T08:30:00.000Z',
-      },
-      {
-        id: 3,
-        name: 'Ava Martin',
-        email: 'ava.martin@example.com',
-        password: 'student',
-        role: 'student',
-        avatar: '',
-        createdAt: '2026-08-14T12:30:00.000Z',
-        lastActivityAt: '2026-08-23T17:45:00.000Z',
-      },
-    ];
+import { getAllUsers, deleteUser, getUserById } from '../services/userApi.js';
 
 export const usersStore = reactive({
-  users: defaultUsers,
+  users: [],
 
   save() {
     localStorage.setItem('users_data', JSON.stringify(this.users));
   },
 
+  async fetchUsers() {
+    const response = await getAllUsers();
+    const payload = response?.data?.data || response?.data || [];
+    const userList = Array.isArray(payload) ? payload : payload.users || [];
+
+    this.users = userList.map((user) => ({
+      ...user,
+      id: user.id ?? user.userId,
+      name: user.name ?? user.fullName ?? user.username,
+      email: user.email,
+      role: user.role ?? 'student',
+      createdAt: user.createdAt ?? user.created_at,
+      lastActivityAt: user.lastActivityAt ?? user.lastActivity,
+      status: user.status ?? (user.lastActivityAt ? 'Active' : 'Suspended'),
+    }));
+
+    this.save();
+    return this.users;
+  },
+
+  async fetchUserById(id) {
+    const response = await getUserById(id);
+    const payload = response?.data?.data || response?.data || {};
+    return payload?.user || payload;
+  },
+
+  async deleteUser(id) {
+    await deleteUser(id);
+    this.users = this.users.filter((user) => String(user.id) !== String(id));
+    this.save();
+  },
+
   findByEmail(email) {
-    return this.users.find((user) => user.email.toLowerCase() === String(email).toLowerCase());
+    return this.users.find((user) => String(user.email || '').toLowerCase() === String(email).toLowerCase());
   },
 
   findByCredentials(email, password) {
     return this.users.find(
-      (user) => user.email.toLowerCase() === String(email).toLowerCase() && user.password === password,
+      (user) => String(user.email || '').toLowerCase() === String(email).toLowerCase() && user.password === password,
     );
   },
 
@@ -67,6 +64,7 @@ export const usersStore = reactive({
       avatar: '',
       createdAt: new Date().toISOString(),
       lastActivityAt: new Date().toISOString(),
+      status: 'Active',
     };
 
     this.users.push(user);

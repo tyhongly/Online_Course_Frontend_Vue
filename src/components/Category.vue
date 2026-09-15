@@ -1,41 +1,15 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { Search, X, ChevronRight, Star, Clock, Users } from 'lucide-vue-next';
-import { categories, findCategory } from '../data/categories.js';
+import { categoryStore } from '../store/categoryStore.js';
 import { courseStore } from '../store/courseStore.js';
 
 const route = useRoute();
-
 const slug = computed(() => route.params.slug);
-const category = computed(() => findCategory(slug.value));
-
-// --- Replace this with your real API / store call -------------------
-// e.g. const courses = ref([]); watch(slug, async s => courses.value = await api.getCourses(s), { immediate: true })
-const allCourses = [
-  { id: 4,  slug: 'mobile-development', title: 'Flutter Complete Course',         instructor: 'Sreyneang L.', price: 44.99, oldPrice: 99.99, rating: 4.6, reviews: 990,  hours: 30, students: 4200, level: 'Beginner' },
-  { id: 5,  slug: 'artificial-intelligence', title: 'Machine Learning Foundations', instructor: 'Dr. Kimsan', price: 59.99, oldPrice: 149.99, rating: 4.9, reviews: 3100, hours: 45, students: 11200, level: 'Intermediate' },
-  { id: 6,  slug: 'artificial-intelligence', title: 'Building Apps with LLMs',    instructor: 'Rathana S.',  price: 34.99, oldPrice: 79.99, rating: 4.7, reviews: 540,  hours: 12, students: 1900, level: 'Advanced' },
-  { id: 7,  slug: 'cybersecurity', title: 'Ethical Hacking Bootcamp',             instructor: 'Panha Chea',  price: 54.99, oldPrice: 129.99, rating: 4.8, reviews: 1780, hours: 36, students: 6400, level: 'Intermediate' },
-  { id: 8,  slug: 'database', title: 'SQL Mastery for Developers',               instructor: 'Bopha Yun',   price: 29.99, oldPrice: 69.99, rating: 4.7, reviews: 1120, hours: 18, students: 4900, level: 'Beginner' },
-  { id: 9,  slug: 'mobile-development', title: 'React Native Mobile Apps',        instructor: 'Sok Lina',    price: 39.99, oldPrice: 89.99, rating: 4.8, reviews: 760,  hours: 24, students: 3600, level: 'Intermediate' },
-  { id: 10, slug: 'programming-languages', title: 'Python Programming Masterclass', instructor: 'Dara Vann',  price: 34.99, oldPrice: 79.99, rating: 4.8, reviews: 1530, hours: 26, students: 6900, level: 'Beginner' },
-  { id: 11, slug: 'programming-languages', title: 'Java Fundamentals and OOP',    instructor: 'Kim Sopheak', price: 44.99, oldPrice: 99.99, rating: 4.7, reviews: 880,  hours: 28, students: 4100, level: 'Intermediate' },
-  { id: 12, slug: 'database', title: 'MongoDB and NoSQL Essentials',             instructor: 'Nita Chhay',  price: 32.99, oldPrice: 74.99, rating: 4.6, reviews: 640,  hours: 16, students: 2800, level: 'Beginner' },
-  { id: 13, slug: 'cybersecurity', title: 'Network Security Fundamentals',        instructor: 'Vuthy Sok',   price: 42.99, oldPrice: 94.99, rating: 4.7, reviews: 920,  hours: 20, students: 3900, level: 'Beginner' },
-  { id: 14, slug: 'cloud-computing', title: 'AWS Cloud Practitioner Guide',       instructor: 'Chenda Ly',   price: 37.99, oldPrice: 84.99, rating: 4.8, reviews: 1100, hours: 21, students: 5100, level: 'Beginner' },
-  { id: 15, slug: 'cloud-computing', title: 'Kubernetes on Cloud',                instructor: 'Rithy Meas',  price: 52.99, oldPrice: 119.99, rating: 4.7, reviews: 690,  hours: 30, students: 2700, level: 'Advanced' },
-  { id: 16, slug: 'ui-ux-graphic-design', title: 'UI/UX Design with Figma',       instructor: 'Sreypov Chan', price: 35.99, oldPrice: 82.99, rating: 4.8, reviews: 1380, hours: 19, students: 6100, level: 'Beginner' },
-  { id: 17, slug: 'ui-ux-graphic-design', title: 'Design Systems for Products',   instructor: 'Malis Touch', price: 45.99, oldPrice: 104.99, rating: 4.7, reviews: 570,  hours: 17, students: 2300, level: 'Intermediate' },
-  { id: 18, slug: 'data-science-analytics', title: 'Data Analysis with Python',   instructor: 'Sokha Phan',  price: 41.99, oldPrice: 92.99, rating: 4.8, reviews: 1260, hours: 25, students: 5400, level: 'Beginner' },
-  { id: 19, slug: 'data-science-analytics', title: 'Power BI Dashboard Design',   instructor: 'Borey Lim',   price: 36.99, oldPrice: 85.99, rating: 4.6, reviews: 730,  hours: 15, students: 3200, level: 'Intermediate' },
-  { id: 20, slug: 'networking-sysadmin', title: 'Linux System Administration',    instructor: 'Sovan Khem',  price: 43.99, oldPrice: 98.99, rating: 4.7, reviews: 810,  hours: 27, students: 3500, level: 'Beginner' },
-  { id: 21, slug: 'networking-sysadmin', title: 'Computer Networking Basics',     instructor: 'Vanna Tep',   price: 31.99, oldPrice: 72.99, rating: 4.6, reviews: 940,  hours: 18, students: 4300, level: 'Beginner' },
-  { id: 22, slug: 'game-development', title: 'Unity Game Development',            instructor: 'Kosal Oum',   price: 49.99, oldPrice: 112.99, rating: 4.8, reviews: 1020, hours: 32, students: 4600, level: 'Beginner' },
-  { id: 23, slug: 'game-development', title: 'Unreal Engine Level Design',        instructor: 'Serey Noun',  price: 54.99, oldPrice: 124.99, rating: 4.7, reviews: 480,  hours: 29, students: 1900, level: 'Intermediate' },
-  { id: 24, slug: 'devops-software-engineering', title: 'Docker and CI/CD Pipelines', instructor: 'Rotha San', price: 46.99, oldPrice: 106.99, rating: 4.8, reviews: 870,  hours: 23, students: 3700, level: 'Intermediate' },
-  { id: 25, slug: 'devops-software-engineering', title: 'Software Testing Essentials', instructor: 'Sokhom Chea', price: 33.99, oldPrice: 76.99, rating: 4.6, reviews: 650, hours: 16, students: 2900, level: 'Beginner' },
-];
+const query = ref('');
+const level = ref('All levels');
+const sort = ref('popular');
 
 const parseStudents = (students) => {
   const value = String(students || '0').trim().toUpperCase();
@@ -45,55 +19,62 @@ const parseStudents = (students) => {
   return Number.isFinite(number) ? number : 0;
 };
 
-const toCategoryCourse = (course) => ({
-  id: course.id,
-  slug: 'web-development',
-  title: course.title,
-  instructor: course.instructor || 'Course Team',
-  price: Number(course.price) || 0,
-  oldPrice: Number(course.originalPrice) || 0,
-  rating: Number(course.rating) || 0,
-  reviews: Number(course.reviews) || 0,
-  hours: Number.parseFloat(String(course.duration || '0')) || 0,
-  students: parseStudents(course.students),
-  level: course.level || (course.type === 'document' || Number(course.price) === 0 ? 'Beginner' : 'Intermediate'),
-  free: course.type === 'document' || Number(course.price) === 0,
+const normalizeSlug = (value) => String(value ?? '').trim().toLowerCase().replace(/\s+/g, '-');
+
+const category = computed(() => {
+  const activeSlug = normalizeSlug(slug.value);
+  return categoryStore.categories.find((item) => normalizeSlug(item.slug || item.name || item.categoryName) === activeSlug) ?? null;
 });
 
-const storedWebCourses = computed(() => courseStore.courses
-  .filter((course) => course.category === 'Development' && /web|html|css|javascript|vue|full-stack/i.test(course.title || ''))
-  .map(toCategoryCourse));
+onMounted(async () => {
+  try {
+    await categoryStore.fetchCategories();
+    await courseStore.fetchCourses();
+  } catch (error) {
+    console.error('Unable to load category/courses from API:', error);
+  }
+});
 
-const levels = ['All levels', 'Beginner', 'Intermediate', 'Advanced'];
-const sorts = [
-  { value: 'popular', label: 'Most popular' },
-  { value: 'rating',  label: 'Highest rated' },
-  { value: 'low',     label: 'Price: low to high' },
-  { value: 'high',    label: 'Price: high to low' },
-];
-
-const query = ref('');
-const level = ref('All levels');
-const sort = ref('popular');
-
-// reset filters when navigating between categories
 watch(slug, () => {
   query.value = '';
   level.value = 'All levels';
   sort.value = 'popular';
 });
 
+const levels = ['All levels', 'Beginner', 'Intermediate', 'Advanced'];
+const sorts = [
+  { value: 'popular', label: 'Most popular' },
+  { value: 'rating', label: 'Highest rated' },
+  { value: 'low', label: 'Price: low to high' },
+  { value: 'high', label: 'Price: high to low' },
+];
+
 const courses = computed(() => {
+  if (!category.value) return [];
+
+  const categoryName = category.value.name ?? category.value.categoryName;
   const q = query.value.trim().toLowerCase();
-  let list = slug.value === 'web-development'
-    ? storedWebCourses.value
-    : allCourses.filter((c) => c.slug === slug.value);
+  let list = courseStore.courses
+    .filter((course) => (course.category || course.categoryName || course.category?.name) === categoryName)
+    .map((course) => ({
+      id: course.id,
+      slug: slug.value,
+      title: course.title || course.name,
+      instructor: course.instructor || 'Course Team',
+      price: Number(course.price) || 0,
+      oldPrice: Number(course.originalPrice || course.price) || 0,
+      rating: Number(course.rating) || 0,
+      reviews: Number(course.reviews) || 0,
+      hours: Number.parseFloat(String(course.duration || '0')) || 0,
+      students: parseStudents(course.students),
+      level: course.level || 'Beginner',
+      free: Number(course.price) === 0,
+    }));
 
   if (q) {
-    list = list.filter(
-      (c) => c.title.toLowerCase().includes(q) || c.instructor.toLowerCase().includes(q)
-    );
+    list = list.filter((c) => c.title.toLowerCase().includes(q) || c.instructor.toLowerCase().includes(q));
   }
+
   if (level.value !== 'All levels') {
     list = list.filter((c) => c.level === level.value);
   }
@@ -108,7 +89,7 @@ const courses = computed(() => {
 });
 
 const related = computed(() =>
-  categories.filter((c) => c.slug !== slug.value).slice(0, 6)
+  categoryStore.categories.filter((c) => normalizeSlug(c.slug || c.name || c.categoryName) !== normalizeSlug(slug.value)).slice(0, 6)
 );
 </script>
 

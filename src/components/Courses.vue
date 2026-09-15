@@ -1,8 +1,17 @@
 <script setup>
-import { courses } from '../data/index.js';
+import { computed, onMounted } from 'vue';
+import { courseStore } from '../store/courseStore.js';
 import CatalogCourseCard from './CatalogCourseCard.vue';
 
-const popularCourses = courses.slice(0, 4);
+const popularCourses = computed(() => courseStore.courses.slice(0, 4));
+
+onMounted(async () => {
+  try {
+    await courseStore.fetchCourses();
+  } catch (error) {
+    console.error('Unable to load courses from API:', error);
+  }
+});
 </script>
 
 <template>

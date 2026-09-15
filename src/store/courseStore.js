@@ -1,6 +1,12 @@
 import { reactive } from 'vue';
-import { courses as initialCourses } from '../data/index.js';
-import { createCourse, deleteCourse, getAllCourses, updateCourse } from '../services/courseApi.js';
+import {
+  createCourse,
+  deleteCourse,
+  getAllCourses,
+  getCourseById,
+  getCourseSections,
+  updateCourse
+} from '../services/courseApi.js';
 
 const documentLessonsMap = {
   2: [
@@ -369,63 +375,8 @@ const defaultDocumentLessons = [
   ], order: 3 }
 ];
 
-function getCourseLessons(course) {
-  if (documentLessonsMap[course.id] && ![2, 4, 17].includes(Number(course.id))) {
-    return documentLessonsMap[course.id];
-  }
-  if (course.type === 'document' || Number(course.price) === 0) {
-    return defaultDocumentLessons;
-  }
-  return defaultVideoLessons;
-}
-
-function loadInitialCourses() {
-  let stored = [];
-  try {
-    const raw = localStorage.getItem('course_data_v3') || localStorage.getItem('course_data');
-    if (raw) stored = JSON.parse(raw);
-  } catch {
-    stored = [];
-  }
-
-  const storedMap = new Map((stored || []).map(c => [c.id, c]));
-
-  const reconciled = initialCourses.map(initCourse => {
-    const existing = storedMap.get(initCourse.id) || {};
-    storedMap.delete(initCourse.id);
-    const isDoc = initCourse.type === 'document' || Number(initCourse.price) === 0;
-    return {
-      ...initCourse,
-      ...existing,
-      type: initCourse.type,
-      price: isDoc ? 0 : (existing.price ?? initCourse.price),
-      originalPrice: isDoc ? 0 : (existing.originalPrice ?? initCourse.originalPrice),
-      status: existing.status || 'live',
-      lessons: getCourseLessons(initCourse)
-    };
-  });
-
-  for (const [, customCourse] of storedMap) {
-    const isDoc = customCourse.type === 'document' || Number(customCourse.price) === 0;
-    reconciled.push({
-      ...customCourse,
-      type: isDoc ? 'document' : (customCourse.type || 'video'),
-      price: isDoc ? 0 : (customCourse.price || 0),
-      status: customCourse.status || 'live',
-      lessons: customCourse.lessons?.length ? customCourse.lessons : (isDoc ? defaultDocumentLessons : defaultVideoLessons)
-    });
-  }
-
-  return reconciled;
-}
-
-let defaultCourses = loadInitialCourses();
-localStorage.setItem('course_data', JSON.stringify(defaultCourses));
-localStorage.setItem('course_data_v2', JSON.stringify(defaultCourses));
-localStorage.setItem('course_data_v3', JSON.stringify(defaultCourses));
-
 export const courseStore = reactive({
-  courses: defaultCourses,
+  courses: [],
 
   async fetchCourses() {
     const response = await getAllCourses();
@@ -435,20 +386,65 @@ export const courseStore = reactive({
     return this.courses;
   },
 
+  async fetchCourseById(id) {
+    const response = await getCourseById(id);
+    const payload = response?.data?.data || response?.data || {};
+    const course = payload?.course || payload;
+    const index = this.courses.findIndex((item) => String(item.id) === String(id));
+
+    if (index === -1) {
+      this.courses.push(course);
+    } else {
+      this.courses[index] = { ...this.courses[index], ...course };
+    }
+
+    return course;
+  },
+
+  async fetchCourseSections(courseId) {
+    const response = await getCourseSections(courseId);
+    const payload = response?.data?.data || response?.data || [];
+    const sections = Array.isArray(payload) ? payload : payload.sections || [];
+    const course = this.courses.find((item) => String(item.id) === String(courseId));
+
+    if (course) {
+      course.lessons = sections;
+    }
+
+    return sections;
+  },
+
   save() {
-    localStorage.setItem('course_data', JSON.stringify(this.courses));
+    // Keep course data sourced from the API instead of persisting seed data to localStorage.
   },
 
   async addCourse(course) {
     const courseType = course.type || (Number(course.price) === 0 ? 'document' : 'video');
+    const normalizedType = courseType === 'document' ? 'document' : 'video';
+    const normalizedPrice = normalizedType === 'document' ? 0 : (Number(course.price) || 0);
+    const slug = (course.slug || course.title || 'new-course')
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
     const newCourse = {
       ...course,
-      type: courseType,
-      price: courseType === 'document' ? 0 : (Number(course.price) || 0),
-      thumbnailUrl: course.thumbnailUrl || course.image || '',
-      image: course.image || course.thumbnailUrl || '',
-      published: course.published ?? course.status !== 'draft',
-      lessons: [],
+      title: course.title || 'Untitled Course',
+      slug,
+      category: course.category || 'Development',
+      description: course.description || '',
+      badgeLabel: course.badgeLabel || '',
+      type: normalizedType,
+      format: course.format || normalizedType,
+      price: normalizedPrice,
+      accessType: course.accessType || 'public',
+      pacing: course.pacing || 'self-paced',
+      coverImageUrl: course.coverImageUrl || course.thumbnailUrl || course.image || '',
+      thumbnailUrl: course.thumbnailUrl || course.coverImageUrl || course.image || '',
+      image: course.image || course.coverImageUrl || course.thumbnailUrl || '',
+      published: course.published ?? course.isPublished ?? course.status !== 'draft',
+      isPublished: course.isPublished ?? course.published ?? course.status !== 'draft',
+      lessons: course.lessons || [],
       status: course.status || 'draft',
       students: '0',
       rating: 0,

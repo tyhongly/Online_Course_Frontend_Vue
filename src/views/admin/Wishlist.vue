@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import { BarChart3, BookHeart, Heart, Users } from 'lucide-vue-next';
+import { BarChart3, BookHeart, Heart, Trash2, Users } from 'lucide-vue-next';
 import { courseStore } from '../../store/courseStore.js';
 import { usersStore } from '../../store/usersStore.js';
 import { wishlistStore } from '../../store/wishlistStore.js';
@@ -64,7 +64,7 @@ const mostWanted = computed(() => wishlistRows.value[0]);
         <div v-if="wishlistRows.length" class="divide-y divide-slate-200">
           <div v-for="(row, index) in wishlistRows" :key="row.course.id" class="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:px-6">
             <div class="flex min-w-0 flex-1 items-center gap-4"><div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-sm font-bold text-rose-700">{{ index + 1 }}</div><img :src="row.course.image || row.course.thumbnailUrl" :alt="row.course.title" class="h-12 w-20 shrink-0 rounded-lg object-cover" /><div class="min-w-0"><h3 class="truncate font-semibold text-slate-950">{{ row.course.title }}</h3><p class="mt-1 text-xs text-slate-500">{{ row.course.category || 'Uncategorized' }}</p></div></div>
-            <div class="flex items-center gap-5 sm:w-64 sm:justify-end"><div class="min-w-28"><div class="mb-1 flex justify-between text-xs text-slate-500"><span>Interest</span><span>{{ row.count }}</span></div><div class="h-2 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full bg-rose-500" :style="{ width: `${Math.min((row.count / Math.max(totalSaved, 1)) * 100 * 2, 100)}%` }" /></div></div><div class="text-right text-sm font-semibold text-slate-700">{{ row.count }} {{ row.count === 1 ? 'save' : 'saves' }}</div></div>
+            <div class="flex items-center gap-5 sm:w-64 sm:justify-end"><div class="min-w-28"><div class="mb-1 flex justify-between text-xs text-slate-500"><span>Interest</span><span>{{ row.count }}</span></div><div class="h-2 overflow-hidden rounded-full bg-slate-100"><div class="h-full rounded-full bg-rose-500" :style="{ width: `${Math.min((row.count / Math.max(totalSaved, 1)) * 100 * 2, 100)}%` }" /></div></div><div class="text-right text-sm font-semibold text-slate-700">{{ row.count }} {{ row.count === 1 ? 'save' : 'saves' }}</div><button type="button" class="ml-2 rounded-full border border-slate-200 p-2 text-slate-500 transition hover:bg-rose-50 hover:text-rose-600" @click="wishlistStore.removeCourseFromAllWishlists(row.course.id)" aria-label="Delete this wishlist row"><Trash2 class="h-4 w-4" /></button></div>
           </div>
         </div>
         <div v-else class="px-6 py-14 text-center"><BookHeart class="mx-auto h-10 w-10 text-slate-300" /><h3 class="mt-4 font-semibold text-slate-950">No wishlist activity yet</h3><p class="mt-2 text-sm text-slate-500">Student course saves will appear here when they add courses to their wishlists.</p></div>

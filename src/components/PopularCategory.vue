@@ -1,5 +1,16 @@
 <script setup>
-import { popularCategories } from '../data/index.js';
+import { computed, onMounted } from 'vue';
+import { categoryStore } from '../store/categoryStore.js';
+
+const popularCategories = computed(() => categoryStore.categories.slice(0, 4));
+
+onMounted(async () => {
+  try {
+    await categoryStore.fetchCategories();
+  } catch (error) {
+    console.error('Unable to load categories from API:', error);
+  }
+});
 </script>
 
 <template>
