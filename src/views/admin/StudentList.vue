@@ -28,7 +28,7 @@ const users = computed(() =>
         year: 'numeric',
       });
 
-      const statusValue = user.status || (user.lastActivityAt ? 'Active' : 'Suspended');
+      const statusValue = user.isSuspended ? 'Suspended' : 'Active';
 
       return {
         ...user,
@@ -91,12 +91,28 @@ const closeStatusDialog = () => {
 
 const currentStatusLabel = computed(() => selectedStatusUser.value?.status || 'Active');
 
-const toggleUserStatus = () => {
+const toggleUserStatus = async () => {
   if (!selectedStatusUser.value) return;
 
-  const nextStatus = currentStatusLabel.value === 'Suspended' ? 'Active' : 'Suspended';
-  usersStore.updateUser(selectedStatusUser.value.id, { status: nextStatus });
-  closeStatusDialog();
+  try {
+    if (currentStatusLabel.value === 'Suspended') {
+      await usersStore.unsuspendUser(selectedStatusUser.value.id);
+    } else {
+      await usersStore.suspendUser(selectedStatusUser.value.id);
+    }
+    closeStatusDialog();
+  } catch (error) {
+    if (error.response?.status === 409) {
+      try {
+        await usersStore.fetchUsers();
+      } catch (refreshError) {
+        console.error('Unable to refresh users after status conflict:', refreshError);
+      }
+      closeStatusDialog();
+      return;
+    }
+    console.error('Unable to update user status:', error);
+  }
 };
 </script>
 

@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router';
 import { Search, X, ChevronRight, Star, Clock, Users } from 'lucide-vue-next';
 import { categoryStore } from '../store/categoryStore.js';
 import { courseStore } from '../store/courseStore.js';
+import defaultCourseImage from '../image/Group_Study.jpg';
 
 const route = useRoute();
 const slug = computed(() => route.params.slug);
@@ -69,6 +70,7 @@ const courses = computed(() => {
       students: parseStudents(course.students),
       level: course.level || 'Beginner',
       free: Number(course.price) === 0,
+      image: course.image || defaultCourseImage,
     }));
 
   if (q) {
@@ -174,8 +176,13 @@ const related = computed(() =>
             :to="`/course/${course.id}`"
             class="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 hover:border-primary/30 transition-all duration-300 flex flex-col"
           >
-            <div class="h-40 bg-primary/10 flex items-center justify-center text-5xl">
-              {{ category.icon }}
+            <div class="h-40 bg-primary/10 overflow-hidden">
+              <img
+                :src="course.image"
+                :alt="course.title"
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                @error="($event) => ($event.target.src = defaultCourseImage)"
+              />
             </div>
             <div class="p-5 flex flex-col flex-1">
               <span class="inline-block self-start text-xs font-semibold text-primary bg-primary/10 px-2.5 py-1 rounded-full mb-3">

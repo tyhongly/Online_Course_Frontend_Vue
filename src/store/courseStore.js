@@ -1,4 +1,5 @@
 import { reactive } from 'vue';
+import defaultCourseImage from '../image/Group_Study.jpg';
 import {
   createCourse,
   deleteCourse,
@@ -382,12 +383,27 @@ const courseFilesBaseUrl = () => {
 };
 
 const normalizeCourse = (course = {}) => {
-  const coverImage = course.coverImage || course.coverImageUrl || course.thumbnailUrl || course.image || '';
+  const imageValue = (value) => {
+    if (typeof value === 'string' && value.trim()) return value.trim();
+    if (value && typeof value === 'object') {
+      return imageValue(value.url || value.path || value.fileName || value.filename || value.name);
+    }
+    return '';
+  };
+  const coverImage = [
+    course.coverImage,
+    course.coverImageUrl,
+    course.thumbnailUrl,
+    course.thumbnail,
+    course.image,
+    course.imageUrl,
+    course.coverImagePath,
+  ].map(imageValue).find(Boolean) || '';
   const image = /^https?:\/\//.test(coverImage) || /^(data:|blob:|\/)/.test(coverImage)
     ? coverImage
     : coverImage
       ? `${courseFilesBaseUrl()}/${coverImage}`
-      : '';
+      : defaultCourseImage;
 
   return { ...course, coverImage, coverImageUrl: image, thumbnailUrl: image, image };
 };

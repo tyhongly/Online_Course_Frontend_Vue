@@ -1,6 +1,7 @@
 <script setup>
 import { ArrowRight, Clock3, Heart } from 'lucide-vue-next';
 import { wishlistStore } from '../store/wishlistStore.js';
+import defaultCourseImage from '../image/Group_Study.jpg';
 
 defineProps({
   course: {
@@ -14,6 +15,10 @@ const descriptionFor = (course) => course.description
   || course.shortDescription
   || `Learn the fundamentals of ${String(course.title || 'this course').toLowerCase()} through guided lessons and practical projects.`;
 const toggleFavorite = (courseId) => wishlistStore.toggle(courseId);
+const handleImageError = (event) => {
+  if (event.target.src.endsWith(defaultCourseImage)) return;
+  event.target.src = defaultCourseImage;
+};
 </script>
 
 <template>
@@ -23,12 +28,11 @@ const toggleFavorite = (courseId) => wishlistStore.toggle(courseId);
   >
     <div class="relative h-48 shrink-0 overflow-hidden">
       <img
-        v-if="course.image"
-        :src="course.image"
+        :src="course.image || defaultCourseImage"
         :alt="course.title"
         class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        @error="handleImageError"
       />
-      <div v-else class="h-full w-full bg-sky-100"></div>
       <div class="absolute inset-0 bg-slate-950/10"></div>
 
       <div class="absolute bottom-4 left-4 flex flex-wrap gap-2">

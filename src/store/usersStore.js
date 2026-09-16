@@ -1,5 +1,11 @@
 import { reactive } from 'vue';
-import { getAllUsers, deleteUser, getUserById } from '../services/userApi.js';
+import {
+  getAllUsers,
+  deleteUser,
+  getUserById,
+  suspendUser as suspendUserRequest,
+  unsuspendUser as unsuspendUserRequest,
+} from '../services/userApi.js';
 
 export const usersStore = reactive({
   users: [],
@@ -13,16 +19,25 @@ export const usersStore = reactive({
     const payload = response?.data?.data || response?.data || [];
     const userList = Array.isArray(payload) ? payload : payload.users || [];
 
-    this.users = userList.map((user) => ({
-      ...user,
-      id: user.id ?? user.userId,
-      name: user.name ?? user.fullName ?? user.username,
-      email: user.email,
-      role: user.role ?? 'student',
-      createdAt: user.createdAt ?? user.created_at,
-      lastActivityAt: user.lastActivityAt ?? user.lastActivity,
-      status: user.status ?? (user.lastActivityAt ? 'Active' : 'Suspended'),
-    }));
+    this.users = userList.map((user) => {
+      const isSuspended = typeof user.isSuspended === 'boolean'
+        ? user.isSuspended
+        : typeof user.suspended === 'boolean'
+          ? user.suspended
+          : String(user.status || '').toLowerCase() === 'suspended';
+
+      return {
+        ...user,
+        id: user.id ?? user.userId,
+        name: user.name ?? user.fullName ?? user.username,
+        email: user.email,
+        role: user.role ?? 'student',
+        createdAt: user.createdAt ?? user.created_at,
+        lastActivityAt: user.lastActivityAt ?? user.lastActivity,
+        isSuspended,
+        status: isSuspended ? 'Suspended' : 'Active',
+      };
+    });
 
     this.save();
     return this.users;
@@ -38,6 +53,16 @@ export const usersStore = reactive({
     await deleteUser(id);
     this.users = this.users.filter((user) => String(user.id) !== String(id));
     this.save();
+  },
+
+  async suspendUser(id) {
+    await suspendUserRequest(id);
+    return this.updateUser(id, { status: 'Suspended', isSuspended: true });
+  },
+
+  async unsuspendUser(id) {
+    await unsuspendUserRequest(id);
+    return this.updateUser(id, { status: 'Active', isSuspended: false });
   },
 
   findByEmail(email) {

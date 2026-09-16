@@ -6,6 +6,8 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
+  if (config.method?.toLowerCase() === 'get') return config;
+
   const authorization = toAuthorizationValue(getAccessToken());
   if (authorization) config.headers.Authorization = authorization;
   return config;

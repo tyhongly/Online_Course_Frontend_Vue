@@ -34,10 +34,10 @@ export const deleteUser = (id) => apiClient.delete(`/users/${id}`);
 /** PUT /users/{id}/role — Update a user's role */
 export const updateUserRole = (id, role) => apiClient.put(`/users/${id}/role`, { role });
 
-/** PUT /users/{id}/suspend — Suspend a user */
-export const suspendUser = (id) => apiClient.put(`/users/${id}/suspend`);
+/** PATCH /users/{id}/suspend — Suspend a user */
+export const suspendUser = (id) => apiClient.patch(`/users/${id}/suspend`);
 
-/** PUT /users/{id}/unsuspend — Unsuspend a user */
-export const unsuspendUser = (id) => apiClient.put(`/users/${id}/unsuspend`);
+/** PATCH /users/{id}/unsuspend — Unsuspend a user */
+export const unsuspendUser = (id) => apiClient.patch(`/users/${id}/unsuspend`);
 
 

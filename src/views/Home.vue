@@ -5,7 +5,7 @@ import Courses from "../components/Courses.vue";
 import WorkshopBanner from "../components/WorkshopBanner.vue";
 import PopularCategory from "../components/PopularCategory.vue";
 import Newsletter from "../components/Newsletter.vue";
-import Blog from "../components/Blog.vue";
+import LatestCourses from "../components/LatestCourses.vue";
 import DualCta from "../components/DualCta.vue";
 </script>
 
@@ -17,7 +17,7 @@ import DualCta from "../components/DualCta.vue";
     <Courses />
     <!-- <WorkshopBanner /> -->
     <Newsletter />
-    <Blog />
+    <LatestCourses />
     <DualCta />
   </main>
 </template>
