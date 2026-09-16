@@ -43,9 +43,7 @@ const removeCategory = async (id) => {
       <div v-if="error" class="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{{ error }}</div>
     <header class="mb-7 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <!-- <p class="text-sm font-semibold uppercase tracking-[0.18em] text-indigo-600">Course taxonomy</p> -->
         <h1 class="mt-2 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">Categories</h1>
-        <!-- <p class="mt-2 text-sm text-slate-600">Keep your course library easy to browse and consistent to manage.</p> -->
       </div>
       <router-link
         to="/admin/categories/new"

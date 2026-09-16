@@ -23,12 +23,6 @@ const removeCourse = (courseId) => {
           class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"
         >
           <div>
-            <!-- <div
-              class="inline-flex items-center gap-2 rounded-full bg-rose-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-rose-700"
-            >
-              <Heart class="h-3.5 w-3.5 fill-current" />
-              Saved courses
-            </div> -->
 
             <h1
               class="mt-4 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl"

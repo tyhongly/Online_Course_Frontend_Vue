@@ -33,49 +33,11 @@ const actionIcons = {
     <div class="mx-auto flex w-full max-w-7xl flex-col gap-6">
       <section>
         <h1
-              class="mt-3 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl"
-            >
-              Admin dashboard
-            </h1>
-      </section>
-      <!-- <section
-        class="relative overflow-hidden rounded-2xl border border-slate-200 shadow-[0_18px_45px_-34px_rgba(15,23,42,0.25)] bg-white px-6 py-8 text-white sm:px-9 sm:py-10"
-      >
-        <div
-          class="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"
+          class="mt-3 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl"
         >
-          <div>
-            <p
-              class="text-sm font-semibold uppercase tracking-[0.2em] text-indigo-600"
-            >
-              Overview
-            </p>
-            <h1
-              class="mt-3 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl"
-            >
-              Admin dashboard
-            </h1>
-            <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-              Monitor students, courses, lessons, and enrollments from one
-              protected control panel.
-            </p>
-          </div>
-
-          <div class="flex flex-wrap gap-3">
-            <router-link
-              v-for="action in quickActions"
-              :key="action.label"
-              :to="action.to"
-              class="inline-flex items-center justify-center rounded-2xl shadow-[0_18px_45px_-34px_rgba(15,23,42,0.25)] bg-primary px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-00"
-            >
-              {{ action.label }}
-            </router-link>
-          </div>
-          <div class="rounded-xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-slate-200"><span class="text-slate-400">Workspace status</span><div class="mt-1 flex items-center gap-2 font-semibold text-white"><span class="h-2 w-2 rounded-full bg-emerald-400" /> All systems active</div></div>
-        </div>
-        <div class="pointer-events-none absolute -right-16 -top-24 h-72 w-72 rounded-full border-[28px] border-indigo-500/20" />
-        <div class="pointer-events-none absolute -bottom-32 right-40 h-64 w-64 rounded-full border-[20px] border-sky-400/10" />
-      </section> -->
+          Admin dashboard
+        </h1>
+      </section>
 
       <section class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <article
@@ -94,7 +56,6 @@ const actionIcons = {
           >
             {{ metrics.totalStudents }}
           </div>
-          <!-- <p class="mt-2 text-sm text-slate-500">Active student accounts</p> -->
         </article>
         <article
           class="rounded-2xl border border-slate-200 shadow-[0_18px_45px_-34px_rgba(15,23,42,0.25)] bg-white p-5"
@@ -112,7 +73,6 @@ const actionIcons = {
           >
             {{ metrics.totalCourses }}
           </div>
-          <!-- <p class="mt-2 text-sm text-slate-500">Course records</p> -->
         </article>
         <article
           class="rounded-2xl border border-slate-200 shadow-[0_18px_45px_-34px_rgba(15,23,42,0.25)] bg-white p-5"
@@ -130,7 +90,6 @@ const actionIcons = {
           >
             {{ metrics.totalLessons }}
           </div>
-          <!-- <p class="mt-2 text-sm text-slate-500">Published curriculum items</p> -->
         </article>
         <article
           class="rounded-2xl border border-slate-200 shadow-[0_18px_45px_-34px_rgba(15,23,42,0.25)] bg-white p-5"
@@ -148,7 +107,6 @@ const actionIcons = {
           >
             {{ metrics.totalEnrollments }}
           </div>
-          <!-- <p class="mt-2 text-sm text-slate-500">Total learning starts</p> -->
         </article>
       </section>
 

@@ -16,15 +16,6 @@ import { CheckCircle2, ArrowRight } from 'lucide-vue-next';
             <img src="/src/image/Group_Meeting.jpg" alt="Students learning together" class="w-full h-full object-cover" />
           </div>
 
-          <!-- Floating Badge -->
-          <!-- <div class="absolute -bottom-6 -left-6 bg-white p-5 rounded-2xl shadow-xl z-20 max-w-[200px]">
-            <div class="flex items-center gap-4 mb-2">
-              <div class="w-12 h-12 rounded-full bg-accent text-white flex items-center justify-center font-bold text-xl">
-                10+
-              </div>
-              <p class="font-bold text-dark text-sm leading-tight">Years of Experience</p>
-            </div>
-          </div> -->
         </div>
 
         <!-- Right Content -->

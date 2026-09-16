@@ -114,7 +114,6 @@ defineExpose({
 </script>
 
 <template>
-  <!-- Avatar only: NO white square wrapper -->
   <section class="inline-block">
     <button
       type="button"

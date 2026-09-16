@@ -57,14 +57,6 @@ const journeySteps = [
           <p class="mt-6 text-lg leading-relaxed text-dark-lighter md:text-xl">
             TosRean brings useful learning paths, supportive guidance, and flexible study together in one place.
           </p>
-          <!-- <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-            <router-link to="/courses" class="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 font-semibold text-white shadow-lg shadow-primary/25 transition hover:-translate-y-0.5 hover:bg-primary-dark">
-              Explore courses <ArrowRight class="h-5 w-5" />
-            </router-link>
-            <router-link to="/categories" class="inline-flex items-center justify-center rounded-full border border-gray-200 bg-white px-6 py-3.5 font-semibold text-dark transition hover:border-primary hover:text-primary">
-              Browse categories
-            </router-link>
-          </div> -->
         </div>
 
         <aside class="relative mx-auto w-full max-w-md lg:ml-auto">
@@ -100,33 +92,9 @@ const journeySteps = [
             </div>
           </div>
         </aside>
-
-        <!-- <div class="relative mx-auto w-full max-w-xl pb-10 pr-0 md:pr-12 lg:mx-0">
-          <div class="absolute inset-x-4 inset-y-8 rounded-[2.5rem] bg-primary/15 -rotate-3"></div>
-          <img src="/src/image/Group_Study.jpg" alt="Learners studying together" class="relative h-[360px] w-full rounded-[2rem] object-cover shadow-2xl md:h-[460px]" />
-          <div class="absolute -bottom-1 left-5 rounded-2xl border border-white/80 bg-white/95 p-4 shadow-xl backdrop-blur md:left-8 md:p-5">
-            <p class="font-heading text-2xl font-bold text-primary">15K+</p>
-            <p class="text-sm font-medium text-dark-lighter">Learners growing together</p>
-          </div>
-          <div class="absolute -right-2 top-10 hidden w-40 rounded-2xl border-4 border-white bg-dark p-2 shadow-2xl md:block">
-            <img src="/src/image/Group_Meeting.jpg" alt="TosRean learning community" class="h-28 w-full rounded-xl object-cover" />
-            <p class="px-2 pb-1 pt-2 text-xs font-semibold text-white">Learn together</p>
-          </div>
-        </div> -->
       </div>
     </section>
-<!-- 
-    <section class="relative z-10 -mt-8 pb-12 md:-mt-12 md:pb-16">
-      <div class="mx-auto max-w-7xl px-4 md:px-6">
-        <div class="grid overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-xl shadow-dark/5 sm:grid-cols-3">
-          <div v-for="(stat, index) in stats" :key="stat.label" :class="['px-6 py-6 text-center md:py-7', index !== stats.length - 1 ? 'border-b border-gray-100 sm:border-b-0 sm:border-r' : '']">
-            <p class="font-heading text-2xl font-bold text-primary md:text-3xl">{{ stat.value }}</p>
-            <p class="mt-1 text-sm font-medium text-dark-lighter">{{ stat.label }}</p>
-          </div>
-        </div>
-      </div>
-    </section> -->
-
+    
     <section class="bg-white py-20 md:py-24">
       <div class="mx-auto grid max-w-7xl gap-12 px-4 md:px-6 lg:grid-cols-2 lg:items-center lg:gap-20">
         <div>
