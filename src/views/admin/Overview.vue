@@ -10,6 +10,7 @@ import {
   Users,
 } from "lucide-vue-next";
 import { useAdminDashboard } from "../../composables/useAdminDashboard.js";
+import StatCard from "../../components/admin/StatCard.vue";
 
 const {
   metrics,

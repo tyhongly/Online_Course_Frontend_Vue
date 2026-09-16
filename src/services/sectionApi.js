@@ -12,3 +12,7 @@ apiClient.interceptors.request.use((config) => {
 });
 
 export const createSection = (section) => apiClient.post('/sections', section);
+export const getSections = () => apiClient.get('/sections');
+export const getSection = (id) => apiClient.get(`/sections/${id}`);
+export const updateSection = (id, section) => apiClient.put(`/sections/${id}`, section);
+export const deleteSection = (id) => apiClient.delete(`/sections/${id}`);

@@ -45,11 +45,11 @@ const editSection = (sectionId) => {
   });
 };
 
-const deleteSection = (sectionId) => {
+const deleteSection = async (sectionId) => {
   if (!course.value || !confirm('Delete this section?')) return;
 
   try {
-    courseStore.deleteLesson(course.value.id, sectionId);
+    await courseStore.deleteLesson(course.value.id, sectionId);
   } catch (requestError) {
     error.value = requestError.response?.data?.message || requestError.response?.data?.massage || 'Unable to delete section.';
   }

@@ -2,7 +2,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { courseStore } from '../../store/courseStore.js';
-import { createSection } from '../../services/sectionApi.js';
+import { createSection, updateSection } from '../../services/sectionApi.js';
 
 const route = useRoute();
 const router = useRouter();
@@ -22,6 +22,11 @@ const form = ref({
   type: 'text',
   order: 1,
   content: '',
+  fileUrl: '',
+  fileType: '',
+  videoDurationSec: 0,
+  hasResources: false,
+  readingMode: 'scroll',
   published: true,
 });
 
@@ -51,6 +56,11 @@ onMounted(() => {
       type: lesson.type || 'text',
       order: lesson.order || 1,
       content: lesson.content || '',
+      fileUrl: lesson.fileUrl || '',
+      fileType: lesson.fileType || '',
+      videoDurationSec: lesson.videoDurationSec || 0,
+      hasResources: lesson.hasResources || false,
+      readingMode: lesson.readingMode || 'scroll',
       published: lesson.published !== false,
     };
   }
@@ -73,14 +83,14 @@ const saveLesson = async () => {
         position,
         hasDocument: resolvedType !== 'video',
         body: resolvedType === 'video' ? '' : form.value.content,
-        fileUrl: '',
-        fileType: '',
+        fileUrl: form.value.fileUrl,
+        fileType: form.value.fileType,
         ocrStatus: '',
         hasVideo: resolvedType === 'video',
         videoUrl: resolvedType === 'video' ? form.value.content : '',
-        videoDurationSec: 0,
-        hasResources: false,
-        readingMode: 'scroll',
+        videoDurationSec: Number(form.value.videoDurationSec) || 0,
+        hasResources: form.value.hasResources,
+        readingMode: form.value.readingMode,
         isPreview: form.value.published,
       });
       const payload = response?.data?.data || response?.data || response;
@@ -111,14 +121,37 @@ const saveLesson = async () => {
     return;
   }
 
-  courseStore.updateLesson(courseId, lessonId.value, {
-    title: form.value.title,
-    type: resolvedType,
-    order: Number(form.value.order) || 1,
-    content: form.value.content,
-    published: form.value.published,
-  });
-  router.push(`/admin/courses/${courseId}/sections`);
+  isSaving.value = true;
+  try {
+    await updateSection(lessonId.value, {
+      courseId,
+      title: form.value.title,
+      position: Number(form.value.order) || 1,
+      hasDocument: resolvedType !== 'video',
+      body: resolvedType === 'video' ? '' : form.value.content,
+      fileUrl: form.value.fileUrl,
+      fileType: form.value.fileType,
+      ocrStatus: lesson.ocrStatus || '',
+      hasVideo: resolvedType === 'video',
+      videoUrl: resolvedType === 'video' ? form.value.content : '',
+      videoDurationSec: Number(form.value.videoDurationSec) || 0,
+      hasResources: form.value.hasResources,
+      readingMode: form.value.readingMode,
+      isPreview: form.value.published,
+    });
+    Object.assign(lesson, {
+      title: form.value.title,
+      type: resolvedType,
+      order: Number(form.value.order) || 1,
+      content: form.value.content,
+      published: form.value.published,
+    });
+    router.push(`/admin/courses/${courseId}/sections`);
+  } catch (requestError) {
+    saveError.value = requestError.response?.data?.message || requestError.response?.data?.massage || 'Unable to update section.';
+  } finally {
+    isSaving.value = false;
+  }
 };
 </script>
 
@@ -132,8 +165,17 @@ const saveLesson = async () => {
         <p class="mt-2 text-sm text-slate-600">Add structured content to the course learning path.</p>
       </div>
 
-      <div class="grid gap-5">
-        <div>
+      <div class="grid gap-6">
+        <div class="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5">
+          <div class="mb-4 flex items-center justify-between">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Basics</p>
+              <p class="mt-1 text-sm text-slate-500">Give this lesson a clear place in the learning path.</p>
+            </div>
+            <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-500">Step 1</span>
+          </div>
+          <div class="grid gap-5">
+          <div>
           <label class="mb-2 block text-sm font-medium text-slate-700">Course</label>
           <select v-model="selectedCourseId" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-slate-950">
             <option v-for="course in courses" :key="course.id" :value="course.id">{{ course.title }}</option>
@@ -143,6 +185,8 @@ const saveLesson = async () => {
             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
             Free Document Course — lessons are text-based only
           </div>
+        </div>
+        </div>
         </div>
         <div>
           <label class="mb-2 block text-sm font-medium text-slate-700">Section Title</label>
@@ -161,10 +205,17 @@ const saveLesson = async () => {
             </select>
           </div>
         </div>
-        <!-- Lesson type selector: only for video courses -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
+          <div class="mb-4 flex items-center justify-between">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-[0.16em] text-indigo-600">Content</p>
+              <p class="mt-1 text-sm text-slate-500">Choose how students will consume this section.</p>
+            </div>
+            <span class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">Step 2</span>
+          </div>
         <div v-if="!isDocumentCourse">
           <label class="mb-2 block text-sm font-medium text-slate-700">Content Type</label>
-          <select v-model="form.type" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-slate-950">
+          <select v-model="form.type" class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10">
             <option value="video">Video (URL)</option>
             <option value="text">Text (HTML)</option>
             <option value="quiz">Quiz (JSON)</option>
@@ -179,11 +230,55 @@ const saveLesson = async () => {
             Example: <code>[{"q": "Question?", "options": ["A", "B"], "answer": "A"}]</code>
           </p>
         </div>
+        <div v-if="form.type === 'video'" class="grid gap-5 sm:grid-cols-2">
+          <div>
+            <label class="mb-2 block text-sm font-medium text-slate-700">Video duration (seconds)</label>
+            <input v-model="form.videoDurationSec" type="number" min="0" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10" placeholder="900" />
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium text-slate-700">Reading mode</label>
+            <select v-model="form.readingMode" class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10">
+              <option value="scroll">Scroll</option>
+              <option value="paged">Paged</option>
+            </select>
+          </div>
+        </div>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5">
+          <div class="mb-4 flex items-center justify-between">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-[0.16em] text-emerald-600">Resources</p>
+              <p class="mt-1 text-sm text-slate-500">Attach an optional downloadable file to this lesson.</p>
+            </div>
+            <span class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-500">Step 3</span>
+          </div>
+          <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white p-3">
+            <input v-model="form.hasResources" type="checkbox" class="h-4 w-4 accent-emerald-600" />
+            <span class="text-sm font-semibold text-slate-800">This section has resources</span>
+          </label>
+          <div v-if="form.hasResources" class="mt-4 grid gap-5 sm:grid-cols-2">
+            <div>
+              <label class="mb-2 block text-sm font-medium text-slate-700">File URL</label>
+              <input v-model="form.fileUrl" type="url" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10" placeholder="https://..." />
+            </div>
+            <div>
+              <label class="mb-2 block text-sm font-medium text-slate-700">File type</label>
+              <input v-model="form.fileType" type="text" class="w-full rounded-2xl border border-slate-300 px-4 py-3 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10" placeholder="PDF, ZIP, XLSX" />
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="mt-8 flex items-center justify-end gap-3">
+      <div class="mt-8 flex flex-col-reverse gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <label class="flex items-center gap-3 text-sm font-medium text-slate-700">
+          <input v-model="form.published" type="checkbox" class="h-4 w-4 accent-indigo-600" />
+          Publish immediately
+        </label>
+        <div class="flex items-center justify-end gap-3">
         <router-link :to="selectedCourseId ? `/admin/courses/${selectedCourseId}/sections` : '/admin/courses'" class="rounded-2xl px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100">Cancel</router-link>
         <button :disabled="isSaving" @click="saveLesson" class="rounded-2xl bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60">{{ isSaving ? 'Saving...' : (isNew ? 'Add Section' : 'Save Changes') }}</button>
+        </div>
       </div>
     </div>
   </div>

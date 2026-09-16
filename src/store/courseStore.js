@@ -7,6 +7,7 @@ import {
   getCourseSections,
   updateCourse
 } from '../services/courseApi.js';
+import { deleteSection, getSections, updateSection } from '../services/sectionApi.js';
 
 const documentLessonsMap = {
   2: [
@@ -375,13 +376,29 @@ const defaultDocumentLessons = [
   ], order: 3 }
 ];
 
+const courseFilesBaseUrl = () => {
+  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+  return apiUrl.replace(/\/api\/?$/, '/api/v1/files');
+};
+
+const normalizeCourse = (course = {}) => {
+  const coverImage = course.coverImage || course.coverImageUrl || course.thumbnailUrl || course.image || '';
+  const image = /^https?:\/\//.test(coverImage) || /^(data:|blob:|\/)/.test(coverImage)
+    ? coverImage
+    : coverImage
+      ? `${courseFilesBaseUrl()}/${coverImage}`
+      : '';
+
+  return { ...course, coverImage, coverImageUrl: image, thumbnailUrl: image, image };
+};
+
 export const courseStore = reactive({
   courses: [],
 
   async fetchCourses() {
     const response = await getAllCourses();
     const payload = response?.data?.data || response?.data || [];
-    this.courses = Array.isArray(payload) ? payload : payload.courses || [];
+    this.courses = (Array.isArray(payload) ? payload : payload.courses || []).map(normalizeCourse);
     this.save();
     return this.courses;
   },
@@ -390,21 +407,23 @@ export const courseStore = reactive({
     const response = await getCourseById(id);
     const payload = response?.data?.data || response?.data || {};
     const course = payload?.course || payload;
+    const normalizedCourse = normalizeCourse(course);
     const index = this.courses.findIndex((item) => String(item.id) === String(id));
 
     if (index === -1) {
-      this.courses.push(course);
+      this.courses.push(normalizedCourse);
     } else {
-      this.courses[index] = { ...this.courses[index], ...course };
+      this.courses[index] = { ...this.courses[index], ...normalizedCourse };
     }
 
-    return course;
+    return normalizedCourse;
   },
 
   async fetchCourseSections(courseId) {
-    const response = await getCourseSections(courseId);
+    const response = await getSections();
     const payload = response?.data?.data || response?.data || [];
-    const sections = Array.isArray(payload) ? payload : payload.sections || [];
+    const sections = (Array.isArray(payload) ? payload : payload.sections || [])
+      .filter((section) => String(section.courseId ?? section.course?.id) === String(courseId));
     const course = this.courses.find((item) => String(item.id) === String(courseId));
 
     if (course) {
@@ -453,9 +472,9 @@ export const courseStore = reactive({
     const response = await createCourse(newCourse);
     const payload = response?.data?.data || response?.data || response;
     const createdCourse = payload?.course || payload;
-    this.courses.push({ ...newCourse, ...createdCourse });
+    this.courses.push(normalizeCourse({ ...newCourse, ...createdCourse }));
     this.save();
-    return { ...newCourse, ...createdCourse };
+    return normalizeCourse({ ...newCourse, ...createdCourse });
   },
 
   async updateCourse(id, updatedData) {
@@ -474,7 +493,7 @@ export const courseStore = reactive({
       };
       const response = await updateCourse(id, nextCourse);
       const payload = response?.data?.data || response?.data || response;
-      this.courses[index] = { ...nextCourse, ...(payload?.course || payload) };
+      this.courses[index] = normalizeCourse({ ...nextCourse, ...(payload?.course || payload) });
       this.save();
       return this.courses[index];
     }
@@ -494,20 +513,24 @@ export const courseStore = reactive({
     }
   },
 
-  updateLesson(courseId, lessonId, lessonData) {
+  async updateLesson(courseId, lessonId, lessonData) {
     const course = this.courses.find(c => c.id === courseId);
     if (course) {
       const idx = course.lessons.findIndex(l => l.id === lessonId);
       if (idx !== -1) {
-        course.lessons[idx] = { ...course.lessons[idx], ...lessonData };
+        const response = await updateSection(lessonId, lessonData);
+        const payload = response?.data?.data || response?.data || response;
+        course.lessons[idx] = { ...course.lessons[idx], ...lessonData, ...(payload?.section || payload) };
         this.save();
+        return course.lessons[idx];
       }
     }
   },
 
-  deleteLesson(courseId, lessonId) {
+  async deleteLesson(courseId, lessonId) {
     const course = this.courses.find(c => c.id === courseId);
     if (course) {
+      await deleteSection(lessonId);
       course.lessons = course.lessons.filter(l => l.id !== lessonId);
       this.save();
     }

@@ -1,10 +1,9 @@
 <script setup>
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { ChevronDown, Search } from 'lucide-vue-next';
 import { useRoute, useRouter } from 'vue-router';
 import { courseStore } from '../../store/courseStore.js';
 import CatalogCourseCard from '../../components/CatalogCourseCard.vue';
-import { isTechnologyCourse } from '../../utils/technologyContent.js';
 
 const searchQuery = ref('');
 const selectedType = ref('All Courses');
@@ -281,7 +280,7 @@ const demoCourses = [
 ];
 
 const courses = computed(() => courseStore.courses
-  .filter((course) => course.published !== false && course.status !== 'draft' && isTechnologyCourse(course))
+  .filter((course) => course.published !== false && course.status !== 'draft')
   .map((course) => {
     const type = course.type || (Number(course.price) === 0 ? 'document' : 'video');
 
@@ -290,12 +289,16 @@ const courses = computed(() => courseStore.courses
       category: course.category || course.categoryName || 'General',
       type,
       price: type === 'document' ? 0 : Number(course.price) || 0,
-      image: course.thumbnailUrl || course.image || '',
+      image: course.coverImageUrl || course.coverImage || course.thumbnailUrl || course.image || '',
       rating: Number(course.rating) || 0,
       reviews: Number(course.reviews) || 0,
       duration: course.duration || 'Self paced'
     };
   }));
+
+onMounted(async () => {
+  await courseStore.fetchCourses();
+});
 
 const categories = computed(() => ['All', ...new Set(courses.value.map((course) => course.category))]);
 

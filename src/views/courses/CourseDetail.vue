@@ -5,7 +5,6 @@ import { courseStore } from '../../store/courseStore.js';
 import { authStore } from '../../store/authStore.js';
 import { enrollmentStore } from '../../store/enrollmentStore.js';
 import { wishlistStore } from '../../store/wishlistStore.js';
-import { isTechnologyCourse } from '../../utils/technologyContent.js';
 import { Heart, FileText, Video, CheckCircle2, ShieldCheck } from 'lucide-vue-next';
 
 const route = useRoute();
@@ -13,7 +12,7 @@ const router = useRouter();
 
 const courseId = Number(route.params.id);
 const course = computed(() =>
-  courseStore.courses.find((c) => c.id === courseId && isTechnologyCourse(c)),
+  courseStore.courses.find((c) => String(c.id) === String(courseId)),
 );
 
 onMounted(async () => {

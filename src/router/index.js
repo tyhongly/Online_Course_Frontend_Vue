@@ -66,7 +66,7 @@ const routes = [
     component: StudentLayout,
     meta: { requiresAuth: true, role: 'student' },
     children: [
-      { path: '', redirect: '/student/dashboard' },
+      { path: '', name: 'StudentRedirect', redirect: '/student/dashboard' },
       { path: 'dashboard', name: 'StudentDashboard', component: Dashboard },
       { path: 'my-courses', name: 'StudentMyCourses', component: MyCourses },
       { path: 'profile', name: 'Profile', component: Profile },

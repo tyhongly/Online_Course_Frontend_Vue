@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import { Bell, Search } from 'lucide-vue-next';
+import { Search } from 'lucide-vue-next';
 import { authStore } from '../../store/authStore.js';
 
 defineProps({
@@ -35,14 +35,6 @@ const avatarInitials = computed(() => displayName.value
     </form>
 
     <div class="flex items-center gap-2 sm:gap-3">
-      <button
-        type="button"
-        class="inline-flex h-10 w-10 items-center justify-center rounded-full text-slate-500 transition hover:bg-primary/5 hover:text-primary focus:outline-none focus:ring-4 focus:ring-primary/15"
-        aria-label="Notifications"
-      >
-        <Bell class="h-5 w-5" aria-hidden="true" />
-      </button>
-
       <router-link
         :to="profileRoute"
         class="group inline-flex cursor-pointer items-center gap-2 rounded-full p-1.5 pr-2 transition hover:bg-primary/5 focus:outline-none focus:ring-4 focus:ring-primary/15 sm:gap-3 sm:pr-3"
