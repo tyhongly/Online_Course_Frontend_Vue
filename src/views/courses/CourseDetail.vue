@@ -56,12 +56,9 @@ const telegramAdminUrl = "https://t.me/tosrean_admin";
   <div v-if="course" class="bg-white min-h-screen pb-20">
     <!-- Hero Header -->
     <div class="bg-light-dark text-dark pt-16 sm:pt-20 lg:pt-24 pb-10 sm:pb-12 relative overflow-hidden">
-      <!-- <img :src="course.image" class="absolute inset-0 w-full h-full object-cover opacity-20" /> -->
       <div class="absolute inset-0"></div>
-      <!-- bg-gradient-to-r from-dark to-dark/50 -->
-      <!-- <div class="container mx-auto relative z-10 flex flex-col lg:flex-row gap-12 items-center"> -->
       <div class="mx-auto w-full max-w-6xl px-5 sm:px-8 relative z-10 flex flex-col lg:flex-row gap-8 lg:gap-12 items-start lg:items-center">
-        <!-- <div class="lg:w-2/3"> -->
+    
         <div class="w-full lg:w-2/3 min-w-0">
           <div class="flex items-center gap-2 mb-4 flex-wrap">
             <span

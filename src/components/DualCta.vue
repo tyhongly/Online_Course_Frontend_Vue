@@ -15,9 +15,6 @@ import { ArrowRight } from 'lucide-vue-next';
           <div class="absolute inset-0 z-20 flex flex-col justify-center p-8 md:p-12">
             <h3 class="text-3xl md:text-4xl font-bold font-heading text-white mb-4">Free Document Library</h3>
             <p class="text-white/90 mb-8 max-w-sm text-lg leading-relaxed font-medium">Access free structured documents, guides, and learning resources.</p>
-            <!-- <router-link :to="{ path: '/courses', query: { type: 'document' } }" class="inline-flex w-max items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 text-base font-semibold text-dark shadow-lg transition-all hover:-translate-y-1 hover:bg-primary hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-              Explore Documents <ArrowRight class="w-5 h-5" />
-            </router-link> -->
           </div>
         </div>
         
@@ -29,9 +26,6 @@ import { ArrowRight } from 'lucide-vue-next';
           <div class="absolute inset-0 z-20 flex flex-col justify-center p-8 md:p-12">
             <h3 class="text-3xl md:text-4xl font-bold font-heading text-white mb-4">Become a Student</h3>
             <p class="text-white/95 mb-8 max-w-sm text-lg leading-relaxed font-medium">Join our learning community and start building your technology skills.</p>
-            <!-- <router-link to="/courses" class="inline-flex w-max items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 text-base font-semibold text-primary shadow-lg transition-all hover:-translate-y-1 hover:bg-dark hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">
-              Start Learning <ArrowRight class="w-5 h-5" />
-            </router-link> -->
           </div>
         </div>
 
