@@ -22,7 +22,7 @@ import BrandLogo from './BrandLogo.vue';
             <router-link to="/" class="text-white/60 transition-colors duration-200 hover:text-primary">Home</router-link>
             <router-link to="/courses" class="text-white/60 transition-colors duration-200 hover:text-primary">Courses</router-link>
             <router-link to="/categories" class="text-white/60 transition-colors duration-200 hover:text-primary">Categories</router-link>
-            <router-link to="/about" class="text-white/60 transition-colors duration-200 hover:text-primary">About</router-link>
+            <!-- <router-link to="/about" class="text-white/60 transition-colors duration-200 hover:text-primary">About</router-link> -->
           </nav>
         </div>
 
