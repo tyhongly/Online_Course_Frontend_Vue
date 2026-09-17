@@ -69,11 +69,11 @@ const continueCourse = (course) => {
 
 <template>
   <div class="space-y-6">
-    <!-- One Main Container -->
+    
     <div
       class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
     >
-      <!-- Your Enrolled Courses -->
+      
       <section class="px-6 py-7 sm:px-8">
         <div class="flex items-end justify-between gap-4">
           <div>
@@ -101,7 +101,7 @@ const continueCourse = (course) => {
           </p>
         </div>
 
-        <!-- Empty State -->
+        
         <div
           v-if="!hasEnrollments"
           class="mt-8 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center sm:p-10"
@@ -144,7 +144,7 @@ const continueCourse = (course) => {
         </div>
       </section>
 
-      <!-- Quick Stats -->
+  
       <section class="border-t border-slate-200 px-6 py-6 sm:px-8">
         <div>
           <p

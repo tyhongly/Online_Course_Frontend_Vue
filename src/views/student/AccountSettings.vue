@@ -84,13 +84,10 @@ const changePassword = async () => {
     <section
       class="overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-[0_18px_50px_-32px_rgba(15,23,42,0.18)]"
     >
-      <div class="bg-gradient-to-br from-[#201b55] via-[#342b7d] to-[#5b4ce1] px-6 py-8 text-white sm:px-8 sm:py-10">
+      <div class="bg-gradient-to-br bg-primary px-6 py-8 text-white sm:px-8 sm:py-10">
         <div class="flex items-start justify-between gap-5">
           <div>
-            <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-indigo-200">
-              <Settings class="h-4 w-4" /> Account settings
-            </div>
-            <h1 class="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
+            <h1 class="mt-4 text-3xl font-semibold text-white tracking-tight sm:text-4xl">
               Keep your account secure
             </h1>
             <p class="mt-3 max-w-2xl text-sm leading-7 text-indigo-100">

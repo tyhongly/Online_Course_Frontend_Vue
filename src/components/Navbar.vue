@@ -137,7 +137,7 @@ onUnmounted(() => window.removeEventListener("scroll", handleScroll));
     :class="[
       'fixed top-0 z-50 w-full transition-all duration-300',
       isScrolled
-        ? 'bg-white/95 py-3 shadow-md backdrop-blur'
+        ? 'bg-white/40 py-3 shadow-md backdrop-blur'
         : 'bg-transparent py-5',
     ]"
   >

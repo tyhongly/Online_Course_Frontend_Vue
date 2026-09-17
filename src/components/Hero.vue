@@ -6,7 +6,7 @@ import { ArrowRight, Play, Star } from "lucide-vue-next";
   <section class="pt-28 pb-16 md:pt-32 md:pb-24 overflow-hidden relative">
     <!-- Background Elements -->
     <div
-      class="absolute top-0 right-0 -z-10 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"
+      class="absolute top-0 right-0 -z-10 w-[800px] h-[900px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"
     ></div>
     <div
       class="absolute bottom-0 left-0 -z-10 w-[600px] h-[600px] bg-accent/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/4"
@@ -49,7 +49,7 @@ import { ArrowRight, Play, Star } from "lucide-vue-next";
         <div
           class="flex-1 relative w-full max-w-lg lg:max-w-none mx-auto mt-10 lg:mt-0"
         >
-          <div
+          <!-- <div
             class="relative z-10 rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white"
           >
             <img
@@ -57,7 +57,7 @@ import { ArrowRight, Play, Star } from "lucide-vue-next";
               alt="Students learning"
               class="w-full h-auto object-cover"
             />
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
