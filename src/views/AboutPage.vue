@@ -1,32 +1,52 @@
-﻿<script setup>
-import { ArrowRight, Award, BookOpen, Code2, Database, GraduationCap, Laptop, Lightbulb, Palette, Rocket, Target, Users } from 'lucide-vue-next';
+﻿```vue
+<script setup>
+import rymSavryImage from '../image/rym-savry.png';
+import soutSinatImage from '../image/sinat.png';
 
 const courses = [
-  { icon: Code2, title: 'HTML, CSS & JavaScript', description: 'Build modern websites from scratch.' },
-  { icon: Laptop, title: 'React JS', description: 'Create powerful interactive interfaces.' },
-  { icon: BookOpen, title: 'Web Development', description: 'Learn full web development skills.' },
-  { icon: Palette, title: 'UI/UX Design', description: 'Design beautiful user experiences.' },
-  { icon: Lightbulb, title: 'Programming Fundamentals', description: 'Understand core programming concepts.' },
-  { icon: Database, title: 'Database & Backend', description: 'Learn how applications store data.' },
-  { icon: Rocket, title: 'Real-world Projects', description: 'Build projects for your portfolio.' },
-];
-
-const benefits = [
-  { icon: Users, title: 'Expert Instructors', description: 'Learn from experienced professionals in the industry.' },
-  { icon: Code2, title: 'Practical Learning', description: 'Build real projects instead of learning only theory.' },
-  { icon: BookOpen, title: 'Learn at Your Pace', description: 'Study whenever and wherever you want.' },
-  { icon: Award, title: 'Certificates', description: 'Showcase your skills and achievements.' },
-];
+  {
+    icon: "🌐",
+    title: "HTML, CSS & JavaScript",
+    description: "Build modern websites from scratch.",
+  },
+  {
+    icon: "⚛️",
+    title: "React JS",
+    description: "Create powerful interactive interfaces.",
+  },
+  {
+    icon: "💻",
+    title: "Web Development",
+    description: "Learn full web development skills.",
+  },
+  {
+    icon: "🎨",
+    title: "UI/UX Design",
+    description: "Design beautiful user experiences.",
+  },
+]
 
 const instructors = [
-  { initials: 'SD', name: 'Sokha Dara', role: 'Web Development' },
-  { initials: 'CR', name: 'Chanvibol Rith', role: 'React Developer' },
-  { initials: 'SP', name: 'Sothea Peng', role: 'UI/UX Designer' },
-  { initials: 'SL', name: 'Srey Leak', role: 'Database Expert' },
-];
+  {
+    name: "Ty Hongly",
+    role: "Leader",
+    image: null,
+  },
+  {
+    name: "Rym Savry",
+    role: "Member",
+    image: rymSavryImage,
+  },
+  {
+    name: "Sout Sinat",
+    role: "Member",
+    image: soutSinatImage,
+  },
+]
 </script>
 
 <template>
+<<<<<<< Updated upstream
 <<<<<<< HEAD
   <main class="overflow-hidden bg-light pt-28">
     <section class="relative pb-20 pt-0 md:pb-28 md:pt-0">
@@ -121,26 +141,250 @@ const instructors = [
           <div class="mt-8 flex flex-wrap gap-4">
             <router-link to="/courses" class="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-semibold text-white shadow-lg shadow-primary/25 transition hover:-translate-y-0.5 hover:bg-primary-dark">Explore courses <ArrowRight class="h-4 w-4" /></router-link>
             <router-link to="/contact" class="rounded-xl border border-primary px-6 py-3.5 font-semibold text-primary transition hover:bg-primary/5">Contact us</router-link>
+=======
+  <main class="min-h-screen bg-white text-slate-800">
+
+  
+
+
+    <!-- ================= WHO WE ARE ================= -->
+    <section class="py-20">
+      <div
+        class="mx-auto grid max-w-7xl items-center gap-12 px-6 md:grid-cols-2"
+      >
+
+        <div
+          class="rounded-3xl bg-slate-100 p-12 text-center shadow-sm"
+        >
+          <div class="text-8xl">
+            💻
+>>>>>>> Stashed changes
           </div>
+
+          <h3 class="mt-6 text-2xl font-bold text-slate-900">
+            Better Skills
+          </h3>
+
+          <p class="mt-2 text-blue-600">
+            Brighter Future
+          </p>
         </div>
+<<<<<<< Updated upstream
         <div class="relative mx-auto flex h-80 w-full max-w-md items-center justify-center overflow-hidden rounded-[2rem] bg-white shadow-2xl shadow-primary/15">
           <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(99,102,241,.14),transparent_36%),radial-gradient(circle_at_80%_80%,rgba(139,92,246,.16),transparent_38%)]"></div>
           <div class="relative text-center"><span class="mx-auto flex h-28 w-28 items-center justify-center rounded-3xl bg-primary text-white shadow-xl shadow-primary/30"><GraduationCap class="h-14 w-14" /></span><p class="mt-6 font-heading text-2xl font-bold text-dark">Start learning today</p><p class="mt-2 text-dark-lighter">Your next skill is waiting.</p></div>
 >>>>>>> 0f3188b (update about us)
+=======
+
+
+        <div>
+        
+
+          <h2
+            class="mt-5 text-3xl font-bold text-slate-900 md:text-4xl"
+          >
+            We're More Than Just a Course Platform
+          </h2>
+
+          <p class="mt-6 leading-8 text-slate-600">
+            Online Course is a dedicated learning platform that provides
+            high-quality courses in web development, programming, design,
+            and modern technologies.
+          </p>
+
+          <p class="mt-4 leading-8 text-slate-600">
+            We are passionate about helping students and developers gain
+            practical skills and create better opportunities for their
+            future.
+          </p>
+>>>>>>> Stashed changes
         </div>
+
       </div>
     </section>
 
-    <section class="py-20 md:py-24"><div class="mx-auto grid max-w-7xl items-center gap-12 px-4 md:px-6 lg:grid-cols-2 lg:gap-20"><div class="flex min-h-80 items-center justify-center rounded-3xl bg-light p-10 text-center"><div><Laptop class="mx-auto h-20 w-20 text-primary" /><h2 class="mt-6 font-heading text-3xl font-bold">Better skills</h2><p class="mt-2 text-lg text-accent">Brighter future</p></div></div><div><span class="text-sm font-bold uppercase tracking-wider text-primary">Who we are</span><h2 class="mt-4 font-heading text-3xl font-bold leading-tight md:text-4xl">We’re more than just a course platform.</h2><p class="mt-6 leading-8 text-dark-lighter">TosRean provides quality learning in web development, programming, design, and modern technologies.</p><p class="mt-4 leading-8 text-dark-lighter">We are passionate about helping learners gain practical skills and create better opportunities for their future.</p></div></div></section>
 
-    <section class="bg-primary/5 py-20 md:py-24"><div class="mx-auto grid max-w-7xl items-center gap-12 px-4 md:px-6 lg:grid-cols-2 lg:gap-20"><div><span class="text-sm font-bold uppercase tracking-wider text-primary">Our mission</span><h2 class="mt-4 font-heading text-3xl font-bold leading-tight md:text-4xl">Make quality education accessible to everyone.</h2><p class="mt-6 leading-8 text-dark-lighter">We break down barriers to learning with practical, affordable, and flexible online courses.</p><p class="mt-4 leading-8 text-dark-lighter">Every learner deserves the confidence to build projects, develop real skills, and pursue a successful career.</p></div><div class="mx-auto rounded-3xl bg-white p-12 text-center shadow-xl shadow-primary/10"><Target class="mx-auto h-20 w-20 text-primary" /><h3 class="mt-6 font-heading text-2xl font-bold text-primary">Better learning</h3><p class="mt-2 text-dark-lighter">For a brighter future</p></div></div></section>
+    <!-- ================= MISSION ================= -->
+    <section class="bg-blue-50 py-20">
+      <div
+        class="mx-auto grid max-w-7xl items-center gap-12 px-6 md:grid-cols-2"
+      >
 
-    <section class="py-20 md:py-24"><div class="mx-auto max-w-7xl px-4 md:px-6"><div class="mx-auto max-w-2xl text-center"><span class="text-sm font-bold uppercase tracking-wider text-primary">What we offer</span><h2 class="mt-4 font-heading text-3xl font-bold md:text-4xl">Explore our courses</h2><p class="mt-4 text-dark-lighter">Learn practical skills and stay ahead in the technology world.</p></div><div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"><article v-for="course in courses" :key="course.title" class="group rounded-2xl border border-slate-100 bg-white p-6 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-xl"><span class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary transition group-hover:bg-primary group-hover:text-white"><component :is="course.icon" class="h-7 w-7" /></span><h3 class="mt-5 font-heading font-bold">{{ course.title }}</h3><p class="mt-2 text-sm leading-6 text-dark-lighter">{{ course.description }}</p><router-link to="/courses" class="mt-4 inline-flex items-center gap-1 text-sm font-bold text-primary">Learn more <ArrowRight class="h-4 w-4" /></router-link></article></div></div></section>
+        <div>
+          <span
+            class="rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-600"
+          >
+            Our Mission
+          </span>
 
-    <section class="bg-light py-20 md:py-24"><div class="mx-auto max-w-7xl px-4 md:px-6"><div class="text-center"><span class="text-sm font-bold uppercase tracking-wider text-primary">Why choose us</span><h2 class="mt-4 font-heading text-3xl font-bold md:text-4xl">Your success is our priority.</h2></div><div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4"><article v-for="benefit in benefits" :key="benefit.title" class="rounded-2xl bg-white p-7 shadow-sm"><component :is="benefit.icon" class="h-9 w-9 text-primary" /><h3 class="mt-5 font-heading font-bold">{{ benefit.title }}</h3><p class="mt-2 text-sm leading-6 text-dark-lighter">{{ benefit.description }}</p></article></div></div></section>
+          <h2
+            class="mt-5 text-3xl font-bold text-slate-900 md:text-4xl"
+          >
+            Make Quality Education Accessible to Everyone
+          </h2>
 
-    <section class="py-20 md:py-24"><div class="mx-auto max-w-7xl px-4 md:px-6"><div class="text-center"><span class="text-sm font-bold uppercase tracking-wider text-primary">Our team</span><h2 class="mt-4 font-heading text-3xl font-bold md:text-4xl">Meet our instructors</h2><p class="mt-4 text-dark-lighter">Passionate professionals ready to guide you.</p></div><div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"><article v-for="instructor in instructors" :key="instructor.name" class="rounded-2xl border border-slate-100 bg-white p-6 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-lg"><span class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 font-heading text-2xl font-bold text-primary">{{ instructor.initials }}</span><h3 class="mt-5 font-heading font-bold">{{ instructor.name }}</h3><p class="mt-2 text-sm text-primary">{{ instructor.role }}</p></article></div></div></section>
+          <p class="mt-6 leading-8 text-slate-600">
+            Our mission is to break down barriers to learning by providing
+            practical, affordable, and flexible online courses.
+          </p>
 
-    <section class="bg-gradient-to-r from-primary-dark to-accent py-20 text-center text-white"><div class="mx-auto max-w-2xl px-4"><h2 class="font-heading text-3xl font-bold md:text-4xl">Start your learning journey.</h2><p class="mt-4 text-lg text-white/80">Ready to improve your skills and build something amazing?</p><router-link to="/courses" class="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 font-bold text-primary shadow-lg transition hover:-translate-y-0.5 hover:bg-light">View courses <ArrowRight class="h-4 w-4" /></router-link></div></section>
+          <p class="mt-4 leading-8 text-slate-600">
+            We want every learner to gain real skills, build projects,
+            and grow their confidence for a successful career.
+          </p>
+        </div>
+
+
+        <div class="flex justify-center">
+          <div
+            class="rounded-3xl bg-white p-12 text-center shadow-lg"
+          >
+            <div class="text-8xl">
+              🎯
+            </div>
+
+            <h3 class="mt-5 text-2xl font-bold text-blue-600">
+              Better Learning
+            </h3>
+
+            <p class="mt-2 text-slate-600">
+              For a Brighter Future
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================= COURSES ================= -->
+    <section class="py-20">
+      <div class="mx-auto max-w-7xl px-6">
+
+        <div class="text-center">
+          <span
+            class="rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-600"
+          >
+            What We Offer
+          </span>
+
+          <h2
+            class="mt-5 text-3xl font-bold text-slate-900 md:text-4xl"
+          >
+            Explore Our Courses
+          </h2>
+
+          <p
+            class="mx-auto mt-4 max-w-2xl text-slate-600"
+          >
+            Learn practical skills and stay ahead in the technology world.
+          </p>
+        </div>
+
+
+        <div
+          class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+        >
+          <div
+            v-for="course in courses"
+            :key="course.title"
+            class="group rounded-2xl border bg-white p-6 text-center shadow-sm transition hover:-translate-y-2 hover:shadow-xl"
+          >
+
+            <div
+              class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 text-4xl"
+            >
+              {{ course.icon }}
+            </div>
+
+            <h3 class="mt-5 font-bold text-slate-900">
+              {{ course.title }}
+            </h3>
+
+            <p
+              class="mt-2 text-sm leading-6 text-slate-500"
+            >
+              {{ course.description }}
+            </p>
+
+            <NuxtLink
+              to="/courses"
+              class="mt-4 inline-block text-sm font-semibold text-blue-600"
+            >
+              Learn More →
+            </NuxtLink>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    
+    <!-- ================= INSTRUCTORS ================= -->
+    <section class="py-20 bg-slate-50">
+      <div class="mx-auto max-w-7xl px-6 ">
+
+        <div class="text-center">
+          <span
+            class="rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-600"
+          >
+            Our Team
+          </span>
+
+          <h2
+            class="mt-5 text-3xl font-bold text-slate-900 md:text-4xl"
+          >
+            Meet Our Instructors
+          </h2>
+
+          <p class="mt-4 text-slate-600">
+            Passionate professionals ready to guide you.
+          </p>
+        </div>
+
+
+        <div
+          class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+        >
+
+          <div
+            v-for="instructor in instructors"
+            :key="instructor.name"
+            class="rounded-2xl border bg-white p-6 text-center shadow-sm transition hover:-translate-y-2 hover:shadow-lg"
+          >
+
+            <div
+              class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-blue-100 text-4xl"
+            >
+              <img
+                v-if="instructor.image"
+                :src="instructor.image"
+                :alt="`${instructor.name}'s profile picture`"
+                class="h-full w-full rounded-full object-cover"
+              >
+            </div>
+
+            <h3 class="mt-5 font-bold text-slate-900">
+              {{ instructor.name }}
+            </h3>
+
+            <p class="mt-2 text-sm text-blue-600">
+              {{ instructor.role }}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+   
+
+
+    
   </main>
 </template>

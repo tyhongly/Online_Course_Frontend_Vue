@@ -16,6 +16,10 @@ import { CheckCircle2, ArrowRight } from 'lucide-vue-next';
             <img src="/src/image/Group_Meeting.jpg" alt="Students learning together" class="w-full h-full object-cover" />
           </div>
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         </div>
 
         <!-- Right Content -->
