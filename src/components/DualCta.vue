@@ -1,34 +1,69 @@
 <script setup>
-import { ArrowRight } from 'lucide-vue-next';
+import { ArrowRight } from "lucide-vue-next";
 </script>
 
 <template>
   <section class="py-24 bg-white">
     <div class="mx-auto max-w-7xl px-4 md:px-6">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
-        
         <!-- Free Document Library -->
-        <div class="relative rounded-2xl overflow-hidden group h-96 shadow-lg hover:shadow-2xl transition-all duration-300">
-          <div class="absolute inset-0 bg-dark/50 group-hover:bg-dark/60 transition-colors z-10"></div>
-          <img src="https://i.pinimg.com/1200x/c5/29/40/c52940bef6c1fa13dcecbaa41d73be50.jpg" alt="Free Document Courses" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-          
-          <div class="absolute inset-0 z-20 flex flex-col justify-center p-8 md:p-12">
-            <h3 class="text-3xl md:text-4xl font-bold font-heading text-white mb-4">Free Document Library</h3>
-            <p class="text-white/90 mb-8 max-w-sm text-lg leading-relaxed font-medium">Access free structured documents, guides, and learning resources.</p>
-          </div>
-        </div>
-        
-        <!-- Become a Student -->
-        <div class="relative rounded-2xl overflow-hidden group h-96 shadow-lg hover:shadow-2xl transition-all duration-300">
-          <div class="absolute inset-0 bg-primary/60 group-hover:bg-primary/70 transition-colors mix-blend-multiply z-10"></div>
-          <img src="https://i.pinimg.com/1200x/bd/dd/48/bddd48e1b77bf16b9bdccd3749c8d2a3.jpg" alt="Become a Student" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-          
-          <div class="absolute inset-0 z-20 flex flex-col justify-center p-8 md:p-12">
-            <h3 class="text-3xl md:text-4xl font-bold font-heading text-white mb-4">Become a Student</h3>
-            <p class="text-white/95 mb-8 max-w-sm text-lg leading-relaxed font-medium">Join our learning community and start building your technology skills.</p>
+        <div
+          class="relative rounded-2xl overflow-hidden group h-96 shadow-lg hover:shadow-2xl transition-all duration-300"
+        >
+          <div
+            class="absolute inset-0 bg-dark/50 group-hover:bg-dark/60 transition-colors z-10"
+          ></div>
+          <img
+            src="https://i.pinimg.com/1200x/c5/29/40/c52940bef6c1fa13dcecbaa41d73be50.jpg"
+            alt="Free Document Courses"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          />
+
+          <div
+            class="absolute inset-0 z-20 flex flex-col justify-center p-8 md:p-12"
+          >
+            <h3
+              class="text-3xl md:text-4xl font-bold font-heading text-white mb-4"
+            >
+              Free Document Library
+            </h3>
+            <p
+              class="text-white/90 mb-8 max-w-sm text-lg leading-relaxed font-medium"
+            >
+              Access free structured documents, guides, and learning resources.
+            </p>
           </div>
         </div>
 
+        <!-- Become a Student -->
+        <div
+          class="relative rounded-2xl overflow-hidden group h-96 shadow-lg hover:shadow-2xl transition-all duration-300"
+        >
+          <div
+            class="absolute inset-0 bg-primary/60 group-hover:bg-primary/70 transition-colors mix-blend-multiply z-10"
+          ></div>
+          <img
+            src="https://i.pinimg.com/1200x/bd/dd/48/bddd48e1b77bf16b9bdccd3749c8d2a3.jpg"
+            alt="Become a Student"
+            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          />
+
+          <div
+            class="absolute inset-0 z-20 flex flex-col justify-center p-8 md:p-12"
+          >
+            <h3
+              class="text-3xl md:text-4xl font-bold font-heading text-white mb-4"
+            >
+              Become a Student
+            </h3>
+            <p
+              class="text-white/95 mb-8 max-w-sm text-lg leading-relaxed font-medium"
+            >
+              Join our learning community and start building your technology
+              skills.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>

@@ -134,24 +134,13 @@ onUnmounted(() => window.removeEventListener("scroll", handleScroll));
 
 <template>
   <header
-<<<<<<< Updated upstream
     :class="[
-      'fixed top-0 z-50 w-full transition-all duration-300',
+      'fixed top-0 z-50 w-full transition-all bg-slate-300 duration-300 ',
       isScrolled
-        ? 'bg-white/40 py-3 shadow-md backdrop-blur'
+        ? 'bg-white/95 py-3 shadow-md backdrop-blur'
         : 'bg-transparent py-5',
     ]"
   >
-=======
-  :class="[
-    'fixed top-0 left-0 z-50 w-full',
-    'py-5',
-    isScrolled
-      ? 'bg-white/95 shadow-md backdrop-blur'
-      : 'bg-transparent',
-  ]"
->
->>>>>>> Stashed changes
     <div
       class="container mx-auto flex items-center justify-between px-4 md:px-6"
     >
