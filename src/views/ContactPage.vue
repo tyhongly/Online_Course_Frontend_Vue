@@ -67,11 +67,11 @@ const sendAnotherMessage = () => {
 </script>
 
 <template>
-  <main class="min-h-screen bg-light pt-28 text-dark">
+  <main class="min-h-screen bg-light pt-20 text-dark">
     <section class="border-b border-slate-200/80 bg-white py-14 sm:py-16">
       <div class="mx-auto max-w-3xl px-4 text-center sm:px-6">
         <h1
-          class="mt-3 font-heading text-3xl font-bold tracking-tight text-dark sm:text-4xl"
+          class="mt-2 font-heading text-3xl font-bold tracking-tight text-dark sm:text-4xl"
         >
           We're Here to Help
         </h1>

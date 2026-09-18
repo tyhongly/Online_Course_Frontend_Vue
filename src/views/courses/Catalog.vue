@@ -356,7 +356,7 @@ const filteredCourses = computed(() => {
 </script>
 
 <template>
-  <div class="min-h-screen overflow-hidden bg-[#f7f9fd] text-slate-900">
+  <div class="min-h-screen overflow-hidden bg-white text-slate-900">
     <div class="pointer-events-none absolute inset-0">
       <div class="absolute left-[-8rem] top-[-7rem] h-[26rem] w-[26rem] rounded-full bg-sky-200/35 blur-3xl"></div>
       <div class="absolute right-[-9rem] top-[6rem] h-[28rem] w-[28rem] rounded-full bg-violet-200/30 blur-3xl"></div>
@@ -365,9 +365,6 @@ const filteredCourses = computed(() => {
 
     <main class="relative mx-auto max-w-7xl px-4 pb-12 pt-28 md:px-6 md:pt-32">
       <section class="max-w-3xl">
-        <p class="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">
-          TosRean Course Catalog
-        </p>
         <h1 class="text-4xl font-semibold tracking-tight text-slate-950 md:text-5xl">
           Course Catalog
         </h1>
@@ -417,7 +414,7 @@ const filteredCourses = computed(() => {
               <ChevronDown class="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             </label>
 
-            <label class="relative min-w-[210px]">
+            <!-- <label class="relative min-w-[210px]">
               <select
                 v-model="sortBy"
                 class="h-11 w-full appearance-none rounded-full border border-slate-200 bg-white px-4 pr-10 text-sm font-medium text-slate-700 outline-none transition focus:border-sky-300 focus:ring-4 focus:ring-sky-100"
@@ -427,7 +424,7 @@ const filteredCourses = computed(() => {
                 </option>
               </select>
               <ChevronDown class="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-            </label>
+            </label> -->
           </div>
         </div>
 
